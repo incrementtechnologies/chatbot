@@ -34,8 +34,11 @@ class Codes{
   public $pPostponeQC  = 214;
   public $pQCViewDetails = 215;
   public $pEditDetails = 216;
-
-
+/**Yol */
+  public $pPackageSelected = 217;
+  public $pPackageInquiry = 218;
+  public $pRoomInquiry = 219;
+  public $pRoomMenuSelected = 220;
 
   /**
     MESSAGE CODES
@@ -62,7 +65,7 @@ class Codes{
   public $qrSurvey       = 327;
   public $qrQueueCardCancel    = 328;
   public $qrQueueCardPostpone  = 329;
-
+  public $qInquirePackage  = 330;
   /**
     TEXT CODES
   */
@@ -99,7 +102,12 @@ class Codes{
       "@pCancelQC"  => $this->pCancelQC,
       "@pPostponeQC"=> $this->pPostponeQC,
       "@pQCViewDetails" => $this->pQCViewDetails,
-      "@pEditDetails" => $this->pEditDetails
+      "@pEditDetails" => $this->pEditDetails,
+      // yol
+      "@pPackageSelected" => $this->pPackageSelected,
+      "@pPackageInquiry"=>$this->pPackageInquiry,
+      "@pRoomMenuSelected"=>$this->pRoomMenuSelected,
+      "@pRoomInquiry"=>$this->pRoomInquiry
     );
 
     $this->quickReplyPayloads = array(
@@ -112,7 +120,8 @@ class Codes{
       "@qrStageError"   => $this->qrStageError,
       "@qrSurvey"       => $this->qrSurvey,
       "@qrQueueCardCancel" => $this->qrQueueCardCancel,
-      "@qrQueueCardPostpone" => $this->qrQueueCardPostpone
+      "@qrQueueCardPostpone" => $this->qrQueueCardPostpone,
+      "@qInquirePackage"=>$this->qInquirePackage
     );
   }
 

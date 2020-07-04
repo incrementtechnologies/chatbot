@@ -24,6 +24,9 @@ class MessageHandler{
   protected $category;
   protected $formId;
 
+  // yol
+  protected $package_inquiry;
+  protected $package;
 
   protected $tracker;
 
@@ -67,7 +70,7 @@ class MessageHandler{
         break;
       case $this->code->postback:
         $this->getParameter();  
-        $this->trackerHandler();
+        // $this->trackerHandler();
         $this->postback->manage($this->custom);
         break;
       case $this->code->message:
@@ -120,6 +123,12 @@ class MessageHandler{
     switch ($code) {
       case $this->code->pCategorySelected:
         $this->category =  $this->custom['parameter'];
+        break;
+      case $this->code->pPackageInquiry:
+        $this->package_inquiry =  $this->custom['parameter'];
+        break;
+      case $this->code->pPackageSelected:
+        $this->package =  $this->custom['parameter'];
         break;
       case $this->code->pGetQueueCard:
         $this->companyId = $this->custom['parameter'];

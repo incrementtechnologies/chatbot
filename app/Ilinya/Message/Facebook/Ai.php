@@ -47,20 +47,22 @@ class Ai{
     $reply = strtolower($reply);
 
     if(strpos($reply, 'hi') !== false || strpos($reply, 'hello') !== false ||strpos($reply, 'help') !== false || strpos($reply, 'hola') !== false){
-        $this->bot->reply($this->post->testMessage(), false);
+        $this->bot->reply($this->post->banner(), false);
         $this->bot->reply($this->post->start(), false);
-        $this->bot->reply($this->post->categories(), false);
+        return '';
     }
     else if(strpos($reply, 'thank you') !== false){
         $this->bot->reply($this->aiResponse->thankYou(),  false);
+        return '';
     }
     else if(strpos($reply, 'baha ba karun') !== false){
         $this->bot->reply("Dli baya", false);
+        return '';
     }
     else{
         $this->bot->reply($this->aiResponse->error(), false);
         $this->bot->reply($this->post->start(), false);
-        $this->bot->reply($this->post->categories(), false);
+        return '';        
     }
   }
 

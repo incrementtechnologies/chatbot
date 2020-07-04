@@ -29,6 +29,7 @@ use App\Ilinya\Templates\Facebook\ListTemplate;
 use App\Ilinya\Templates\Facebook\ButtonElement;
 use App\Ilinya\Templates\Facebook\GenericElement;
 use App\Ilinya\Templates\Facebook\QuickReplyElement;
+use Storage;
 
 /*
     @API
@@ -54,70 +55,36 @@ class PostbackResponse{
 
     public function testMessage(){
         $this->user();
-        $message = "Hi ".$this->user->getFirstName()." :) I'm ILinya, I can help you to get ticket or make reservation to any establishment(s) or event(s) you want. I'm currently on a TEST MODE right now, so all of the data are just sample and not really connected to the establishment that will be mentioned in our conversation later. ";
+        // $message = "Hi ".$this->user->getFirstName()." :) I'm ILinya, I can help you to get ticket or make reservation to any establishment(s) or event(s) you want. I'm currently on a TEST MODE right now, so all of the data are just sample and not really connected to the establishment that will be mentioned in our conversation later. ";
+        $message = "Hi ".$this->user->getFirstName().", how could I help you?";
         return ["text" => $message];
     }
-    public function start(){
-        $this->user();
-
-        $title =  "Hi ".$this->user->getFirstName().". I'm Ilinya your personal assistant.";
-        $subtitle = "Kindly click the buttons to navigate.";
-        $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
+    public function banner(){
+        $title = "Mezzo Hotel";
+        $subtitle = "A new diversion of luxury";
         $elements[] = GenericElement::title($title)
-                            ->imageUrl($imageUrl)
+                            ->imageUrl('https://mezzohotel.com/img/logo.png')
                             ->subtitle($subtitle)
                             ->buttons(null)
                             ->toArray();
         $response =  GenericTemplate::toArray($elements);
         return $response;
     }
-    
-    public function categories(){
-        $request = new Request();
-        $request['sort'] = ["category" => "asc"];
-        $categories = Controller::retrieve($request, "App\Http\Controllers\BusinessTypeController");
-        $subtitle = "Get tickets or make reservations on category below:";
-        $buttons = [];
-        $elements = [];
-       
-        if($categories){
-            $prev = $categories[0]['category'];
-            $i = 0;
-            foreach ($categories as $category) {
-                 $imageUrl = "http://ilinya.com/wp-content/uploads/2017/09/category_".strtolower($category['category']).'.png';
-                $buttons[] = ButtonElement::title($category['sub_category'])
-                    ->type('postback')
-                    ->payload(strtolower($category['id']).'@pCategorySelected')
-                    ->toArray();
-                if($i < sizeof($categories) - 1){
-                    if($prev != $categories[$i + 1]['category']){
-                        $title = $category['category'];
-                        $elements[] = GenericElement::title($title)
-                            ->imageUrl($imageUrl)
-                            ->subtitle($subtitle)
-                            ->buttons($buttons)
-                            ->toArray();
-                        $prev = $category['category'];
-                        $buttons = null;
-                        echo $imageUrl.'<br />';
-                    }
-                }
-                else{
-                    $title = $category['category'];
-                    $elements[] = GenericElement::title($title)
-                        ->imageUrl($imageUrl)
-                        ->subtitle($subtitle)
-                        ->buttons($buttons)
+    public function start(){
+        $this->user();
+        $title =  "Greetings ".$this->user->getFirstName().",thank you for your interest in Mezzo Hotel.For us to help you with your inquiry please select the following options below.";
+        $subtitle = "Kindly click the buttons to navigate.";
+        $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
+        $menus= array("ROOM RATES" , "BANQUET PACKAGES" , "CONCERN/INQUIRY");
+        $buttons =[];
+        foreach ($menus as $menu) {
+            $payload = preg_replace('/\s+/', '_', $menu);
+            $buttons[] = ButtonElement::title($menu)
+                        ->type('postback')
+                        ->payload(strtolower($payload).'@pCategorySelected')
                         ->toArray();
-                        echo $imageUrl.'<br />';
-                }
-                
-                $i++;
-            }
         }
-
-
-        $response =  GenericTemplate::toArray($elements);
+        $response = ButtonTemplate::toArray($title,$buttons);
         return $response;
     }
 

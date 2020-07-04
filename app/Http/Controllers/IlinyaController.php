@@ -10,7 +10,6 @@ use App\Jobs\TestDatabaseQueryEffect;
 use App\Jobs\ChatbotBroadcast;
 use App\Ilinya\ImageGenerator;
 use App\Ilinya\Response\Facebook\SurveyResponse;
-
 class IlinyaController extends APIController
 {
     public function hook(Request $request){
@@ -55,3 +54,5 @@ class IlinyaController extends APIController
         dispatch(new TestDatabaseQueryEffect($size));
     }
 }
+
+

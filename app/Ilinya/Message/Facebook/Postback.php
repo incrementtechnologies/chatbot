@@ -15,8 +15,10 @@ use App\Ilinya\Response\Facebook\QueueCardsResponse;
 use App\Ilinya\Response\Facebook\DisregardResponse;
 use App\Ilinya\Response\Facebook\DetailsResponse;
 use App\Ilinya\Response\Facebook\EditDetailsResponse;
+use App\Ilinya\Response\Facebook\RoomResponse;
+use App\Ilinya\Response\Facebook\PackageResponse;
 use App\Ilinya\Webhook\Facebook\Messaging;
-
+use Storage;
 class Postback{
     protected $forms;
     protected $post;
@@ -29,6 +31,8 @@ class Postback{
     protected $disregard;
     protected $details;
     protected $editDetails;
+    protected $package;
+    protected $room;
 
     function __construct(Messaging $messaging){
         $this->bot    = new Bot($messaging);
@@ -44,6 +48,8 @@ class Postback{
         $this->search = new SearchResponse($messaging);
         $this->details = new DetailsResponse($messaging);
         $this->editDetails = new EditDetailsResponse($messaging);
+        $this->room = new RoomResponse($messaging);
+        $this->package = new PackageResponse($messaging);
     }
 
     public function manage($custom){
@@ -64,8 +70,41 @@ class Postback{
             $this->bot->reply($this->post->categories(), false);
             break;
           case $this->code->pCategorySelected:
-            $this->bot->reply($this->category->companies($custom['parameter']), false);
-            break;
+            switch (strtolower($custom['parameter'])) {
+              case 'room rates':
+                        $this->bot->reply($this->room->roomMenuStart(), false);
+                        $this->bot->reply($this->room->roomMenu(), false);
+                        break;
+                      case strtolower('BANQUET PACKAGES'):
+                        $this->bot->reply($this->package->packageMenu(), false);
+                        break;
+                      case strtolower('CONCERN/INQUIRY'):
+                        $this->bot->reply($this->package->concerns($custom['parameter']), false); 
+                        break;
+                      default:
+                        return '';
+                        break;
+                    }
+                break;
+          case $this->code->pPackageSelected:
+              $this->bot->reply($this->package->packages(), false);
+              break;
+          case $this->code->pPackageInquiry:
+              $this->bot->reply($this->package->packageInquiry(), false);
+              break;
+          case $this->code->pRoomMenuSelected:
+              switch (strtolower($custom['parameter'])) {
+                case 'room rates':
+                  $this->bot->reply($this->room->rooms(false), false);
+                  break;
+              case strtolower('ROOM RESERVATIONS'):
+                  $this->bot->reply($this->room->rooms(true), false); 
+                break;
+              default:
+                return '';
+                break;  
+              }
+              break;
           case $this->code->pSearch:
             $this->bot->reply($this->search->searchOption(), false);
             break;

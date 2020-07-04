@@ -48,10 +48,10 @@ class Curl{
       echo  $envFbStatus;
       // true = live, false = test
       if($envFbStatus == true){
-        $page_access_token = "access_token=EAACfJZAjQCwcBAHGVRzk0BazJOn5ZBm8ZAtG6ZB3Bft8ZAdAUPEZB6z9bo4QpsdQl5vciEPiO7p2KLCTvxoyGOcHL4HHv22DiDgaroCjpVrCrbzdAWuqEPGV2uQwrtB5wiBbROEJFxWHRkRvTT1WXJjWhZBUuPL1RYcbzMltE28lhRbThpKYoUY"; 
+        $page_access_token = "access_token=EAACxnaNUyvkBAP0kXUDNGAudc8oMUBFR2TulfBUA3efM8Yjfqsq1w42hVIrfLN2qvMoc9eA4GZAsgneoJuj4HOx7b7UrE9hmZAugS6XBsMeZBZCWfTZBLrZCsS3a4ryxfBFuVZBiJEqAD6X1KjELd2ZBwZCudlno8geyYzWDZBVnjtMgZDZD" ;//"access_token=EAACfJZAjQCwcBAHGVRzk0BazJOn5ZBm8ZAtG6ZB3Bft8ZAdAUPEZB6z9bo4QpsdQl5vciEPiO7p2KLCTvxoyGOcHL4HHv22DiDgaroCjpVrCrbzdAWuqEPGV2uQwrtB5wiBbROEJFxWHRkRvTT1WXJjWhZBUuPL1RYcbzMltE28lhRbThpKYoUY"; 
       }
       else{
-        $page_access_token = "access_token=EAAFRBiltHcQBAO1VFEe37bKHt7SA27ACcNaepjFYCRWMoE3Ke2a2SSwC8KYBZAchwlYbWlyk1nIZAVmVtq43ZBfa62ZBUIvTfhf7OO1PrlGAefZAsdue2jNpwkfeZAxe1dfZBelF0093yauIAd58M8nCZAMGqnkuy70mliBzIUUWTZCDI41noMfxe";
+        $page_access_token = "access_token=EAACxnaNUyvkBAP0kXUDNGAudc8oMUBFR2TulfBUA3efM8Yjfqsq1w42hVIrfLN2qvMoc9eA4GZAsgneoJuj4HOx7b7UrE9hmZAugS6XBsMeZBZCWfTZBLrZCsS3a4ryxfBFuVZBiJEqAD6X1KjELd2ZBwZCudlno8geyYzWDZBVnjtMgZDZD" ;//"access_token=EAAFRBiltHcQBAO1VFEe37bKHt7SA27ACcNaepjFYCRWMoE3Ke2a2SSwC8KYBZAchwlYbWlyk1nIZAVmVtq43ZBfa62ZBUIvTfhf7OO1PrlGAefZAsdue2jNpwkfeZAxe1dfZBelF0093yauIAd58M8nCZAMGqnkuy70mliBzIUUWTZCDI41noMfxe";
       }
 
       $url .= ($flag == false)? '?'.$page_access_token:'&'.$page_access_token;  

@@ -16,7 +16,7 @@ class VerifyMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $facebookVerification = "GoCentral123456789ekennCKdashIlinya2017143143leadUsLord";
+        $facebookVerification = "my_messenger_key";
         if ($request->input("hub_mode") === "subscribe" && $request->input("hub_verify_token") === $facebookVerification){
             return response($request->input("hub_challenge"), 200);
         }

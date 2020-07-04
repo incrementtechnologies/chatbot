@@ -42,17 +42,17 @@ class MessageExtractor{
 
     public function extractDataFromPostback(){
         $payload = $this->messaging->getPostback()->getPayload();
+        $parameter = $this->messaging->getPostback()->getTitle();
         $response = [
             "type"  => "postback"
         ];
-
-        if(strpos($payload, '@')){
-            $array = explode('@', $payload);
-            $response['payload']    = "@".$payload;
-            $response['parameter']   = $parameter;
-        }
-        else{
+        if ($payload[0] =='@') {
             $response['payload']    = $payload;
+            $response['parameter']   = $parameter;
+        } else {
+            $array = explode('@', $payload);
+            $response['payload']    = '@'.$array[1];
+            $response['parameter']   = $parameter;
         }
         return  $response;
     }

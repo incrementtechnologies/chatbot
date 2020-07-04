@@ -13,6 +13,7 @@ class Entry{
     private $standByMode;
 
     private function __construct(array $data){
+        \Log::info('Test');
         $this->id = $data["id"];
         $this->time = $data["time"];
         $this->messagings = [];
