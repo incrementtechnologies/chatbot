@@ -97,7 +97,7 @@ class Postback{
                 case 'room rates':
                   $this->bot->reply($this->room->rooms(false), false);
                   break;
-              case strtolower('ROOM RESERVATIONS'):
+              case strtolower('GROUP RESERVATIONS'):
                   $this->bot->reply($this->room->rooms(true), false); 
                 break;
               default:
@@ -105,6 +105,9 @@ class Postback{
                 break;  
               }
               break;
+          case $this->code->pRoomInquiry:
+            $this->bot->reply($this->room->roomReservation(), false);
+          break;
           case $this->code->pSearch:
             $this->bot->reply($this->search->searchOption(), false);
             break;

@@ -1,1 +1,2 @@
 https://www.youtube.com/watch?v=rwdL2SdVy78
+https://stackoverflow.com/questions/17860449/insert-new-rows-into-google-spreadsheet-via-curl-php-how

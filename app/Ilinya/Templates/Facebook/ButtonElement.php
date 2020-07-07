@@ -53,6 +53,7 @@ class ButtonElement{
     @NR
   */
   protected $webviewShareButton;
+  protected $extension;
 
 
   function __construct($title){
@@ -98,21 +99,24 @@ class ButtonElement{
     return $this;
   }
 
+  public function messengerExtensions(){
+    $this->extension = true;
+    return $this;
+  }
+
   public function toArray(){
     $response["type"] = $this->type;
-
     if($this->type == "web_url"){
       $response["url"] = $this->url;
       $response["webview_height_ratio"] = $this->webviewHeightRatio;
-      //$response["messenger_extensions"] = false;
-      $response["fallback_url"] = $this->fallbackUrl;
+      $response["fallback_url"] = $this->fallbackUrl ;
+      $response["messenger_extensions"] = $this->extension;
       if($this->webviewShareButton != null)
         $response["webview_share_button"] = $this->webviewShareButton;
     }
     else{
       $response["payload"] = $this->payload;
     }
-    
     if($this->title != null){
       $response['title'] = $this->title;
     }

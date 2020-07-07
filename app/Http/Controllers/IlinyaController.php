@@ -10,8 +10,11 @@ use App\Jobs\TestDatabaseQueryEffect;
 use App\Jobs\ChatbotBroadcast;
 use App\Ilinya\ImageGenerator;
 use App\Ilinya\Response\Facebook\SurveyResponse;
+use App\Ilinya\Http\Curl;
 class IlinyaController extends APIController
 {
+
+
     public function hook(Request $request){
         $entries = Entry::getEntries($request);
         foreach ($entries as $entry) {

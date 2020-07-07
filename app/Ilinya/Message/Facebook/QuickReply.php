@@ -16,6 +16,8 @@ use App\Ilinya\Response\Facebook\SurveyResponse;
 use App\Ilinya\Webhook\Facebook\Messaging;
 use App\Ilinya\Response\Facebook\QueueCardsResponse;
 
+use App\Ilinya\Response\Facebook\RoomResponse;
+use App\Ilinya\Response\Facebook\PackageResponse;
 
 class QuickReply{
     protected $form;
@@ -28,6 +30,8 @@ class QuickReply{
     protected $postback;
     protected $survey;
     protected $qc;
+    protected $package;
+    protected $room;
 
   function __construct(Messaging $messaging){
         $this->bot    = new Bot($messaging);
@@ -42,6 +46,9 @@ class QuickReply{
         $this->search = new SearchResponse($messaging);
         $this->survey = new SurveyResponse($messaging);
         $this->qc     = new QueueCardsResponse($messaging);
+        
+        $this->room = new RoomResponse($messaging);
+        $this->package = new PackageResponse($messaging);
   }
   public function manage($custom){
       $parameter = $custom['quick_reply']['parameter'];
@@ -135,6 +142,9 @@ class QuickReply{
           else{
             $this->bot->reply($this->qc->noInform(), false);
           }
+          break;
+        case $this->code->qInquirePackage :
+            $this->bot->reply($this->package->packageInquiryStages(), false);
           break;
         default:
           //Statement Here

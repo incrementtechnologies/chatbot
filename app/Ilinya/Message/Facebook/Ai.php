@@ -4,6 +4,7 @@ namespace App\Ilinya\Message\Facebook;
 
 use App\Ilinya\Bot;
 use App\Ilinya\Tracker;
+use App\Ilinya\Http\Curl;
 use App\Ilinya\Message\Facebook\Codes;
 use App\Ilinya\Message\Facebook\Form;
 use App\Ilinya\Response\Facebook\PostbackResponse;
@@ -27,6 +28,7 @@ class Ai{
     protected $editDetails;
     protected $validation;
     protected $details;
+    protected $curl;
     protected $aiResponse;
   function __construct(Messaging $messaging){
       $this->bot    = new Bot($messaging);
@@ -41,28 +43,28 @@ class Ai{
       $this->validation = new Validation($messaging);
       $this->details = new DetailsResponse($messaging);
       $this->aiResponse   = new AiResponse($messaging);
+      $this->curl = new Curl();
+   
+
   }
 
   public function manage($reply){
     $reply = strtolower($reply);
-
+    $this->curl->whitelistWebView();
     if(strpos($reply, 'hi') !== false || strpos($reply, 'hello') !== false ||strpos($reply, 'help') !== false || strpos($reply, 'hola') !== false){
         $this->bot->reply($this->post->banner(), false);
         $this->bot->reply($this->post->start(), false);
-        return '';
+        // $this->bot->reply($this->post->persistentMenu() ,false);
     }
     else if(strpos($reply, 'thank you') !== false){
         $this->bot->reply($this->aiResponse->thankYou(),  false);
-        return '';
     }
     else if(strpos($reply, 'baha ba karun') !== false){
         $this->bot->reply("Dli baya", false);
-        return '';
     }
     else{
         $this->bot->reply($this->aiResponse->error(), false);
-        $this->bot->reply($this->post->start(), false);
-        return '';        
+        // $this->bot->reply($this->post->start(), false);
     }
   }
 
