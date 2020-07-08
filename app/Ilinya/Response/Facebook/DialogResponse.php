@@ -1,6 +1,5 @@
 <?php
-namespace App\Ilinya\Facebook;
-
+namespace App\Ilinya\Response\Facebook;
 /*
     @Providers
 */
@@ -8,7 +7,7 @@ use App\Ilinya\Webhook\Facebook\Messaging;
 use App\Ilinya\User;
 use App\Ilinya\Bot;
 use Illuminate\Http\Request;
-use App\Ilinya\DialogTracker;
+use App\Ilinya\BotTracker;
 use App\Ilinya\Http\Curl;
 /*
     @Template
@@ -40,7 +39,7 @@ use App\Ilinya\API\SheetController;
 use Storage;
 
 
-class ConcernRespose{
+class DialogResponse    {
 
   protected $messaging;
   protected $tracker;
@@ -49,7 +48,7 @@ class ConcernRespose{
   private $user;
   public function __construct(Messaging $messaging){
       $this->messaging = $messaging;
-      $this->tracker   = new DialogTracker($messaging);
+      $this->tracker   = new BotTracker($messaging);
       $this->bot       = new Bot($messaging);
       $this->curl = new Curl();
   }
@@ -58,15 +57,40 @@ class ConcernRespose{
     $user = $this->curl->getUser($this->messaging->getSenderId());
     $this->user = new User($this->messaging->getSenderId(), $user['first_name'], $user['last_name']);
   }
-
-    public function stage1(){
-
+    public function start()
+    {
+        $this->tracker->insert(1);
+        $this->bot->reply(["text"=>"stage1"],false);
     }
+  public function manage($stage)
+  {
+      switch ($stage) {
+          case 1:
+              # code...
+              $this->stage2();
+              break;
+          
+          case 2 :
+                $this->stage3();
+              # code...
+              break;
+          
+          case 3:
+              # code...
+              break;
+          
+          default:
+              # code...
+              break;
+      }
+  }
     public function stage2(){
-        
+        $this->tracker->insert(2);
+        $this->bot->reply(["text"=>"stage2"],false);
     }
     public function stage3(){
-        
+        $this->tracker->insert(2);
+        $this->bot->reply(["text"=>"stage3"],false);
     }
 
 //END

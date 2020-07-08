@@ -19,6 +19,7 @@ class CreateDialogFlowsTable extends Migration
             $table->string('input');
             $table->integer('stage');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

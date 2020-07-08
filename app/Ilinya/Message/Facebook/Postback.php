@@ -16,6 +16,7 @@ use App\Ilinya\Response\Facebook\DisregardResponse;
 use App\Ilinya\Response\Facebook\DetailsResponse;
 use App\Ilinya\Response\Facebook\EditDetailsResponse;
 use App\Ilinya\Response\Facebook\RoomResponse;
+use App\Ilinya\Response\Facebook\FoodResponse;
 use App\Ilinya\Response\Facebook\PackageResponse;
 use App\Ilinya\Webhook\Facebook\Messaging;
 use Storage;
@@ -33,6 +34,7 @@ class Postback{
     protected $editDetails;
     protected $package;
     protected $room;
+    protected $food;
 
     function __construct(Messaging $messaging){
         $this->bot    = new Bot($messaging);
@@ -50,6 +52,7 @@ class Postback{
         $this->editDetails = new EditDetailsResponse($messaging);
         $this->room = new RoomResponse($messaging);
         $this->package = new PackageResponse($messaging);
+        $this->food = new FoodResponse($messaging);
     }
 
     public function manage($custom){
@@ -95,10 +98,12 @@ class Postback{
           case $this->code->pRoomMenuSelected:
               switch (strtolower($custom['parameter'])) {
                 case 'room rates':
-                  $this->bot->reply($this->room->rooms(false), false);
+                  // $this->bot->reply($this->room->rooms(false), false);
+                  $this->room->rooms(false);
                   break;
               case strtolower('GROUP RESERVATIONS'):
-                  $this->bot->reply($this->room->rooms(true), false); 
+                  // $this->bot->reply($this->room->rooms(true), false);
+                  $this->room->rooms(true);
                 break;
               default:
                 return '';

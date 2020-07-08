@@ -3,7 +3,7 @@
 namespace App\Ilinya\Message\Facebook;
 
 use App\Ilinya\Bot;
-use App\Ilinya\Tracker;
+use App\Ilinya\BotTracker;
 use App\Ilinya\Message\Facebook\Codes;
 use App\Ilinya\Message\Facebook\Form;
 use App\Ilinya\Response\Facebook\PostbackResponse;
@@ -33,7 +33,7 @@ class Text{
       $this->post   = new PostbackResponse($messaging);
       $this->category = new CategoryResponse($messaging);
       $this->form   = new Form($messaging);
-      $this->tracker= new Tracker($messaging);
+      $this->tracker= new BotTracker($messaging);
       $this->code   = new Codes(); 
       $this->edit   = new EditResponse($messaging);
       $this->search = new SearchResponse($messaging);
@@ -44,7 +44,7 @@ class Text{
   }
 
   public function manage($reply){
-      switch ($this->tracker->getReplyStage()) {
+    /*  switch ($this->tracker->getReplyStage()) {
         case $this->code->replyStageSearch:
           if(intval($this->tracker->getSearchOption()) >= 2){
             $this->bot->reply($this->search->manage($reply), false);
@@ -57,10 +57,6 @@ class Text{
           $this->form->reply($reply);
           break;
         case $this->code->replyStageEdit:
-          /*
-            1. Validate
-            2. Check
-          */
           $validate = $this->edit->validate($reply);
           if($validate['status'] == true){
             $this->bot->reply($this->edit->inform(), false);
@@ -71,10 +67,6 @@ class Text{
           }
           break;
         case $this->code->replyEditDetails:
-          /*
-            1. Validate
-            2. Check
-          */
           $validate = $this->validation->validate($reply);
           if($validate['status'] == true){
             $data = [
@@ -95,8 +87,10 @@ class Text{
         default:
           $this->ai->manage($reply);
           break;
-      }
-  }
+      } 
+    **/
+        $this->ai->manage($reply);
+       }
   public function checkShortCodes($text){
     if($text[0] == '@'){
       return true;

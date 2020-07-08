@@ -66,10 +66,12 @@ class MessageHandler{
         break;
       case $this->code->delivery:
         //Delivery
+        // $this->trackerHandler();
+
         break;
       case $this->code->pStart:
         $this->postback->manage($this->custom);
-        $this->trackerHandler();
+        // $this->trackerHandler();
         break;
       case $this->code->postback:
         $this->getParameter();  
@@ -78,7 +80,7 @@ class MessageHandler{
         break;
       case $this->code->message:
         $this->message();
-        $this->trackerHandler();
+        // $this->trackerHandler();
         break;
       case $this->code->error:
         //Error
@@ -93,7 +95,7 @@ class MessageHandler{
 
   public function trackerHandler(){
     $data = [
-                "status"            => $this->currentCode
+                "status" => $this->currentCode
             ];
     switch ($this->trackerFlag) {
       case 1: // Insert
@@ -162,7 +164,7 @@ class MessageHandler{
             }
         }
         else if($this->custom['text']){
-            $this->text->manage($this->custom['text']);
+              $this->text->manage($this->custom['text']);
         } 
   }
 }

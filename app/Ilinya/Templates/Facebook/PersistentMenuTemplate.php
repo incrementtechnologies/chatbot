@@ -37,15 +37,15 @@ class PersistentMenuTemplate{
         "persistent_menu"=> [
               [
                   "locale"=> "default",
-                  "composer_input_disabled"=> false,
+                  "composer_input_disabled"=> true,
                   "call_to_actions"=> $actions
                   ]
               
           ]
     ];
-    \Storage::put("menu.json", $response);
-
-    return $response;
+    // \Storage::put("menu.json", json_encode($response));
+// 
+    return json_encode($response);
   }
 
 }

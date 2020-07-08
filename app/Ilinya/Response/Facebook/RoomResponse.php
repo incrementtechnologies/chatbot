@@ -109,11 +109,13 @@ class RoomResponse{
     return $response;
   }
   public function rooms($isRreserve){
-    $credentials = array("5","6");
+    $credentials = array("5","9");
     $categories = SheetController::getSheetContent($credentials); 
     $buttons = [];
     $elements = [];
-    if(sizeof($categories)>0){
+    $length = sizeof($categories);
+    $max = 10;
+    if($length>0){
         $prev = $categories[0]['title'];
         $i = 0; 
         foreach ($categories as $category) {
@@ -159,10 +161,17 @@ class RoomResponse{
             }
             
             $i++;
+            if (sizeof($elements) == $max) {
+              $response =  GenericTemplate::toArray($elements);
+              $this->bot->reply($response , false);
+              $elements = [];
+          }
         }
     }
-    $response =  GenericTemplate::toArray($elements);
-    return json_encode($response);
+      $response =  GenericTemplate::toArray($elements);
+      $this->bot->reply($response , false);
+    // $response =  GenericTemplate::toArray($elements);
+    // return json_encode($response);
 }
 public function roomReserveAgain(){
   $title =  "Thank you for your interest in Mezzo Hotel. Please wait for our personnel to respond to confirm your banquet inquiry. If you have anything to change with your inquiry please select the option to arrange banquet.";

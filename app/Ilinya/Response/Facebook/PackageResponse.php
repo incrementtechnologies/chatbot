@@ -95,10 +95,11 @@ class PackageResponse{
   }
 
   public function packages(){
-      $credentials = array("4","3");
+      $credentials = array("14","3");
       $packages = SheetController::getSheetContent($credentials); 
       $buttons = [];
       $elements = [];
+      $max  = 10; 
       if(sizeof($packages)>0){
           $prev = $packages[0]['title'];
           $i = 0; 
@@ -135,10 +136,17 @@ class PackageResponse{
                 echo $imageUrl.'<br />';
             }
             $i++;
+            if (sizeof($elements) == $max) {
+                $response =  GenericTemplate::toArray($elements);
+                $this->bot->reply(json_encode($response) , false);
+                $elements = [];
+            }
         }
     }
     $response =  GenericTemplate::toArray($elements);
-    return $response;
+    $this->bot->reply(json_encode($response) , false);
+    // $response =  GenericTemplate::toArray($elements);
+    // return $response;
 }
 
     public function packageInquiry(){
