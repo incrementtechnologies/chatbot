@@ -73,6 +73,9 @@ class MessageHandler{
         $this->postback->manage($this->custom);
         // $this->trackerHandler();
         break;
+      case 'value':
+        # code...
+        break;
       case $this->code->postback:
         $this->getParameter();  
         // $this->trackerHandler();

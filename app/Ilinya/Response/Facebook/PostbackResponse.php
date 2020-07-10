@@ -30,6 +30,7 @@ use App\Ilinya\Templates\Facebook\PersistentMenuTemplate;
 use App\Ilinya\Templates\Facebook\ButtonElement;
 use App\Ilinya\Templates\Facebook\GenericElement;
 use App\Ilinya\Templates\Facebook\QuickReplyElement;
+use App\Ilinya\Templates\Facebook\PersistentMenuElement;
 use Storage;
 
 /*
@@ -63,7 +64,27 @@ class PostbackResponse{
     }
 
     public function persistentMenu(){
-        $response = PersistentMenuTemplate::toArray();
+        $menus=  array(
+            array("title"=>"FAQ" , "isWebview"=>false),
+            array("title"=>"CONCERN/INQUIRY" ,"isWebview"=>true,"url" => "https://mezzohotel.com/inquiry/other")
+        );
+        $actions =[];
+        foreach ($menus as $menu) {
+            $payload = preg_replace('/\s+/', '_', $menu["title"]);
+            if ($menu["isWebview"]) {
+                $actions[] = PersistentMenuElement::title($menu['title'])
+                    ->type('web_url')
+                    ->url($menu["url"])
+                    ->ratio("full")
+                    ->toArray();
+            } else {
+                $actions[] = PersistentMenuElement::title($menu["title"])
+                            ->type('postback')
+                            ->payload('@pCategorySelected')
+                            ->toArray();
+            }
+        }
+        $response = PersistentMenuTemplate::toArray($actions);
         return $response;
     }
     public function banner(){
@@ -83,10 +104,31 @@ class PostbackResponse{
         $subtitle = "Kindly click the buttons to navigate.";
         $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
         $menus= array(
-            array("title"=>"ROOM RATES" , "isWebview"=>false),
-            array("title"=>"BANQUET PACKAGES","isWebview"=>false),
+            array("title"=>"ROOM RATES"),
+            array("title"=>"BANQUET PACKAGES"),
+            array("title"=>"FOODS")
+        );
+        $buttons =[];
+        foreach ($menus as $menu) {
+            $payload = preg_replace('/\s+/', '_', $menu["title"]);
+            $buttons[] = ButtonElement::title($menu["title"])
+            ->type('postback')
+            ->payload(strtolower($payload).'@pCategorySelected')
+            ->toArray();
+        }
+        $response = ButtonTemplate::toArray($title,$buttons);
+
+        return $response;
+    }
+    public function inquiry(){
+        $this->user();
+        $title =  "For more Concerns and Inquiries.";
+        $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
+        $menus= array(
+            array("title"=>"FAQ" , "isWebview"=>false),
             array("title"=>"CONCERN/INQUIRY" ,"isWebview"=>true,
-            "url" => "https://mezzohotel.com/inquiry/other"));
+            "url" => "https://mezzohotel.com/inquiry/other"),
+        );
         $buttons =[];
         foreach ($menus as $menu) {
             $payload = preg_replace('/\s+/', '_', $menu["title"]);
@@ -101,17 +143,16 @@ class PostbackResponse{
             } else {
                 $buttons[] = ButtonElement::title($menu["title"])
                             ->type('postback')
-                            ->payload(strtolower($payload).'@pCategorySelected')
+                            ->payload('@pFaq')
                             ->toArray();
             }
         }
         $response = ButtonTemplate::toArray($title,$buttons);
-
         return $response;
     }
 
     public function priorityError(){
-        $quickReplies[] = QuickReplyElement::title('Yes')->contentType('text')->payload('priority@yes');
+        $quickReplies[] = QuickReplyElement::title('Yes')->contentType('text')->payload('z@yes');
         $quickReplies[] = QuickReplyElement::title('No')->contentType('text')->payload('priority@no');
         return QuickReplyTemplate::toArray('Are you sure you want cancel your current conversation?', $quickReplies);
     }

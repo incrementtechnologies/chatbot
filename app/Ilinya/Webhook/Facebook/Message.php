@@ -33,7 +33,7 @@ class Message{
         if($this->quickReply){
             $response =[];
             if ($this->quickReply['payload'][0] =='@') {
-                $response['payload']    = $quickReply['payload'];
+                $response['payload']    = $this->quickReply['payload'];
                 $response['parameter']   = $this->getText();
             } else {
                 $array = explode('@', $this->quickReply['payload']);

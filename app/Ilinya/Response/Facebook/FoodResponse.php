@@ -62,7 +62,7 @@ class FoodResponse{
 // Start Yol
 
   public function foods(){
-    $credentials = array("12","4");
+    $credentials = array(env('FOOD_URL'),"4");
     $foods = SheetController::getSheetContent($credentials); 
     $buttons = [];
     $elements = [];
@@ -71,17 +71,20 @@ class FoodResponse{
         $prev = $foods[0]['caption'];
         $i = 0; 
         foreach ($foods as $food) {
-             $subtitle = null;
-            //  $payload= preg_replace('/\s+/', '_', strtolower($food['caption']));
+            $data = explode(":",$food['caption']);
+            $subtitle = $data[0];
              $imageUrl = "https://mezzohotel.com/img/".$food["image"];
              $btnText = str_replace("_" ," " , $food['type']);
              $buttons[] = ButtonElement::title(strtoupper($btnText))
-             ->type('web_url')
-             ->url($food["link"])
-             ->toArray();
+                        ->type('web_url')
+                        ->url($food["link"])
+                        ->ratio("full")
+                        ->messengerExtensions()
+                        ->fallbackUrl($food["link"])
+                        ->toArray();
             if($i < sizeof($foods) - 1){
                 if($prev != $foods[$i + 1]['caption']){
-                    $title = $food['caption'];
+                    $title = $data[1];
                     $elements[] = GenericElement::title($title)
                         ->imageUrl($imageUrl)
                         ->subtitle($subtitle)
@@ -93,7 +96,7 @@ class FoodResponse{
                 }
             }
             else{
-                $title = $food['caption'];
+                $title = $data[1];
                 $elements[] = GenericElement::title($title)
                     ->imageUrl($imageUrl)
                     ->subtitle($subtitle)

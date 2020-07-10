@@ -95,7 +95,7 @@ class PackageResponse{
   }
 
   public function packages(){
-      $credentials = array("14","3");
+      $credentials = array(env('PACKAGE_URL'),"3");
       $packages = SheetController::getSheetContent($credentials); 
       $buttons = [];
       $elements = [];
@@ -150,7 +150,7 @@ class PackageResponse{
 }
 
     public function packageInquiry(){
-        $credentials = array("4","3");
+        $credentials = array(env('PACKAGE_URL'),"3");
         $packages = SheetController::getSheetContent($credentials);
         $quickReplies =[];
         for ($i=0; $i <sizeof($packages) ; $i++) {  

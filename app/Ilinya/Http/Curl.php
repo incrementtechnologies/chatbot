@@ -25,6 +25,7 @@ class Curl{
       $url = 'https://graph.facebook.com/v2.6/me/messages';
       $curl = new Curl();
       $curl->post($url,$parameter);
+      // return response("", 200);  
     }
 
 
@@ -42,15 +43,15 @@ class Curl{
 
     public function prepare($url, $flag){
       $request = curl_init();
-      $page_access_token = "";
+      $page_access_token = "access_token=";
       $envFbStatus = env('FB_TOKEN_STATUS');
       echo  $envFbStatus;
       // true = live, false = test
       if($envFbStatus == true){
-        $page_access_token = "access_token=EAACxnaNUyvkBAP0kXUDNGAudc8oMUBFR2TulfBUA3efM8Yjfqsq1w42hVIrfLN2qvMoc9eA4GZAsgneoJuj4HOx7b7UrE9hmZAugS6XBsMeZBZCWfTZBLrZCsS3a4ryxfBFuVZBiJEqAD6X1KjELd2ZBwZCudlno8geyYzWDZBVnjtMgZDZD" ;//"access_token=EAACfJZAjQCwcBAHGVRzk0BazJOn5ZBm8ZAtG6ZB3Bft8ZAdAUPEZB6z9bo4QpsdQl5vciEPiO7p2KLCTvxoyGOcHL4HHv22DiDgaroCjpVrCrbzdAWuqEPGV2uQwrtB5wiBbROEJFxWHRkRvTT1WXJjWhZBUuPL1RYcbzMltE28lhRbThpKYoUY"; 
+        $page_access_token .= env('LIVE_FB_ACCESS_TOKEN');
       }
       else{
-        $page_access_token = "access_token=EAACxnaNUyvkBAP0kXUDNGAudc8oMUBFR2TulfBUA3efM8Yjfqsq1w42hVIrfLN2qvMoc9eA4GZAsgneoJuj4HOx7b7UrE9hmZAugS6XBsMeZBZCWfTZBLrZCsS3a4ryxfBFuVZBiJEqAD6X1KjELd2ZBwZCudlno8geyYzWDZBVnjtMgZDZD" ;//"access_token=EAAFRBiltHcQBAO1VFEe37bKHt7SA27ACcNaepjFYCRWMoE3Ke2a2SSwC8KYBZAchwlYbWlyk1nIZAVmVtq43ZBfa62ZBUIvTfhf7OO1PrlGAefZAsdue2jNpwkfeZAxe1dfZBelF0093yauIAd58M8nCZAMGqnkuy70mliBzIUUWTZCDI41noMfxe";
+        $page_access_token .= env('DEV_FB_ACCESS_TOKEN');
       }
       $url .= ($flag == false)? '?'.$page_access_token:'&'.$page_access_token;   
       curl_setopt($request, CURLOPT_URL, $url);
@@ -74,18 +75,25 @@ class Curl{
     }
 
     public function whitelistWebView(){
-      $url = "https://graph.facebook.com/v7.0/me/messenger_profile?access_token=EAACxnaNUyvkBAP0kXUDNGAudc8oMUBFR2TulfBUA3efM8Yjfqsq1w42hVIrfLN2qvMoc9eA4GZAsgneoJuj4HOx7b7UrE9hmZAugS6XBsMeZBZCWfTZBLrZCsS3a4ryxfBFuVZBiJEqAD6X1KjELd2ZBwZCudlno8geyYzWDZBVnjtMgZDZD";
+      $url = "https://graph.facebook.com/v7.0/me/messenger_profile?access_token=";
+      $envFbStatus = env('FB_TOKEN_STATUS');      
+      echo  $envFbStatus;
+      // true = live, false = test
+      if($envFbStatus == true){
+        $url .= env('LIVE_FB_ACCESS_TOKEN');
+      }
+      else{
+        $url .= env('DEV_FB_ACCESS_TOKEN');
+      }
       $data = array(
-          'whitelisted_domains' => [ "https://mezzohotel.com"]
+          'whitelisted_domains' => explode(",",env('WHITELISTED_DOMAINS'))
       );
       $payload = json_encode($data);
-      // Prepare new cURL resource
       $ch = curl_init($url);
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
       curl_setopt($ch, CURLINFO_HEADER_OUT, true);
       curl_setopt($ch, CURLOPT_POST, true);
       curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-      // Set HTTP Header for POST request 
       curl_setopt($ch, CURLOPT_HTTPHEADER, array(
           'Content-Type: application/json',
           'Content-Length: ' . strlen($payload))

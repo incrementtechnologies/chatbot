@@ -64,15 +64,17 @@ class Ai{
     $this->curl->whitelistWebView();
     $track_flag = $this->tracker->getStage();
     if ($track_flag!=null) {
-        $this->dialog->manage($track_flag);
+        $this->bot->reply($this->dialog->manage($reply) , false);
     } else {
+        $this->tracker->delete();
         if(strpos($reply, 'hi') !== false || strpos($reply, 'hello') !== false ||strpos($reply, 'help') !== false || strpos($reply, 'hola') !== false){
-            $this->tracker->delete();
             $this->bot->reply($this->post->banner(), false);
             $this->bot->reply($this->post->start(), false);
+            $this->bot->reply($this->post->inquiry(), false);
+            $this->bot->reply($this->post->persistentMenu(),false);
         }
         else if(strpos($reply, 'thank you') !== false){
-            $this->tracker->delete();
+            
             $this->bot->reply($this->aiResponse->thankYou(),  false);
         }
         else if(strpos(strtolower($reply) ,"foods") !== false){ 

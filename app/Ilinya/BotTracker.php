@@ -42,6 +42,10 @@ class BotTracker{
     return $this->stage;
   }
 
+  public function getInput(){
+    return $this->input;;
+  }
+  
   public function getStatus($custom){
     $prev = $this->status;
     $current = $this->code->getCode($custom);
@@ -100,17 +104,22 @@ class BotTracker{
     return $response;
   }
 
-  public function insert($stage){
+  public function insert($stage  , $msg = null){
+        if ($msg == null) {
+          if ($this->messaging->getMessage()!=null) {
+            if ($this->messaging->getMessage()->getText()!=null) {
+              $msg = $this->messaging->getMessage()->getText();
+            } else {
+              $msg = $this->messaging->getMessage()->getQuickReply();
+            }
+          }    
+        }
         $data = [
           "userID" => $this->messaging->getSenderId(),
-          "input"  => $this->messaging->getMessage()->getText(),
+          "input"  => $msg,
           "stage"  => $stage,
         ];
-        
-        $condition = [
-          ['userID','=',$this->messaging->getSenderId() ],
-          ['stage','=' ,$stage ]
-      ];
+        $condition = ['userID'=>$this->messaging->getSenderId()];
         $flag = DB::retrieve($this->db_tracker, $condition, null);
         if(!$flag){
           DB::insert($this->db_tracker, $data);
@@ -120,16 +129,12 @@ class BotTracker{
   }
 
   public function update($data){
-        $condition = [
-            ['userID','=',$this->messaging->getSenderId()]
-        ];
+        $condition = ['userID'=>$this->messaging->getSenderId()];
         DB::update($this->db_tracker, $condition, $data);
   }
 
   public function retrieve(){
-    $condition = [
-      ['userID','=',$this->messaging->getSenderId()]
-  ];
+    $condition = ['userID'=>$this->messaging->getSenderId()];
     $result = DB::retrieve($this->db_tracker, $condition);
       if($result){
           foreach ($result as $key) {
@@ -138,12 +143,11 @@ class BotTracker{
               $this->input        = $key['input'];       
           }
       }
-      \Storage::put('user.json', json_encode($result));
   }
 
   public function delete(){
     $condition = [
-          ['userID','=',$this->messaging->getSenderId()]
+          'userID'=>$this->messaging->getSenderId()
     ];
     DB::delete($this->db_tracker, $condition);
   }
