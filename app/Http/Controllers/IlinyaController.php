@@ -39,13 +39,13 @@ class IlinyaController extends APIController
     }
 
     private function checkDuplicate($messaging , $temp){
-        //  ($messaging->getTimestamp() == $temp->getTimestamp()) &&
         if (
+            ($messaging->getRecipientId() == $temp->getRecipientId()) && 
             ($messaging->getSenderId() == $temp->getSenderId()) &&
             ($messaging->getRecipientId() == $temp->getRecipientId()) &&
             ($messaging->getType() == $temp->getType()) &&
             ($messaging->getMessage()->getId() == $temp->getMessage()->getId()) &&
-            ($messaging->getMessage()->getText() == $temp->getMessage()->getId()) &&
+            ($messaging->getMessage()->getText() == $temp->getMessage()->getText()) &&
             ($messaging->getMessage()->getQuickReply() == $temp->getMessage()->getQuickReply()) &&
             ($messaging->getPostback() == $temp->getPostback())
         ) {
@@ -79,9 +79,15 @@ class IlinyaController extends APIController
     public function createImage(){
         ImageGenerator::create();
     }
+    
 
     public function test1($size){
         dispatch(new TestDatabaseQueryEffect($size));
+    }
+
+
+    public function gettingStared(Request $request){
+        return "ok";
     }
 }
 
