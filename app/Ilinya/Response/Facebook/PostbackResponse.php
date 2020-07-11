@@ -100,7 +100,7 @@ class PostbackResponse{
     }
     public function start(){
         $this->user();
-        $title =  "Greetings ".$this->user->getFirstName().",thank you for your interest in Mezzo Hotel.For us to help you with your inquiry please select the following options below.";
+        $title =  "Greetings ".$this->user->getFirstName().", thank you for your interest in Mezzo Hotel.For us to help you with your inquiry please select the following options below.";
         $subtitle = "Kindly click the buttons to navigate.";
         $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
         $menus= array(
