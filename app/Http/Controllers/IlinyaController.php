@@ -16,25 +16,25 @@ class IlinyaController extends APIController
 
 
     public function hook(Request $request){
-        $entries = Entry::getEntries($request);
-        foreach ($entries as $entry) {
-            $messagings = $entry->getMessagings();
-            $temp_messagings = [];
-            foreach ($messagings as $messaging) {
-                if (sizeof($temp_messagings) > 0) {
-                    foreach ($temp_messagings as $temp) {
-                        if (!$this->checkDuplicate($messaging , $temp)) {
-                            $temp_messagings[] = $messaging;
-                            dispatch(new BotHandler($messaging));
-                        } 
+            $entries = Entry::getEntries($request);
+            foreach ($entries as $entry) {
+                $messagings = $entry->getMessagings();
+                $temp_messagings = [];
+                foreach ($messagings as $messaging) {
+                    if (sizeof($temp_messagings) > 0) {
+                        foreach ($temp_messagings as $temp) {
+                            if (!$this->checkDuplicate($messaging , $temp)) {
+                                $temp_messagings[] = $messaging;
+                                dispatch(new BotHandler($messaging));
+                            } 
+                        }
+                    } else {
+                        $temp_messagings[] = $messaging;
+                        dispatch(new BotHandler($messaging));
                     }
-                } else {
-                    $temp_messagings[] = $messaging;
-                    dispatch(new BotHandler($messaging));
+                    
                 }
-                
             }
-        }
         return response("", 200);
     }
 

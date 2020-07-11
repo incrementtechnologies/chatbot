@@ -111,6 +111,8 @@ class RoomResponse{
   public function rooms($isRreserve){
     $credentials = array(env('ROOM_URL'),"9");
     $categories = SheetController::getSheetContent($credentials); 
+    \Storage::put("request.json", json_encode($categories));
+
     $buttons = [];
     $elements = [];
     $length = sizeof($categories);

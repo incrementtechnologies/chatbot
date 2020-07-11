@@ -59,6 +59,7 @@ class Curl{
       curl_setopt($request, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
       curl_setopt($request, CURLINFO_HEADER_OUT, true);
       curl_setopt($request, CURLOPT_SSL_VERIFYPEER, true);
+
       return $request;  
     }
 
