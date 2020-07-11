@@ -146,7 +146,7 @@ class CategoryResponse{
   public function packageMenu()
   {
     $this->user();
-    $title =  "Hi ".$this->user->getFirstName().",thank you for your interest in our Banquet Packages.Please choose the following options to get the information you need.";
+    $title =  "Hi ".$this->user->getFirstName().", thank you for your interest in our Banquet Packages.Please choose the following options to get the information you need.";
     $menus= array( 
       array("payload"=> "@pPackageInquiry", "title"=>"BANQUET INQUIRY") ,
       array("payload"=> "@pPackageSelected", "title"=>"BANQUET PACKAGES")
