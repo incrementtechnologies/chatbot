@@ -20,7 +20,7 @@ class IlinyaController extends APIController
                 dispatch(new BotHandler($messaging));
             }
         }
-        return response("", 200);
+        return response("Ok", 200);
     }
 
     public function broadcast($message){
