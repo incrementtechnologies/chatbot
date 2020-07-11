@@ -95,3 +95,13 @@ Route::get("/bot/paging/{recipientId}/{message}/{surveyMode}","IlinyaController@
 Route::get("/bot/reminder/{recipientId}/{message}/{surveyMode}","IlinyaController@reminder");
 Route::get("/bot/image","IlinyaController@createImage");
 Route::get("/bot/test/{size}","IlinyaController@test");
+
+/**
+ * @Webview Routes
+ */
+
+ Route::get("/webview/packages" ,"WebViewController@packageForm");
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

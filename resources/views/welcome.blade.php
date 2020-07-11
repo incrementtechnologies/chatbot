@@ -9,6 +9,11 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+            <!-- Scripts -->
+        <script src="{{ asset('js/app.js') }}" defer></script>
+        
+        <!-- Styles -->
+        <link href="{{ asset('sass/app.css') }}" rel="stylesheet">
 
         <!-- Styles -->
         <style>

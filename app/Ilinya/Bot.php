@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Log;
 
 use App\Ilinya\Http\Curl;
 use App\Ilinya\Webhook\Facebook\Messaging;
+use App\Ilinya\Templates\Facebook\PersistentMenuTemplate;
+
 
 class Bot{
     protected $curl;

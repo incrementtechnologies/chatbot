@@ -3,7 +3,7 @@
 namespace App\Ilinya\Message\Facebook;
 
 use App\Ilinya\Bot;
-use App\Ilinya\Tracker;
+use App\Ilinya\BotTracker;
 use App\Ilinya\Message\Facebook\Codes;
 use App\Ilinya\Message\Facebook\Form;
 use App\Ilinya\Message\Facebook\Error;
@@ -16,6 +16,9 @@ use App\Ilinya\Response\Facebook\SurveyResponse;
 use App\Ilinya\Webhook\Facebook\Messaging;
 use App\Ilinya\Response\Facebook\QueueCardsResponse;
 
+use App\Ilinya\Response\Facebook\RoomResponse;
+use App\Ilinya\Response\Facebook\PackageResponse;
+use App\Ilinya\Response\Facebook\DialogResponse;
 
 class QuickReply{
     protected $form;
@@ -28,13 +31,17 @@ class QuickReply{
     protected $postback;
     protected $survey;
     protected $qc;
+    protected $package;
+    protected $room;
+    protected $dialog;
+
 
   function __construct(Messaging $messaging){
         $this->bot    = new Bot($messaging);
         $this->post   = new PostbackResponse($messaging);
         $this->category = new CategoryResponse($messaging);
         $this->form   = new Form($messaging);
-        $this->tracker= new Tracker($messaging);
+        $this->tracker= new BotTracker($messaging);
         $this->code   = new Codes(); 
         $this->send   = new SendResponse($messaging);
         $this->error  = new Error($messaging);
@@ -42,6 +49,10 @@ class QuickReply{
         $this->search = new SearchResponse($messaging);
         $this->survey = new SurveyResponse($messaging);
         $this->qc     = new QueueCardsResponse($messaging);
+        $this->room = new RoomResponse($messaging);
+        $this->package = new PackageResponse($messaging);
+        $this->dialog = new DialogResponse($messaging);
+
   }
   public function manage($custom){
       $parameter = $custom['quick_reply']['parameter'];
@@ -136,7 +147,22 @@ class QuickReply{
             $this->bot->reply($this->qc->noInform(), false);
           }
           break;
-        default:
+          case $this->code->qInquirePackage :
+              $this->bot->reply($this->package->packageInquiryStages(), false);
+            break;
+          case $this->code->qLoadMoreResult :
+              $this->dialog->manage($parameter);
+            break;
+          case $this->code->qMainMenu;
+            $this->tracker->delete();
+             $this->bot->reply($this->post->start(), false);
+            $this->bot->reply($this->post->inquiry(), false);
+          break;
+          case $this->code->qFaq;
+            $this->tracker->delete();
+            $this->bot->reply($this->dialog->startFaq("faq"), false);
+          break;
+          default:
           //Statement Here
           break;
       }

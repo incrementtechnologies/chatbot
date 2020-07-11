@@ -25,12 +25,12 @@ class Curl{
       $url = 'https://graph.facebook.com/v2.6/me/messages';
       $curl = new Curl();
       $curl->post($url,$parameter);
+      // return response("", 200);  
     }
 
 
     public function post($url, $parameter){
-     $request = $this->prepare($url, false);
-
+      $request = $this->prepare($url, false);
       curl_setopt($request, CURLOPT_POST, count($parameter));
       curl_setopt($request, CURLOPT_POSTFIELDS, json_encode($parameter));
       return $this->execute($request);
@@ -43,28 +43,24 @@ class Curl{
 
     public function prepare($url, $flag){
       $request = curl_init();
-      $page_access_token = "";
+      $page_access_token = "access_token=";
       $envFbStatus = env('FB_TOKEN_STATUS');
       echo  $envFbStatus;
       // true = live, false = test
       if($envFbStatus == true){
-        // $page_access_token = "access_token=EAACxnaNUyvkBADAnlNzxJ34ZCBv0QQ0VAekrsFZCziGwfOr0cM5uZAtNVQ7ZBDF8Er8hD6RUow0kgmPLufzP5HFjIFNmZASGAhZCZAE5zCpWiCIZBZCR5Bcxh5PTIBreHrC93OKPZBAlh08eYFZBsX1ZACEjbfgZAY7hh5WPZAGdO9TAWJ90spglOZBTfNG" ;
-        $page_access_token = "access_token=".env('LIVE_FB_ACCESS_TOKEN');
+        $page_access_token .= env('LIVE_FB_ACCESS_TOKEN');
       }
       else{
-        // $page_access_token = "access_token=EAACxnaNUyvkBADAnlNzxJ34ZCBv0QQ0VAekrsFZCziGwfOr0cM5uZAtNVQ7ZBDF8Er8hD6RUow0kgmPLufzP5HFjIFNmZASGAhZCZAE5zCpWiCIZBZCR5Bcxh5PTIBreHrC93OKPZBAlh08eYFZBsX1ZACEjbfgZAY7hh5WPZAGdO9TAWJ90spglOZBTfNG";
-        $page_access_token = "access_token=".env('DEV_FB_ACCESS_TOKEN');
+        $page_access_token .= env('DEV_FB_ACCESS_TOKEN');
       }
-
-      $url .= ($flag == false)? '?'.$page_access_token:'&'.$page_access_token;  
-        
+      $url .= ($flag == false)? '?'.$page_access_token:'&'.$page_access_token;   
       curl_setopt($request, CURLOPT_URL, $url);
       curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
       curl_setopt($request, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
       curl_setopt($request, CURLINFO_HEADER_OUT, true);
       curl_setopt($request, CURLOPT_SSL_VERIFYPEER, true);
 
-      return $request;
+      return $request;  
     }
 
     public function execute($request){  
@@ -78,5 +74,35 @@ class Curl{
     public function executeBody($request){
       return json_decode(curl_exec($request),true);
     }
+
+    public function whitelistWebView(){
+      $url = "https://graph.facebook.com/v7.0/me/messenger_profile?access_token=";
+      $envFbStatus = env('FB_TOKEN_STATUS');      
+      echo  $envFbStatus;
+      // true = live, false = test
+      if($envFbStatus == true){
+        $url .= env('LIVE_FB_ACCESS_TOKEN');
+      }
+      else{
+        $url .= env('DEV_FB_ACCESS_TOKEN');
+      }
+      $data = array(
+          'whitelisted_domains' => explode(",",env('WHITELISTED_DOMAINS'))
+      );
+      $payload = json_encode($data);
+      $ch = curl_init($url);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+      curl_setopt($ch, CURLOPT_POST, true);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+      curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+          'Content-Type: application/json',
+          'Content-Length: ' . strlen($payload))
+      );
+      // Submit the POST request
+      $result = curl_exec($ch);
+      // Close cURL session handle
+      curl_close($ch);        
+  }
 
 }

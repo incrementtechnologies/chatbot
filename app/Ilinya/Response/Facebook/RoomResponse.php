@@ -52,6 +52,7 @@ class RoomResponse{
       $this->tracker   = new Tracker($messaging);
       $this->bot       = new Bot($messaging);
       $this->curl = new Curl();
+
   }
   
   public function user(){
@@ -66,11 +67,12 @@ class RoomResponse{
     return ["text" => $title];
   }
   public function roomMenu(){
-    $title ="How can we help you with your room inquiry?";
+    $this->user();
+    $title ="Hi ".$this->user->getFirstName().", thank you for interest in our room rates. Please choose the following options to get the information you need.";
     $menus= array( 
       array("payload"=> "@pRoomMenuSelected", "title"=>"ROOM RATES" ,"web"=>false),
       array("url"=> "https://mezzohotel.com", "title"=>"HOTEL FACILITIES" ,"web"=>true),
-      array("payload"=> "@pRoomMenuSelected", "title"=>"ROOM RESERVATIONS","web"=>false)
+      array("payload"=> "@pRoomMenuSelected", "title"=>"GROUP RESERVATIONS","web"=>false)
     );
     // 
     foreach ($menus as $menu) {
@@ -83,18 +85,39 @@ class RoomResponse{
         $buttons[] = ButtonElement::title($menu["title"])
                   ->type('web_url')
                   ->url($menu["url"])
+                  ->ratio("full")
+                  ->messengerExtensions()
+                  ->fallbackUrl($menu["url"])
                   ->toArray();
       }
     }
     $response = ButtonTemplate::toArray($title,$buttons);
     return $response;
   }
+
+  public function roomReservation(){
+    $url = "https://mezzohotel.com/inquiry/room";
+    $title =  "For us to arrange a reservation please follow the questions in order for us understand your reservation through Facebook.";
+     $buttons[] = ButtonElement::title("Click Here")
+                ->type('web_url')
+                ->url($url)
+                ->ratio("full")
+                ->messengerExtensions()
+                ->fallbackUrl($url)
+                ->toArray();
+    $response = ButtonTemplate::toArray($title,$buttons);
+    return $response;
+  }
   public function rooms($isRreserve){
-    $credentials = array("5","6");
+    $credentials = array(env('ROOM_URL'),"9");
     $categories = SheetController::getSheetContent($credentials); 
+    \Storage::put("request.json", json_encode($categories));
+
     $buttons = [];
     $elements = [];
-    if(sizeof($categories)>0){
+    $length = sizeof($categories);
+    $max = 10;
+    if($length>0){
         $prev = $categories[0]['title'];
         $i = 0; 
         foreach ($categories as $category) {
@@ -104,9 +127,12 @@ class RoomResponse{
              $imageUrl = "https://mezzohotel.com/img/".$imgArray[0];
              if ($isRreserve!=true) {
               $buttons[] = ButtonElement::title('BOOK NOW')
-              ->type('web_url')
-              ->url("https://mezzohotel.com/managebooking.php")
-              ->toArray();
+                ->type('web_url')
+                ->url("https://mezzohotel.com/managebooking.php")
+                ->ratio("full")
+                ->messengerExtensions()
+                ->fallbackUrl("https://mezzohotel.com/managebooking.php")
+                ->toArray();
              } else {
               $buttons[] = ButtonElement::title('RESERVE')
               ->type('postback')
@@ -137,23 +163,28 @@ class RoomResponse{
             }
             
             $i++;
+            if (sizeof($elements) == $max) {
+              $response =  GenericTemplate::toArray($elements);
+              $this->bot->reply($response , false);
+              $elements = [];
+          }
         }
     }
-    $response =  GenericTemplate::toArray($elements);
-    Storage::put('Rooms.json', json_encode($response));
-    return $response;
+      $response =  GenericTemplate::toArray($elements);
+      $this->bot->reply($response , false);
+    // $response =  GenericTemplate::toArray($elements);
+    // return json_encode($response);
 }
-  public function concerns($parameter){
-    $title = $parameter;
-    $elements[] = GenericElement::title($title)
-                        ->imageUrl(null)
-                        ->subtitle("test")
-                        ->buttons(null)
-                        ->toArray();
-    $response =  GenericTemplate::toArray($elements);
-    Storage::put('Packages.json', json_encode($response));
-    return $response;
-  }
+public function roomReserveAgain(){
+  $title =  "Thank you for your interest in Mezzo Hotel. Please wait for our personnel to respond to confirm your banquet inquiry. If you have anything to change with your inquiry please select the option to arrange banquet.";
+   $buttons[] = ButtonElement::title("Reserve Room Again")
+              ->type('postback')
+              ->payload("@pRoomInquiry")
+              ->toArray();
+  $response = ButtonTemplate::toArray($title,$buttons);
+  return $response;
+}
+
 
   //END
 

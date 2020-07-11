@@ -3,7 +3,7 @@
 namespace App\Ilinya\Message\Facebook;
 
 use App\Ilinya\Bot;
-use App\Ilinya\Tracker;
+use App\Ilinya\BotTracker;
 use App\Ilinya\Message\Facebook\Codes;
 use App\Ilinya\Message\Facebook\Form;
 use App\Ilinya\Response\Facebook\PostbackResponse;
@@ -16,7 +16,9 @@ use App\Ilinya\Response\Facebook\DisregardResponse;
 use App\Ilinya\Response\Facebook\DetailsResponse;
 use App\Ilinya\Response\Facebook\EditDetailsResponse;
 use App\Ilinya\Response\Facebook\RoomResponse;
+use App\Ilinya\Response\Facebook\FoodResponse;
 use App\Ilinya\Response\Facebook\PackageResponse;
+use App\Ilinya\Response\Facebook\DialogResponse;
 use App\Ilinya\Webhook\Facebook\Messaging;
 use Storage;
 class Postback{
@@ -33,13 +35,15 @@ class Postback{
     protected $editDetails;
     protected $package;
     protected $room;
-
+    protected $food;
+    protected $dialog;
+    
     function __construct(Messaging $messaging){
         $this->bot    = new Bot($messaging);
         $this->post   = new PostbackResponse($messaging);
         $this->category = new CategoryResponse($messaging);
         $this->forms   = new Form($messaging);
-        $this->tracker= new Tracker($messaging);
+        $this->tracker= new BotTracker($messaging);
         $this->code   = new Codes(); 
         $this->send   = new SendResponse($messaging);
         $this->edit   = new EditResponse($messaging);
@@ -50,6 +54,8 @@ class Postback{
         $this->editDetails = new EditDetailsResponse($messaging);
         $this->room = new RoomResponse($messaging);
         $this->package = new PackageResponse($messaging);
+        $this->food = new FoodResponse($messaging);
+        $this->dialog = new DialogResponse($messaging);
     }
 
     public function manage($custom){
@@ -70,41 +76,62 @@ class Postback{
             $this->bot->reply($this->post->categories(), false);
             break;
           case $this->code->pCategorySelected:
+            $this->tracker->delete();
             switch (strtolower($custom['parameter'])) {
               case 'room rates':
                         $this->bot->reply($this->room->roomMenuStart(), false);
                         $this->bot->reply($this->room->roomMenu(), false);
                         break;
-                      case strtolower('BANQUET PACKAGES'):
-                        $this->bot->reply($this->package->packageMenu(), false);
-                        break;
-                      case strtolower('CONCERN/INQUIRY'):
-                        $this->bot->reply($this->package->concerns($custom['parameter']), false); 
-                        break;
-                      default:
-                        return '';
-                        break;
-                    }
+              case strtolower('BANQUET PACKAGES'):
+                $this->bot->reply($this->package->packageMenu(), false);
+                break;
+              case strtolower('FOODS'):
+                $this->bot->reply($this->food->foods(), false);
+                break;
+              case strtolower('ASK MORE QUESTION'):
+                $this->tracker->delete();
+                $this->bot->reply($this->dialog->startFaq("faq"), false);
+                break;
+              case strtolower('CONCERN/INQUIRY'):
+                $this->bot->reply($this->package->concerns($custom['parameter']), false); 
+                break;
+              default:
+                return '';
+                break;
+             }
                 break;
           case $this->code->pPackageSelected:
+              $this->tracker->delete();
               $this->bot->reply($this->package->packages(), false);
               break;
           case $this->code->pPackageInquiry:
+              $this->tracker->delete();
               $this->bot->reply($this->package->packageInquiry(), false);
               break;
           case $this->code->pRoomMenuSelected:
+              $this->tracker->delete();
               switch (strtolower($custom['parameter'])) {
                 case 'room rates':
-                  $this->bot->reply($this->room->rooms(false), false);
+                  // $this->bot->reply($this->room->rooms(false), false);
+                  $this->room->rooms(false);
                   break;
-              case strtolower('ROOM RESERVATIONS'):
-                  $this->bot->reply($this->room->rooms(true), false); 
+              case strtolower('GROUP RESERVATIONS'):
+                  // $this->bot->reply($this->room->rooms(true), false);
+                  $this->room->rooms(true);
                 break;
               default:
                 return '';
                 break;  
               }
               break;
+          case $this->code->pRoomInquiry:
+            $this->tracker->delete();
+            $this->bot->reply($this->room->roomReservation(), false);
+          break;        
+          case $this->code->pFaq:
+            $this->tracker->delete();
+            $this->bot->reply($this->dialog->startFaq("faq"), false);
+          break;
           case $this->code->pSearch:
             $this->bot->reply($this->search->searchOption(), false);
             break;

@@ -31,14 +31,16 @@ class Message{
 
     public function getQuickReply(){
         if($this->quickReply){
-            if(strpos($this->quickReply['payload'],"@")){
-                $payload = $this->quickReply['payload'];
-                list($parameter, $payload) = explode('@', $payload);
-                return [
-                    "payload"   => '@'.$payload,
-                    "parameter" => $parameter
-                ];
+            $response =[];
+            if ($this->quickReply['payload'][0] =='@') {
+                $response['payload']    = $this->quickReply['payload'];
+                $response['parameter']   = $this->getText();
+            } else {
+                $array = explode('@', $this->quickReply['payload']);
+                $response['payload']    = '@'.$array[1];
+                $response['parameter']   = $array[0];
             }
+            return $response;
         }
         return null;
     }
