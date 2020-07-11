@@ -13,8 +13,6 @@ use App\Ilinya\Response\Facebook\SurveyResponse;
 use App\Ilinya\Http\Curl;
 class IlinyaController extends APIController
 {
-
-
     public function hook(Request $request){
             $entries = Entry::getEntries($request);
             foreach ($entries as $entry) {

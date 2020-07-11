@@ -109,10 +109,8 @@ class RoomResponse{
     return $response;
   }
   public function rooms($isRreserve){
-    $credentials = array(env('ROOM_URL'),"9");
+    $credentials = array(env('ROOMS_URL'),"9");
     $categories = SheetController::getSheetContent($credentials); 
-    \Storage::put("request.json", json_encode($categories));
-
     $buttons = [];
     $elements = [];
     $length = sizeof($categories);
@@ -169,11 +167,13 @@ class RoomResponse{
               $elements = [];
           }
         }
+        // \Storage::put("rooms.json", json_encode($elements));
+          $response =  GenericTemplate::toArray($elements);
+          $this->bot->reply($response , false);
     }
-      $response =  GenericTemplate::toArray($elements);
-      $this->bot->reply($response , false);
-    // $response =  GenericTemplate::toArray($elements);
-    // return json_encode($response);
+    else{
+      $this->bot->reply(["text"=>"Sorry, there are no rooms available"] , false);
+    }
 }
 public function roomReserveAgain(){
   $title =  "Thank you for your interest in Mezzo Hotel. Please wait for our personnel to respond to confirm your banquet inquiry. If you have anything to change with your inquiry please select the option to arrange banquet.";

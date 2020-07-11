@@ -112,6 +112,9 @@ class FoodResponse{
             }
         }
     }
+    else{
+        $this->bot->reply(["text"=>"Sorry, there are no food available"] , false);
+      }
     $response =  GenericTemplate::toArray($elements);
     $this->bot->reply(json_encode($response) , false);
     // return json_encode($response);

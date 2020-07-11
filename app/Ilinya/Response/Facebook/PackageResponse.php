@@ -143,6 +143,9 @@ class PackageResponse{
             }
         }
     }
+    else{
+        $this->bot->reply(["text"=>"Sorry, there are no package available"] , false);
+      }
     $response =  GenericTemplate::toArray($elements);
     $this->bot->reply(json_encode($response) , false);
     // $response =  GenericTemplate::toArray($elements);
