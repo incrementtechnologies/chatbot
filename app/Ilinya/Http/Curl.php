@@ -48,10 +48,12 @@ class Curl{
       echo  $envFbStatus;
       // true = live, false = test
       if($envFbStatus == true){
-        $page_access_token .= env('LIVE_FB_ACCESS_TOKEN');
+        // $page_access_token = "access_token=EAACxnaNUyvkBADAnlNzxJ34ZCBv0QQ0VAekrsFZCziGwfOr0cM5uZAtNVQ7ZBDF8Er8hD6RUow0kgmPLufzP5HFjIFNmZASGAhZCZAE5zCpWiCIZBZCR5Bcxh5PTIBreHrC93OKPZBAlh08eYFZBsX1ZACEjbfgZAY7hh5WPZAGdO9TAWJ90spglOZBTfNG" ;
+        $page_access_token = "access_token=".env('LIVE_FB_ACCESS_TOKEN');
       }
       else{
-        $page_access_token .= env('DEV_FB_ACCESS_TOKEN');
+        // $page_access_token = "access_token=EAACxnaNUyvkBADAnlNzxJ34ZCBv0QQ0VAekrsFZCziGwfOr0cM5uZAtNVQ7ZBDF8Er8hD6RUow0kgmPLufzP5HFjIFNmZASGAhZCZAE5zCpWiCIZBZCR5Bcxh5PTIBreHrC93OKPZBAlh08eYFZBsX1ZACEjbfgZAY7hh5WPZAGdO9TAWJ90spglOZBTfNG";
+        $page_access_token = "access_token=".env('DEV_FB_ACCESS_TOKEN');
       }
       $url .= ($flag == false)? '?'.$page_access_token:'&'.$page_access_token;   
       curl_setopt($request, CURLOPT_URL, $url);

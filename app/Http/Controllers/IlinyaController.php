@@ -35,7 +35,7 @@ class IlinyaController extends APIController
                 
             }
         }
-        return response("", 200);
+        return response("Ok", 200);
     }
 
     private function checkDuplicate($messaging , $temp){
