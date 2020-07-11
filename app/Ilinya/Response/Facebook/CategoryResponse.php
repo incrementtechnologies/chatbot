@@ -140,7 +140,6 @@ class CategoryResponse{
         }
     }
     $response =  GenericTemplate::toArray($elements);
-    Storage::put('Rooms.json', json_encode($response));
     return $response;
 }
 
@@ -167,7 +166,6 @@ class CategoryResponse{
     $packages = SheetController::getSheetContent($credentials); 
     $buttons = [];
     $elements = [];
-    Storage::put('package.json' ,json_encode($packages));
     if(sizeof($packages)>0){
         $prev = $packages[0]['title'];
         $i = 0; 
@@ -215,7 +213,6 @@ class CategoryResponse{
                         ->buttons(null)
                         ->toArray();
     $response =  GenericTemplate::toArray($elements);
-    Storage::put('Packages.json', json_encode($response));
     return $response;
   }
   public function companies($businessTypeId){

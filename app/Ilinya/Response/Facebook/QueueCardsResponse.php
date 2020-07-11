@@ -272,6 +272,4 @@ class QueueCardsResponse{
       $this->user();
       return ['text' => "Hi ".$this->user->getFirstName()." :) I understand your action :P"];
     }
-
-
 }

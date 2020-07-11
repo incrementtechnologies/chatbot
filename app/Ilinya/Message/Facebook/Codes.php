@@ -39,6 +39,7 @@ class Codes{
   public $pPackageInquiry = 218;
   public $pRoomInquiry = 219;
   public $pRoomMenuSelected = 220;
+  public $pFaq = 221;
 
   /**
     MESSAGE CODES
@@ -66,6 +67,9 @@ class Codes{
   public $qrQueueCardCancel    = 328;
   public $qrQueueCardPostpone  = 329;
   public $qInquirePackage  = 330;
+  public $qLoadMoreResult = 332;
+  public $qMainMenu = 333;
+  public $qFaq = 334;
   /**
     TEXT CODES
   */
@@ -107,7 +111,8 @@ class Codes{
       "@pPackageSelected" => $this->pPackageSelected,
       "@pPackageInquiry"=>$this->pPackageInquiry,
       "@pRoomMenuSelected"=>$this->pRoomMenuSelected,
-      "@pRoomInquiry"=>$this->pRoomInquiry
+      "@pRoomInquiry"=>$this->pRoomInquiry,
+      "@pFaq"=>$this->pFaq,
     );
 
     $this->quickReplyPayloads = array(
@@ -121,7 +126,10 @@ class Codes{
       "@qrSurvey"       => $this->qrSurvey,
       "@qrQueueCardCancel" => $this->qrQueueCardCancel,
       "@qrQueueCardPostpone" => $this->qrQueueCardPostpone,
-      "@qInquirePackage"=>$this->qInquirePackage
+      "@qInquirePackage" => $this->qInquirePackage,
+      "@qLoadMoreResult" => $this->qLoadMoreResult,
+      "@qMainMenu" => $this->qMainMenu,
+      "@qFaq" => $this->qFaq,
     );
   }
 

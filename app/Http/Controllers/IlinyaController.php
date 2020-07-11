@@ -10,19 +10,49 @@ use App\Jobs\TestDatabaseQueryEffect;
 use App\Jobs\ChatbotBroadcast;
 use App\Ilinya\ImageGenerator;
 use App\Ilinya\Response\Facebook\SurveyResponse;
+use App\Ilinya\Http\Curl;
 class IlinyaController extends APIController
 {
+
+
     public function hook(Request $request){
         $entries = Entry::getEntries($request);
         foreach ($entries as $entry) {
             $messagings = $entry->getMessagings();
+            $temp_messagings = [];
             foreach ($messagings as $messaging) {
-                dispatch(new BotHandler($messaging));
+                if (sizeof($temp_messagings) > 0) {
+                    foreach ($temp_messagings as $temp) {
+                        if (!$this->checkDuplicate($messaging , $temp)) {
+                            $temp_messagings[] = $messaging;
+                            dispatch(new BotHandler($messaging));
+                        } 
+                    }
+                } else {
+                    $temp_messagings[] = $messaging;
+                    dispatch(new BotHandler($messaging));
+                }
+                
             }
         }
         return response("Ok", 200);
     }
 
+    private function checkDuplicate($messaging , $temp){
+        //  ($messaging->getTimestamp() == $temp->getTimestamp()) &&
+        if (
+            ($messaging->getSenderId() == $temp->getSenderId()) &&
+            ($messaging->getRecipientId() == $temp->getRecipientId()) &&
+            ($messaging->getType() == $temp->getType()) &&
+            ($messaging->getMessage()->getId() == $temp->getMessage()->getId()) &&
+            ($messaging->getMessage()->getText() == $temp->getMessage()->getId()) &&
+            ($messaging->getMessage()->getQuickReply() == $temp->getMessage()->getQuickReply()) &&
+            ($messaging->getPostback() == $temp->getPostback())
+        ) {
+            return true;
+        }
+        return false;
+    }
     public function broadcast($message){
         $companyId = $this->getUserCompanyID();
         dispatch(new ChatbotBroadcast($companyId, $message));
