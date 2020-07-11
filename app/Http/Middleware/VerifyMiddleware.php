@@ -18,7 +18,6 @@ class VerifyMiddleware
     {
         $facebookVerification = 'mezzohotel';
         if ($request->input("hub_mode") === "subscribe" && $request->input("hub_verify_token") === $facebookVerification){
-            echo 'hello';
             return response($request->input("hub_challenge"), 200);
         }
         return $next($request);
