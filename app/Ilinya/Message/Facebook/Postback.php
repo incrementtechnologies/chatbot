@@ -64,7 +64,7 @@ class Postback{
           case $this->code->pStart:
             $this->bot->reply($this->post->testMessage(), false);
             $this->bot->reply($this->post->start(), false);
-            $this->bot->reply($this->post->categories(), false);
+            $this->bot->reply($this->post->inquiry(), false);
             break;
           case $this->code->pUserGuide:
             $this->bot->reply($this->post->userGuide(), true);
@@ -73,7 +73,7 @@ class Postback{
             $this->bot->reply($this->qc->display(), false);
             break;
           case $this->code->pCategories:
-            $this->bot->reply($this->post->categories(), false);
+            $this->bot->reply($this->post->inquiry(), false);
             break;
           case $this->code->pCategorySelected:
             $this->tracker->delete();

@@ -9,7 +9,6 @@ class SheetController
     public static function getSheetContent($arr) {
          $url = $arr[0];
          $num = (int)$arr[1];
-        //  $url = "https://spreadsheets.google.com/feeds/cells/1gOP1KqUS_uh0L18np4XQml387E8fuhn-oErTDhoaBgc/{$page}/public/values?alt=json";
          $curl = new Curl();
          $sheetData = $curl->get($url ,true);
          $entries   = $sheetData["feed"]["entry"];

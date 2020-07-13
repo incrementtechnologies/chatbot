@@ -71,7 +71,6 @@ class Ai{
             $this->bot->reply($this->post->banner(), false);
             $this->bot->reply($this->post->start(), false);
             $this->bot->reply($this->post->inquiry(), false);
-            $this->bot->reply($this->post->persistentMenu(),false);
         }
         else if(strpos($reply, 'thank you') !== false){
             

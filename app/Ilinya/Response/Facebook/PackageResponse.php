@@ -47,19 +47,22 @@ class PackageResponse{
   protected $bot; 
   private $curl;
   private $user;
+  private $packages;
+  private $credentials;
   private $web_url = "https://mezzohotel.com/inquiry/event";
   public function __construct(Messaging $messaging){
       $this->messaging = $messaging;
       $this->tracker   = new Tracker($messaging);
       $this->bot       = new Bot($messaging);
       $this->curl = new Curl();
+      $this->credentials = array(env('PACKAGE_URL'),"3");
+      $this->packages = SheetController::getSheetContent($this->credentials); 
   }
   
   public function user(){
     $user = $this->curl->getUser($this->messaging->getSenderId());
     $this->user = new User($this->messaging->getSenderId(), $user['first_name'], $user['last_name']);
   }
-// Start Yol
   public function packageMenu()
   {
     $this->user();
@@ -70,21 +73,7 @@ class PackageResponse{
     );
     $buttons =[];
     foreach ($menus as $menu) {
-        // if ($menu["web"]) {
-        //     $buttons[] = ButtonElement::title($menu["title"])
-        //     ->type('web_url')
-        //     ->url($this->web_url)
-        //     ->ratio("full")
-        //     ->messengerExtensions()
-        //     ->fallbackUrl($this->web_url)
-        //     ->toArray();
-        // } else {
-        //     $buttons[] = ButtonElement::title($menu["title"])
-        //                 ->type('postback')
-        //                 ->payload($menu["payload"])
-        //                 ->toArray();
-        // }
-        $buttons[] = ButtonElement::title($menu["title"])
+      $buttons[] = ButtonElement::title($menu["title"])
                         ->type('postback')
                         ->payload($menu["payload"])
                         ->toArray();
@@ -95,15 +84,13 @@ class PackageResponse{
   }
 
   public function packages(){
-      $credentials = array(env('PACKAGE_URL'),"3");
-      $packages = SheetController::getSheetContent($credentials); 
       $buttons = [];
       $elements = [];
       $max  = 10; 
-      if(sizeof($packages)>0){
-          $prev = $packages[0]['title'];
+      if(sizeof($this->packages)>0){
+          $prev = $this->packages[0]['title'];
           $i = 0; 
-          foreach ($packages as $package) {
+          foreach ($this->packages as $package) {
               $imageUrl = $package['image'];
               $payload= preg_replace('/\s+/', '_', strtolower($package['title']));
               $buttons[] = ButtonElement::title(strtoupper('Inquire now'))
@@ -113,8 +100,8 @@ class PackageResponse{
                 ->messengerExtensions()
                 ->fallbackUrl($this->web_url)
                 ->toArray();
-              if($i < sizeof($packages) - 1){
-                  if($prev != $packages[$i + 1]['title']){
+              if($i < sizeof($this->packages) - 1){
+                  if($prev != $this->packages[$i + 1]['title']){
                       $title = $package['title'];
                       $elements[] = GenericElement::title($title)
                       ->imageUrl($imageUrl)
@@ -142,23 +129,19 @@ class PackageResponse{
                 $elements = [];
             }
         }
+        $response =  GenericTemplate::toArray($elements);
+        $this->bot->reply(json_encode($response) , false);
     }
     else{
         $this->bot->reply(["text"=>"Sorry, there are no package available"] , false);
       }
-    $response =  GenericTemplate::toArray($elements);
-    $this->bot->reply(json_encode($response) , false);
-    // $response =  GenericTemplate::toArray($elements);
-    // return $response;
 }
 
     public function packageInquiry(){
-        $credentials = array(env('PACKAGE_URL'),"3");
-        $packages = SheetController::getSheetContent($credentials);
         $quickReplies =[];
-        for ($i=0; $i <sizeof($packages) ; $i++) {  
+        for ($i=0; $i <sizeof($this->packages) ; $i++) {  
             $payload = preg_replace('/\s+/', '_', $packages[$i]['title']);
-            $quickReplies[] = QuickReplyElement::title($packages[$i]['title'])->contentType('text')->payload($payload.'@qInquirePackage');
+            $quickReplies[] = QuickReplyElement::title($this->packages[$i]['title'])->contentType('text')->payload($payload.'@qInquirePackage');
         }
         $title="Please choose any of the following option of the type of banquet setup?";
         $response= QuickReplyTemplate::toArray($title,$quickReplies);
@@ -188,10 +171,6 @@ class PackageResponse{
         $response = ButtonTemplate::toArray($title,$buttons);
         return $response;
     }
-
-
-
-
 //END
 
 }

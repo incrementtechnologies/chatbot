@@ -25,7 +25,7 @@ class Curl{
       $url = 'https://graph.facebook.com/v2.6/me/messages';
       $curl = new Curl();
       $curl->post($url,$parameter);
-      // return response("", 200);  
+      return response("", 200);  
     }
 
 
@@ -61,20 +61,22 @@ class Curl{
       curl_setopt($request, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
       curl_setopt($request, CURLINFO_HEADER_OUT, true);
       curl_setopt($request, CURLOPT_SSL_VERIFYPEER, true);
-
       return $request;  
     }
 
     public function execute($request){  
       $body = curl_exec($request);
       $info = curl_getinfo($request);
+      \Storage::put("request.json", json_encode($info));
       curl_close($request);
       $statusCode = $info['http_code'] === 0 ? 500 : $info['http_code'];
       return new Response((string) $body, $statusCode, []);
     }
 
     public function executeBody($request){
-      return json_decode(curl_exec($request),true);
+      $result = json_decode(curl_exec($request),true);
+      curl_close($request);
+      return $result;
     }
 
     public function whitelistWebView(){

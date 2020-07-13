@@ -19,6 +19,7 @@ class Bot{
     }
 
     public function reply($data, $flag){
+        // \Storage::put("data.json", json_encode($data));
         $message = ($flag == true)?["text" => $data] : $data;
         $recipientId = $this->messaging->getSenderId();
         Curl::send($recipientId, $message);

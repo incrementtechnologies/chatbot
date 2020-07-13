@@ -47,12 +47,15 @@ class RoomResponse{
   protected $bot; 
   private $curl;
   private $user;
+  private $categories ; 
+  private $credentials;
   public function __construct(Messaging $messaging){
       $this->messaging = $messaging;
       $this->tracker   = new Tracker($messaging);
       $this->bot       = new Bot($messaging);
       $this->curl = new Curl();
-
+      $this->credentials = array(env('ROOMS_URL'),"9");
+      $this->categories = SheetController::getSheetContent($this->credentials); 
   }
   
   public function user(){
@@ -109,16 +112,15 @@ class RoomResponse{
     return $response;
   }
   public function rooms($isRreserve){
-    $credentials = array(env('ROOMS_URL'),"9");
-    $categories = SheetController::getSheetContent($credentials); 
+   
     $buttons = [];
     $elements = [];
-    $length = sizeof($categories);
+    $length = sizeof($this->categories);
     $max = 10;
     if($length>0){
-        $prev = $categories[0]['title'];
+        $prev = $this->categories[0]['title'];
         $i = 0; 
-        foreach ($categories as $category) {
+        foreach ($this->categories as $category) {
              $subtitle = $category['price'];
              $payload= preg_replace('/\s+/', '_', strtolower($category['title']));
              $imgArray= explode(',' , $category['images = array']);
@@ -137,8 +139,8 @@ class RoomResponse{
               ->payload($payload."@pRoomInquiry")
               ->toArray();
              } 
-            if($i < sizeof($categories) - 1){
-                if($prev != $categories[$i + 1]['title']){
+            if($i < sizeof($this->categories) - 1){
+                if($prev != $this->categories[$i + 1]['title']){
                     $title = $category['title'];
                     $elements[] = GenericElement::title($title)
                         ->imageUrl($imageUrl)
@@ -159,7 +161,6 @@ class RoomResponse{
                     ->toArray();
                     echo $imageUrl.'<br />';
             }
-            
             $i++;
             if (sizeof($elements) == $max) {
               $response =  GenericTemplate::toArray($elements);
@@ -167,7 +168,6 @@ class RoomResponse{
               $elements = [];
           }
         }
-        // \Storage::put("rooms.json", json_encode($elements));
           $response =  GenericTemplate::toArray($elements);
           $this->bot->reply($response , false);
     }
@@ -184,9 +184,5 @@ public function roomReserveAgain(){
   $response = ButtonTemplate::toArray($title,$buttons);
   return $response;
 }
-
-
-  //END
-
 }
 

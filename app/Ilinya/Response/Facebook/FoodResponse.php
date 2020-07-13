@@ -44,14 +44,19 @@ class FoodResponse{
 
   protected $messaging;
   protected $tracker;
+  protected $foods;
   protected $bot; 
   private $curl;
   private $user;
+  private $credentials;
+
   public function __construct(Messaging $messaging){
       $this->messaging = $messaging;
       $this->tracker   = new Tracker($messaging);
       $this->bot       = new Bot($messaging);
       $this->curl = new Curl();
+      $this->credentials = array(env('FOOD_URL'),"4");
+      $this->foods = SheetController::getSheetContent($this->credentials); 
 
   }
   
@@ -59,20 +64,16 @@ class FoodResponse{
     $user = $this->curl->getUser($this->messaging->getSenderId());
     $this->user = new User($this->messaging->getSenderId(), $user['first_name'], $user['last_name']);
   }
-// Start Yol
-
   public function foods(){
-    $credentials = array(env('FOOD_URL'),"4");
-    $foods = SheetController::getSheetContent($credentials); 
     $buttons = [];
     $elements = [];
     $max=10;
-    if(sizeof($foods)>0){
-        $prev = $foods[0]['caption'];
+    if(sizeof($this->foods)>0){
+        $prev = $this->foods[0]['caption'];
         $i = 0; 
-        foreach ($foods as $food) {
-            $data = explode(":",$food['caption']);
-            $subtitle = $data[0];
+        foreach ($this->foods as $food) {
+             $data = explode(":",$food['caption']);
+             $subtitle = $data[0];
              $imageUrl = "https://mezzohotel.com/img/".$food["image"];
              $btnText = str_replace("_" ," " , $food['type']);
              $buttons[] = ButtonElement::title(strtoupper($btnText))
@@ -82,8 +83,8 @@ class FoodResponse{
                         ->messengerExtensions()
                         ->fallbackUrl($food["link"])
                         ->toArray();
-            if($i < sizeof($foods) - 1){
-                if($prev != $foods[$i + 1]['caption']){
+            if($i < sizeof($this->foods) - 1){
+                if($prev != $this->foods[$i + 1]['caption']){
                     $title = $data[1];
                     $elements[] = GenericElement::title($title)
                         ->imageUrl($imageUrl)
@@ -110,14 +111,18 @@ class FoodResponse{
                 $this->bot->reply(json_encode($response) , false);
                 $elements = [];
             }
+            
         }
+        $response =  GenericTemplate::toArray($elements);
+        $this->bot->reply(json_encode($response) , false);
+        $elements = [];
+        ++$count;
+        // return json_encode($response);
     }
     else{
         $this->bot->reply(["text"=>"Sorry, there are no food available"] , false);
       }
-    $response =  GenericTemplate::toArray($elements);
-    $this->bot->reply(json_encode($response) , false);
-    // return json_encode($response);
+
 }
   //END
 
