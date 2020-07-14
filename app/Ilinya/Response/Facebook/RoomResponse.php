@@ -109,7 +109,7 @@ class RoomResponse{
     return $response;
   }
   public function rooms($isRreserve){
-    $credentials = array(env('ROOM_URL'),"9");
+    $credentials = array(env('ROOMS_URL'),"9");
     $categories = SheetController::getSheetContent($credentials); 
     \Storage::put("request.json", json_encode($categories));
 
@@ -169,9 +169,12 @@ class RoomResponse{
               $elements = [];
           }
         }
+        $response =  GenericTemplate::toArray($elements);
+        $this->bot->reply($response , false);
+    }else{
+      $this->bot->reply(["text"=>"There are no rooms available at the moment."],false);
     }
-      $response =  GenericTemplate::toArray($elements);
-      $this->bot->reply($response , false);
+    
     // $response =  GenericTemplate::toArray($elements);
     // return json_encode($response);
 }

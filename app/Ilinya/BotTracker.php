@@ -2,7 +2,7 @@
 
 namespace App\Ilinya;
 
-
+use App\Logs;
 use App\Ilinya\API\Controller;
 use App\Ilinya\API\Database as DB;
 use Illuminate\Http\Request;
@@ -150,5 +150,26 @@ class BotTracker{
           'userID'=>$this->messaging->getSenderId()
     ];
     DB::delete($this->db_tracker, $condition);
+  }
+
+  public function remove(){
+      $data =[
+          "userID"=>$this->messaging->getSenderId(),
+          "recepientID"=>$this->messaging->getRecipientId(),
+          "type"=> $this->messaging->getType(),
+      ];
+
+      if ($this->messaging->getType() =='postback') {
+          $data['message'] = $this->messaging->getPostback()->getPayload();
+      }else{
+          if ($this->messaging->getMessage()->getQuickReply()) {
+              # code...
+              $msg =$this->messaging->getMessage()->getQuickReply();
+              $data['message'] =strtolower( $msg['payload'].$msg['parameter']);
+          } else {
+              $data['message'] = strtolower($this->messaging->getMessage()->getText());
+          }
+      }
+      Logs::where($data)->delete();
   }
 }

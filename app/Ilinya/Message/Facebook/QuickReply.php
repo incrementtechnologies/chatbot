@@ -149,18 +149,24 @@ class QuickReply{
           break;
           case $this->code->qInquirePackage :
               $this->bot->reply($this->package->packageInquiryStages(), false);
-            break;
+              
+              break;
           case $this->code->qLoadMoreResult :
               $this->dialog->manage($parameter);
-            break;
+              
+              break;
           case $this->code->qMainMenu;
             $this->tracker->delete();
-             $this->bot->reply($this->post->start(), false);
+            
+            $this->bot->reply($this->post->start(), false);
             $this->bot->reply($this->post->inquiry(), false);
-          break;
+            
+            break;
           case $this->code->qFaq;
             $this->tracker->delete();
+            
             $this->bot->reply($this->dialog->startFaq("faq"), false);
+            
           break;
           default:
           //Statement Here

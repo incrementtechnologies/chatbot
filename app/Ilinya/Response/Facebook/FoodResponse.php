@@ -8,7 +8,7 @@ use App\Ilinya\Webhook\Facebook\Messaging;
 use App\Ilinya\User;
 use App\Ilinya\Bot;
 use Illuminate\Http\Request;
-use App\Ilinya\Tracker;
+use App\Ilinya\BotTracker;
 use App\Ilinya\Http\Curl;
 /*
     @Template
@@ -49,7 +49,7 @@ class FoodResponse{
   private $user;
   public function __construct(Messaging $messaging){
       $this->messaging = $messaging;
-      $this->tracker   = new Tracker($messaging);
+      $this->tracker   = new BotTracker($messaging);
       $this->bot       = new Bot($messaging);
       $this->curl = new Curl();
 
@@ -111,9 +111,14 @@ class FoodResponse{
                 $elements = [];
             }
         }
-    }
-    $response =  GenericTemplate::toArray($elements);
-    $this->bot->reply(json_encode($response) , false);
+        $response =  GenericTemplate::toArray($elements);
+        $this->bot->reply(json_encode($response) , false);
+        
+    }else{
+        $this->bot->reply(["text"=>"There are no foods available at the moment."],false);
+        
+      }
+   
     // return json_encode($response);
 }
   //END

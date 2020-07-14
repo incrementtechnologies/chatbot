@@ -60,40 +60,48 @@ class MessageHandler{
     $this->response = $this->tracker->getStatus($this->custom);
     $this->currentCode = $this->code->getCode($this->custom);
     $this->trackerFlag = $this->response['tracker_flag'];
-    switch ($this->response['status']) {
-      case $this->code->read:
-        //Read
+    $type = $this->messaging->getType();
+    \Log::info("New ".$type." received");
+    switch ($type){
+      case 'message':
+           $this->message();
         break;
-      case $this->code->delivery:
-        //Delivery
-        // $this->trackerHandler();
-
-        break;
-      case $this->code->pStart:
-        $this->postback->manage($this->custom);
-        // $this->trackerHandler();
-        break;
-      case 'value':
-        # code...
-        break;
-      case $this->code->postback:
-        $this->getParameter();  
-        // $this->trackerHandler();
-        $this->postback->manage($this->custom);
-        break;
-      case $this->code->message:
-        $this->message();
-        // $this->trackerHandler();
-        break;
-      case $this->code->error:
-        //Error
-        $this->error->manage($this->custom);
-        break;
-      default:
-        //Do Nothing
-        $this->error->manage($this->custom);
+      case 'postback':
+          $this->getParameter();  
+          $this->postback->manage($this->custom);
         break;
     }
+    // switch ($this->response['status']) {
+    //   case $this->code->read:
+    //     //Read
+    //     break;
+    //   case $this->code->delivery:
+    //     //Delivery
+    //     // $this->trackerHandler();
+
+    //     break;
+    //   case $this->code->pStart:
+    //     $this->postback->manage($this->custom);
+    //     // $this->trackerHandler();
+    //     break;
+    //   case 'value':
+    //     # code...
+    //     break;
+    //   case $this->code->postback:
+    //    
+    //     break;
+    //   case $this->code->message:
+    
+    //     break;
+    //   case $this->code->error:
+    //     //Error
+    //     $this->error->manage($this->custom);
+    //     break;
+    //   default:
+    //     //Do Nothing
+    //     $this->error->manage($this->custom);
+    //     break;
+    // }
   }
 
   public function trackerHandler(){

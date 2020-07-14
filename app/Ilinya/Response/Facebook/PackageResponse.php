@@ -63,27 +63,13 @@ class PackageResponse{
   public function packageMenu()
   {
     $this->user();
-    $title =  "Hi ".$this->user->getFirstName().",thank you for your interest in our Banquet Packages.Please choose the following options to get the information you need.";
+    $title =  "Hi ".$this->user->getFirstName().", thank you for your interest in our Banquet Packages.Please choose the following options to get the information you need.";
     $menus= array( 
       array("payload"=> "@pPackageInquiry", "title"=>"BANQUET INQUIRY" ,"web"=>true) ,
       array("payload"=> "@pPackageSelected", "title"=>"BANQUET PACKAGES" ,"web"=>false)
     );
     $buttons =[];
     foreach ($menus as $menu) {
-        // if ($menu["web"]) {
-        //     $buttons[] = ButtonElement::title($menu["title"])
-        //     ->type('web_url')
-        //     ->url($this->web_url)
-        //     ->ratio("full")
-        //     ->messengerExtensions()
-        //     ->fallbackUrl($this->web_url)
-        //     ->toArray();
-        // } else {
-        //     $buttons[] = ButtonElement::title($menu["title"])
-        //                 ->type('postback')
-        //                 ->payload($menu["payload"])
-        //                 ->toArray();
-        // }
         $buttons[] = ButtonElement::title($menu["title"])
                         ->type('postback')
                         ->payload($menu["payload"])
@@ -142,11 +128,13 @@ class PackageResponse{
                 $elements = [];
             }
         }
-    }
-    $response =  GenericTemplate::toArray($elements);
-    $this->bot->reply(json_encode($response) , false);
-    // $response =  GenericTemplate::toArray($elements);
-    // return $response;
+        $response =  GenericTemplate::toArray($elements);
+        $this->bot->reply(json_encode($response) , false);
+        
+    }else{
+        $this->bot->reply(["text"=>"There are no packages available at the moment."],false);
+        
+      }
 }
 
     public function packageInquiry(){
