@@ -2,8 +2,6 @@
 
 namespace App\Ilinya\Http;
 use Symfony\Component\HttpFoundation\Response;
-
-
 class Curl{
 
     function __construct(){
@@ -28,6 +26,37 @@ class Curl{
       return response("", 200);  
     }
 
+    public static function setupMenu($recipientId){
+      $body = [
+        "psid"=>$recipientId,
+        "persistent_menu"=> [
+          [
+              "locale"=> "default",
+              "composer_input_disabled"=> false,
+              "call_to_actions"=> [
+                  [
+                      "type"=> "postback",
+                      "title"=> "ROOM RATES",
+                      "payload"=> "room_rates@pCategorySelected"
+                  ],
+                   [
+                      "type"=> "postback",
+                      "title"=> "BANQUET PACKAGES",
+                      "payload"=> "banquet_packages@pCategorySelected"
+                   ],
+                    [
+                      "type"=> "postback",
+                      "title"=> "CAFE MEZZO",
+                      "payload"=> "cafe_mezzo@pCategorySelected"
+                    ]
+              ]
+          ]
+      ]
+      ];      
+      $url ="https://graph.facebook.com/v7.0/me/custom_user_settings";
+      $curl = new Curl();
+      $curl->post($url,$body);
+    }
 
     public function post($url, $parameter){
       $request = $this->prepare($url, false);
@@ -38,6 +67,7 @@ class Curl{
 
     public function get($url, $flag){
       $request = $this->prepare($url, $flag);
+      set_time_limit(0);
       return $this->executeBody($request);
     }
 
@@ -65,11 +95,12 @@ class Curl{
     }
 
     public function execute($request){  
+      set_time_limit(0);
       $body = curl_exec($request);
       $info = curl_getinfo($request);
-      \Storage::put("request.json", json_encode($info));
-      curl_close($request);
       $statusCode = $info['http_code'] === 0 ? 500 : $info['http_code'];
+      \Log::notice("status : ".$statusCode);
+      curl_close($request);
       return new Response((string) $body, $statusCode, []);
     }
 
@@ -104,6 +135,7 @@ class Curl{
           'Content-Length: ' . strlen($payload))
       );
       // Submit the POST request
+      set_time_limit(0);
       $result = curl_exec($ch);
       // Close cURL session handle
       curl_close($ch);        

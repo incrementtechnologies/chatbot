@@ -9,13 +9,13 @@ class Messaging
 {
     public static $TYPE_MESSAGE = "message";
 
-    private $senderId;
-    private $recipientId;
-    private $timestamp;
-    private $message;
-    private $messageArray;
-    private $type;
-    private $postback;
+    protected $senderId;
+    protected $recipientId;
+    protected $timestamp;
+    protected $message;
+    protected $messageArray;
+    protected $type;
+    protected $postback;
 
     public function __construct(array $data)
     {

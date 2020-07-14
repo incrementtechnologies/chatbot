@@ -106,7 +106,7 @@ class PostbackResponse{
         $menus= array(
             array("title"=>"ROOM RATES"),
             array("title"=>"BANQUET PACKAGES"),
-            array("title"=>"FOODS")
+            array("title"=>"CAFE MEZZO")
         );
         $buttons =[];
         foreach ($menus as $menu) {

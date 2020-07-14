@@ -66,14 +66,14 @@ class PackageResponse{
   public function packageMenu()
   {
     $this->user();
-    $title =  "Hi ".$this->user->getFirstName().",thank you for your interest in our Banquet Packages.Please choose the following options to get the information you need.";
+    $title =  "Hi ".$this->user->getFirstName().", thank you for your interest in our Banquet Packages.Please choose the following options to get the information you need.";
     $menus= array( 
       array("payload"=> "@pPackageInquiry", "title"=>"BANQUET INQUIRY" ,"web"=>true) ,
       array("payload"=> "@pPackageSelected", "title"=>"BANQUET PACKAGES" ,"web"=>false)
     );
     $buttons =[];
     foreach ($menus as $menu) {
-      $buttons[] = ButtonElement::title($menu["title"])
+        $buttons[] = ButtonElement::title($menu["title"])
                         ->type('postback')
                         ->payload($menu["payload"])
                         ->toArray();
@@ -131,9 +131,10 @@ class PackageResponse{
         }
         $response =  GenericTemplate::toArray($elements);
         $this->bot->reply(json_encode($response) , false);
-    }
-    else{
-        $this->bot->reply(["text"=>"Sorry, there are no package available"] , false);
+        
+    }else{
+        $this->bot->reply(["text"=>"There are no packages available at the moment."],false);
+        
       }
 }
 

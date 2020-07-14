@@ -4,7 +4,6 @@ namespace App\Ilinya;
 
 
 use Illuminate\Support\Facades\Log;
-
 use App\Ilinya\Http\Curl;
 use App\Ilinya\Webhook\Facebook\Messaging;
 use App\Ilinya\Templates\Facebook\PersistentMenuTemplate;
@@ -23,6 +22,7 @@ class Bot{
         $message = ($flag == true)?["text" => $data] : $data;
         $recipientId = $this->messaging->getSenderId();
         Curl::send($recipientId, $message);
+        return response("", 200);       
     }
 
     public static function notify($recipientId, $message){
@@ -32,5 +32,11 @@ class Bot{
 
     public static function survey($recipientId, $message){
         Curl::send($recipientId, $message);
+    }
+
+    public function setup(){
+        $recipientId = $this->messaging->getSenderId();
+        Curl::setupMenu($recipientId);
+        return response("", 200);
     }
 }

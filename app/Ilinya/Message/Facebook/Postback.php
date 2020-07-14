@@ -62,9 +62,10 @@ class Postback{
         $action = $this->code->getCode($custom);
         switch ($action) {
           case $this->code->pStart:
-            $this->bot->reply($this->post->testMessage(), false);
-            $this->bot->reply($this->post->start(), false);
-            $this->bot->reply($this->post->inquiry(), false);
+          // $this->bot->setup();
+          $this->bot->reply($this->post->banner(), false);
+          $this->bot->reply($this->post->start(), false);
+          $this->bot->reply($this->post->inquiry(), false);
             break;
           case $this->code->pUserGuide:
             $this->bot->reply($this->post->userGuide(), true);
@@ -85,14 +86,20 @@ class Postback{
               case strtolower('BANQUET PACKAGES'):
                 $this->bot->reply($this->package->packageMenu(), false);
                 break;
-              case strtolower('FOODS'):
+              case strtolower('CAFE MEZZO'):
                 $this->bot->reply($this->food->foods(), false);
                 break;
-              case strtolower('ASK MORE QUESTION'):
-                $this->tracker->delete();
-                $this->bot->reply($this->dialog->startFaq("faq"), false);
-                break;
-              case strtolower('CONCERN/INQUIRY'):
+                case strtolower('ASK MORE QUESTION'):
+                  $this->tracker->delete();
+                  $this->bot->reply($this->dialog->startFaq("faq"), false);
+                  break;
+                case strtolower('GO BACK TO MENU'):
+                  $this->tracker->delete();
+                  $this->bot->reply($this->post->banner(), false);
+                  $this->bot->reply($this->post->start(), false);
+                  $this->bot->reply($this->post->inquiry(), false);
+                  break;
+                case strtolower('CONCERN/INQUIRY'):
                 $this->bot->reply($this->package->concerns($custom['parameter']), false); 
                 break;
               default:
@@ -103,10 +110,12 @@ class Postback{
           case $this->code->pPackageSelected:
               $this->tracker->delete();
               $this->bot->reply($this->package->packages(), false);
+              
               break;
           case $this->code->pPackageInquiry:
               $this->tracker->delete();
               $this->bot->reply($this->package->packageInquiry(), false);
+              // 
               break;
           case $this->code->pRoomMenuSelected:
               $this->tracker->delete();
@@ -114,10 +123,12 @@ class Postback{
                 case 'room rates':
                   // $this->bot->reply($this->room->rooms(false), false);
                   $this->room->rooms(false);
+                  // 
                   break;
               case strtolower('GROUP RESERVATIONS'):
                   // $this->bot->reply($this->room->rooms(true), false);
                   $this->room->rooms(true);
+                  // 
                 break;
               default:
                 return '';

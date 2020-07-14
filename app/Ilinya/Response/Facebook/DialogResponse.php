@@ -99,6 +99,8 @@ class DialogResponse    {
     }
     if (sizeof($result) == 0) { 
         $this->bot->reply($this->aiResponse->error(), false);
+        $this->bot->reply( $this->startFaq('faq'), false);
+       
     } else {
         $offset = sizeof($result) >= $page*3 ?  $page * 3 : sizeof($result);
         $index = $offset-3 < 0 ? 0 : $offset-3;
