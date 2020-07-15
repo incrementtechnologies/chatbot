@@ -28,7 +28,6 @@ class Curl{
 
     public static function setupMenu($recipientId){
       $body = [
-        "psid"=>$recipientId,
         "persistent_menu"=> [
           [
               "locale"=> "default",
@@ -53,7 +52,7 @@ class Curl{
           ]
       ]
       ];      
-      $url ="https://graph.facebook.com/v7.0/me/custom_user_settings";
+      $url ="https://graph.facebook.com/v2.6/me/messenger_profile";
       $curl = new Curl();
       $curl->post($url,$body);
     }
