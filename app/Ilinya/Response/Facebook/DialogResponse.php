@@ -109,7 +109,7 @@ class DialogResponse    {
             $this->bot->reply(["text"=> $message],false) ;
         }
         for ($i=$index ; $i < $offset ; $i++) { 
-            $message =($i+1). ". ".$result[$i]['question']."\n\ n".$result[$i]['answer'];
+            $message =($i+1). ". ".$result[$i]['question']."\n\n".$result[$i]['answer'];
             $this->bot->reply(["text"=>$message],false);
         }
         if ($offset < sizeof($result) ) {
