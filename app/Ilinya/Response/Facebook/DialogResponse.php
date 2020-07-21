@@ -97,6 +97,7 @@ class DialogResponse    {
             foreach ($msg_array as $word ) {
                 if (in_array($word , $tags)) {
                     $result[] = $question;
+                    break;
                 }
             }
         }
