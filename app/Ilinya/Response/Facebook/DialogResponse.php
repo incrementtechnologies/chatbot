@@ -56,7 +56,7 @@ class DialogResponse    {
       $this->bot       = new Bot($messaging);
       $this->aiResponse = new AiResponse($messaging);
       $this->curl = new Curl();
-      $this->questions = SheetController::getSheetContent(array(env("FAQ_URL") ,"2"));
+      $this->questions = SheetController::getSheetContent(array(env("FAQ_URL") ,"3"));
   }
   
   public function user(){
@@ -68,9 +68,6 @@ class DialogResponse    {
         $this->tracker->insert(1 ,$msg);
         $this->user();
         $message =  "Hi ".$this->user->getFirstName().", Please send us your question.";
-        // $quickReplies =[];
-        // $quickReplies[] = QuickReplyElement::title('CANCEL')->contentType('text')->payload('@qMainMenu');
-        // $response =  QuickReplyTemplate::toArray($message, $quickReplies);
         return ["text"=>$message];
     }
   public function manage($msg)
@@ -93,8 +90,15 @@ class DialogResponse    {
     $result = [];
     $msg_array = explode(" " , $reply);
     foreach ($this->questions as $question) {
-        if (strpos(strtolower($question['question']),$reply) !== false) {
+        $tags = explode("," ,$question['tags']);
+        if (strpos(strtolower($question['question']),$reply) !== false ) {
                 $result[] = $question;
+        }else{
+            foreach ($msg_array as $word ) {
+                if (in_array($word , $tags)) {
+                    $result[] = $question;
+                }
+            }
         }
     }
     if (sizeof($result) == 0) { 
