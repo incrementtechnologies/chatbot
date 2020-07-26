@@ -62,10 +62,11 @@ class Postback{
         $action = $this->code->getCode($custom);
         switch ($action) {
           case $this->code->pStart:
+          $this->tracker->delete();
           // $this->bot->setup();
-          $this->bot->reply($this->post->banner(), false);
+          // $this->bot->reply($this->post->banner(), false);
           $this->bot->reply($this->post->start(), false);
-          $this->bot->reply($this->post->inquiry(), false);
+          // $this->bot->reply($this->post->inquiry(), false);
             break;
           case $this->code->pUserGuide:
             $this->bot->reply($this->post->userGuide(), true);
@@ -79,10 +80,16 @@ class Postback{
           case $this->code->pCategorySelected:
             $this->tracker->delete();
             switch (strtolower($custom['parameter'])) {
-              case 'room rates':
+              case 'rooms':
                         $this->bot->reply($this->room->roomMenuStart(), false);
                         $this->bot->reply($this->room->roomMenu(), false);
                         break;
+              case strtolower('Food and Beverage'):
+                        $this->bot->reply($this->post->foodAndBeverageMenu(), false);
+                        break;
+              case strtolower('inquiries'):
+                $this->bot->reply($this->post->inquiry(), false);
+                break;
               case strtolower('BANQUET PACKAGES'):
                 $this->bot->reply($this->package->packageMenu(), false);
                 break;
@@ -100,7 +107,8 @@ class Postback{
                   $this->bot->reply($this->post->inquiry(), false);
                   break;
                 case strtolower('CONCERN/INQUIRY'):
-                $this->bot->reply($this->package->concerns($custom['parameter']), false); 
+                  $this->tracker->delete();
+                  $this->bot->reply($this->package->concerns($custom['parameter']), false); 
                 break;
               default:
                 return '';

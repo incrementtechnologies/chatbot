@@ -104,9 +104,9 @@ class PostbackResponse{
         $subtitle = "Kindly click the buttons to navigate.";
         $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
         $menus= array(
-            array("title"=>"ROOM RATES"),
-            array("title"=>"BANQUET PACKAGES"),
-            array("title"=>"CAFE MEZZO")
+            array("title"=>"Rooms"),
+            array("title"=>"Food and Beverage"),
+            array("title"=>"Inquiries")
         );
         $buttons =[];
         foreach ($menus as $menu) {
@@ -118,6 +118,23 @@ class PostbackResponse{
         }
         $response = ButtonTemplate::toArray($title,$buttons);
 
+        return $response;
+    }
+    public function foodAndBeverageMenu(){
+        $title =  "Food and Beverage";
+        $buttons=[];
+        $menus= array( 
+            array( "title"=>"Banquet Packages") ,
+            array( "title"=>"Cafe Mezzo"),
+          );
+          foreach ($menus as $menu) {
+            $payload = preg_replace('/\s+/', '_', $menu["title"]);
+            $buttons[] = ButtonElement::title($menu["title"])
+            ->type('postback')
+            ->payload(strtolower($payload).'@pCategorySelected')
+            ->toArray();
+        }
+        $response = ButtonTemplate::toArray($title,$buttons);
         return $response;
     }
     public function inquiry(){

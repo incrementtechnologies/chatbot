@@ -147,7 +147,7 @@ class RoomResponse{
                     $title = $category['title'];
                     $elements[] = GenericElement::title($title)
                         ->imageUrl($imageUrl)
-                        ->subtitle($subtitle)
+                        ->subtitle(null)
                         ->buttons($buttons)
                         ->toArray();
                     $prev = $category['title'];

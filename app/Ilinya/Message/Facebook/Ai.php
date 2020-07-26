@@ -60,7 +60,6 @@ class Ai{
   }
 
   public function manage($reply){
-    \Log::info("message : ".$reply);
     $reply = strtolower($reply);
     $this->curl->whitelistWebView();
     $track_flag = $this->tracker->getStage();
@@ -69,34 +68,26 @@ class Ai{
     } else {
         $this->tracker->delete();
         if(strpos($reply, 'hi') !== false || strpos($reply, 'hello') !== false ||strpos($reply, 'help') !== false || strpos($reply, 'hola') !== false){
-            $this->bot->reply($this->post->banner(), false);
             $this->bot->reply($this->post->start(), false);
-            $this->bot->reply($this->post->inquiry(), false);
-            
         }
         else if(strpos($reply, 'thank you') !== false){
             $this->bot->reply($this->aiResponse->thankYou(),  false);
-            
         }
         else if(strpos(strtolower($reply) ,"food") !== false){ 
             $this->bot->reply($this->food->foods(), false);
-            
         }
         
         else if(strpos(strtolower($reply) ,"rooms") !== false){ 
             $this->bot->reply($this->room->roomMenuStart(), false);
             $this->bot->reply($this->room->roomMenu(), false);
-            
         }
-        
         else if(strpos(strtolower($reply) ,"packages") !== false){ 
             $this->bot->reply($this->package->packageMenu(), false);
-            
         }
         else {
-            $this->bot->reply($this->post->banner(), false);
+            // $this->bot->reply($this->post->banner(), false);
             $this->bot->reply($this->post->start(), false);
-            $this->bot->reply($this->post->inquiry(), false);
+            // $this->bot->reply($this->post->inquiry(), false);
             
         }
         return response('',200);
