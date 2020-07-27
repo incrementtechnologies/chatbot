@@ -26,7 +26,18 @@ class Curl{
       return response("", 200);  
     }
 
-    public static function setupMenu($recipientId){
+    public static function started(){
+      $body = [
+        "get_started" => [
+          "payload" => "@pStart"
+        ]
+      ];      
+      $url ="https://graph.facebook.com/v2.6/me/messenger_profile";
+      $curl = new Curl();
+      $curl->post($url,$body);
+    }
+
+    public static function setupMenu(){
       $body = [
         "persistent_menu"=> [
           [

@@ -106,6 +106,14 @@ class IlinyaController extends APIController
         }   
     }
 
+    public function getStarted(Request $request){
+        Curl::started();
+    }
+
+    public function persistent(Request $request){
+        Curl::setupMenu();
+    }
+
     public function createImage(){
         ImageGenerator::create();
     }
