@@ -124,7 +124,7 @@ class RoomResponse{
         $prev = $this->categories[0]['title'];
         $i = 0; 
         foreach ($this->categories as $category) {
-             $subtitle = $category['price'];
+             $subtitle = $isRreserve ? null: $category['price'];
              $payload= preg_replace('/\s+/', '_', strtolower($category['title']));
              $imgArray= explode(',' , $category['images = array']);
              $imageUrl = "https://mezzohotel.com/img/".$imgArray[0];
