@@ -46,17 +46,17 @@ class Curl{
               "call_to_actions"=> [
                   [
                       "type"=> "postback",
-                      "title"=> "ROOMS",
-                      "payload"=> "room_rates@pCategorySelected"
+                      "title"=> "Rooms",
+                      "payload"=> "rooms@pCategorySelected"
                   ],
                    [
                       "type"=> "postback",
-                      "title"=> "FOOD & BEVERAGE",
-                      "payload"=> "banquet_packages@pCategorySelected"
+                      "title"=> "Food & Beverage",
+                      "payload"=> "Food and Beverage@pCategorySelected"
                    ],
                     [
                       "type"=> "postback",
-                      "title"=> "INQUIRUES",
+                      "title"=> "Inquiries",
                       "payload"=> "inquiries@pCategorySelected"
                     ]
               ]
