@@ -62,7 +62,7 @@ class CategoryResponse{
   public function roomMenuStart()
   {
     $this->user();;
-    $title =  "Greetings from Mezzo! I'm currently away right now. I'll get back to you in a bit ".$this->user->getFirstName()." !\n\nYou can also call our Reservations at 0906 423 1579 for booking inquiries and room availability.\n\n#anewdimensionofluxury";    
+    $title =  "Greetings from Mezzo!\n\nYou can also call our Reservations at 0906 423 1579 for booking inquiries and room availability.\n\n#anewdimensionofluxury";    
     return ["text" => $title];
   }
   public function roomMenu(){

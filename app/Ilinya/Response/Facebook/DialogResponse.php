@@ -67,7 +67,7 @@ class DialogResponse    {
     {
         $this->tracker->insert(1 ,$msg);
         $this->user();
-        $message =  "Hi ".$this->user->getFirstName().", Please send us your question.";
+        $message =  "Hi ".$this->user->getFirstName().", please send us your question.";
         return ["text"=>$message];
     }
   public function manage($msg)
@@ -131,7 +131,7 @@ class DialogResponse    {
             $response= QuickReplyTemplate::toArray($title,$quickReplies);
             $this->bot->reply($response,false);
         }else{
-            $title =  "You have reached the bottom of the results.What do you want to do next?";
+            $title =  "You have reached the bottom of the results. What do you want to do next?";
             $menus =array(
                 array("title"=>"Ask more question"),
                 array("title"=>"Go back to menu")
