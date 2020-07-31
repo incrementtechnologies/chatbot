@@ -171,6 +171,5 @@ class BotTracker{
           }
       }
       $delete = Logs::where($data)->delete();
-      \Storage::append("condition.json",json_encode($delete));
   }
 }

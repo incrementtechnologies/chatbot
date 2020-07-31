@@ -87,7 +87,6 @@ class PackageResponse{
             ->payload($menu["payload"])
             ->toArray();
         }
-        
     }
     $response = ButtonTemplate::toArray($title,$buttons);
     return $response;
