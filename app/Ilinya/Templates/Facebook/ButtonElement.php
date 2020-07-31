@@ -57,7 +57,7 @@ class ButtonElement{
 
 
   function __construct($title){
-    $this->title = $title;
+    $this->title =ucwords(strtolower($title));
   }
 
   public function type($type){
@@ -66,7 +66,7 @@ class ButtonElement{
   }
   
   public static function title($title){
-    return new static($title);
+    return new static(ucwords(strtolower($title)));
   }
 
   public function url($url){
@@ -118,7 +118,7 @@ class ButtonElement{
       $response["payload"] = $this->payload;
     }
     if($this->title != null){
-      $response['title'] = $this->title;
+      $response['title'] = ucwords(strtolower($this->title));
     }
     return $response;
   }

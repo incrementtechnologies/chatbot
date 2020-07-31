@@ -90,13 +90,13 @@ class Postback{
               case strtolower('inquiries'):
                 $this->bot->reply($this->post->inquiry(), false);
                 break;
-              case strtolower('BANQUET PACKAGES'):
+              case strtolower('BANQUET'):
                 $this->bot->reply($this->package->packageMenu(), false);
                 break;
               case strtolower('CAFE MEZZO'):
                 $this->bot->reply($this->food->foods(), false);
                 break;
-                case strtolower('ASK MORE QUESTION'):
+                case strtolower('ASK ANOTHER QUESTION'):
                   $this->tracker->delete();
                   $this->bot->reply($this->dialog->startFaq("faq"), false);
                   break;
@@ -128,7 +128,7 @@ class Postback{
           case $this->code->pRoomMenuSelected:
               $this->tracker->delete();
               switch (strtolower($custom['parameter'])) {
-                case 'room rates':
+                case 'rooms':
                   // $this->bot->reply($this->room->rooms(false), false);
                   $this->room->rooms(false);
                   // 

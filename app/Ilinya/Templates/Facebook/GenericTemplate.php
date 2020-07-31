@@ -4,11 +4,13 @@ namespace App\Ilinya\Templates\Facebook;
 
 class GenericTemplate{
 
+
   public static function toArray(array $elements){
     /*
         @ Requires Array of GenericElement
       
     */
+
     $response =  [
       "attachment"  => [
         "type"      => 'template',

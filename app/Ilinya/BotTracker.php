@@ -170,6 +170,7 @@ class BotTracker{
               $data['message'] = strtolower($this->messaging->getMessage()->getText());
           }
       }
-      Logs::where($data)->delete();
+      $delete = Logs::where($data)->delete();
+      \Storage::append("condition.json",json_encode($delete));
   }
 }

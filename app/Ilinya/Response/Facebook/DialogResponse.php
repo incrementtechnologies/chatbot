@@ -130,25 +130,42 @@ class DialogResponse    {
             $title="Reply 'more' to view more results.";
             $response= QuickReplyTemplate::toArray($title,$quickReplies);
             $this->bot->reply($response,false);
+            $this->FaqList();
         }else{
             $title =  "You have reached the bottom of the results. What do you want to do next?";
             $menus =array(
-                array("title"=>"Ask more question"),
+                array("title"=>"Ask another question"),
                 array("title"=>"Go back to menu")
             );
             $buttons =[];
             foreach ($menus as $menu) {
                 # code...
-                $buttons[] = ButtonElement::title(strtoupper($menu["title"]))
+                $buttons[] = ButtonElement::title(ucwords(strtolower($menu["title"])))
                   ->type('postback')
                   ->payload("@pCategorySelected")
                   ->toArray();
             }
              $response = ButtonTemplate::toArray($title,$buttons);
              $this->bot->reply($response,false);
+             $this->FaqList();
+
         }
     }
 
+  }
+
+   public function FaqList()
+  {
+      $buttons =[];
+      $buttons[] = ButtonElement::title("FAQ List")
+      ->type('web_url')
+      ->url("https://mezzohotel.com/#faq")
+      ->ratio("full")
+      ->messengerExtensions()
+      ->fallbackUrl("https://mezzohotel.com/#faq")
+      ->toArray();
+      $response = ButtonTemplate::toArray("To see the complete FAQ list , click here",$buttons);
+      $this->bot->reply($response,false);
   }
 
 //END

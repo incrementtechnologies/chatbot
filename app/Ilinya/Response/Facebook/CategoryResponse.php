@@ -149,7 +149,7 @@ class CategoryResponse{
     $title =  "Hi ".$this->user->getFirstName().", thank you for your interest in our Banquet Packages.Please choose the following options to get the information you need.";
     $menus= array( 
       array("payload"=> "@pPackageInquiry", "title"=>"BANQUET INQUIRY") ,
-      array("payload"=> "@pPackageSelected", "title"=>"BANQUET PACKAGES")
+      array("payload"=> "@pPackageSelected", "title"=>"BANQUET")
     );
     $buttons =[];
     foreach ($menus as $menu) {

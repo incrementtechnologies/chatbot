@@ -69,52 +69,55 @@ class FoodResponse{
     $elements = [];
     $max=10;
     if(sizeof($this->foods)>0){
-        $prev = $this->foods[0]['caption'];
-        $i = 0; 
-        foreach ($this->foods as $food) {
-             $data = explode(":",$food['caption']);
-             $subtitle = $data[0];
-             $imageUrl = "https://mezzohotel.com/img/".$food["image"];
-             $btnText = str_replace("_" ," " , $food['type']);
-             $buttons[] = ButtonElement::title(strtoupper($btnText))
-                        ->type('web_url')
-                        ->url($food["link"])
-                        ->ratio("full")
-                        ->messengerExtensions()
-                        ->fallbackUrl($food["link"])
-                        ->toArray();
-            if($i < sizeof($this->foods) - 1){
-                if($prev != $this->foods[$i + 1]['caption']){
+        $partitions = $this->bot->partition($this->packages);
+        foreach ($partitions as $chunck) {
+            $prev = $chunck[0]['caption'];
+            $i = 0; 
+            foreach ($chunck as $food) {
+                $data = explode(":",$food['caption']);
+                $subtitle = $data[0];
+                $imageUrl = "https://mezzohotel.com/img/".$food["image"];
+                $btnText = str_replace("_" ," " , $food['type']);
+                $buttons[] = ButtonElement::title(ucwords(strtolower($btnText)))
+                            ->type('web_url')
+                            ->url($food["link"])
+                            ->ratio("full")
+                            ->messengerExtensions()
+                            ->fallbackUrl($food["link"])
+                            ->toArray();
+                if($i < sizeof($chunck) - 1){
+                    if($prev != $chunck[$i + 1]['caption']){
+                        $title = $data[1];
+                        $elements[] = GenericElement::title($title)
+                            ->imageUrl($imageUrl)
+                            ->subtitle($subtitle)
+                            ->buttons($buttons)
+                            ->toArray();
+                        $prev = $food['caption'];
+                        $buttons = null;
+                        echo $imageUrl.'<br />';
+                    }
+                }
+                else{
                     $title = $data[1];
                     $elements[] = GenericElement::title($title)
                         ->imageUrl($imageUrl)
                         ->subtitle($subtitle)
                         ->buttons($buttons)
                         ->toArray();
-                    $prev = $food['caption'];
-                    $buttons = null;
-                    echo $imageUrl.'<br />';
+                        echo $imageUrl.'<br />';
                 }
-            }
-            else{
-                $title = $data[1];
-                $elements[] = GenericElement::title($title)
-                    ->imageUrl($imageUrl)
-                    ->subtitle($subtitle)
-                    ->buttons($buttons)
-                    ->toArray();
-                    echo $imageUrl.'<br />';
-            }
-            $i++;
-            if (sizeof($elements) == $max) {
-                $response =  GenericTemplate::toArray($elements);
-                $this->bot->reply(json_encode($response) , false);
-                $elements = [];
-            }
-            
+                $i++;
+                // if (sizeof($elements) == $max) {
+                //     $response =  GenericTemplate::toArray($elements);
+                //     $this->bot->reply(json_encode($response) , false);
+                //     $elements = [];
+                // }
+                
         }
         $response =  GenericTemplate::toArray($elements);
         $this->bot->reply(json_encode($response) , false);
+    }
         
     }else{
         $this->bot->reply(["text"=>"There are no foods available at the moment."],false);

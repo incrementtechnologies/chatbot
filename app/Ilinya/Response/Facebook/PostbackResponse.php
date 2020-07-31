@@ -66,7 +66,8 @@ class PostbackResponse{
     public function persistentMenu(){
         $menus=  array(
             array("title"=>"FAQ" , "isWebview"=>false),
-            array("title"=>"CONCERN/INQUIRY" ,"isWebview"=>true,"url" => "https://mezzohotel.com/inquiry/other")
+            array("title"=>"FAQ List" , "isWebview"=>false),
+            array("title"=>"Convern/Inquiry" ,"isWebview"=>true,"url" => "https://mezzohotel.com/inquiry/other")
         );
         $actions =[];
         foreach ($menus as $menu) {
@@ -111,7 +112,7 @@ class PostbackResponse{
         $buttons =[];
         foreach ($menus as $menu) {
             $payload = preg_replace('/\s+/', '_', $menu["title"]);
-            $buttons[] = ButtonElement::title($menu["title"])
+            $buttons[] = ButtonElement::title(ucwords(strtolower( $menu['title'])))
             ->type('postback')
             ->payload(strtolower($payload).'@pCategorySelected')
             ->toArray();
@@ -124,12 +125,12 @@ class PostbackResponse{
         $title =  "Food and Beverage";
         $buttons=[];
         $menus= array( 
-            array( "title"=>"Banquet Packages") ,
+            array( "title"=>"Banquet") ,
             array( "title"=>"Cafe Mezzo"),
           );
           foreach ($menus as $menu) {
             $payload = preg_replace('/\s+/', '_', $menu["title"]);
-            $buttons[] = ButtonElement::title($menu["title"])
+            $buttons[] = ButtonElement::title(ucwords(strtolower( $menu['title'])))
             ->type('postback')
             ->payload(strtolower($payload).'@pCategorySelected')
             ->toArray();
@@ -150,7 +151,7 @@ class PostbackResponse{
         foreach ($menus as $menu) {
             $payload = preg_replace('/\s+/', '_', $menu["title"]);
             if ($menu["isWebview"]) {
-                $buttons[] = ButtonElement::title($menu['title'])
+                $buttons[] = ButtonElement::title(ucwords(strtolower( $menu['title'])))
                     ->type('web_url')
                     ->url($menu["url"])
                     ->ratio("full")
@@ -158,7 +159,7 @@ class PostbackResponse{
                     ->fallbackUrl($menu["url"])
                     ->toArray();
             } else {
-                $buttons[] = ButtonElement::title($menu["title"])
+                $buttons[] = ButtonElement::title(ucwords(strtolower( $menu['title'])))
                             ->type('postback')
                             ->payload('@pFaq')
                             ->toArray();

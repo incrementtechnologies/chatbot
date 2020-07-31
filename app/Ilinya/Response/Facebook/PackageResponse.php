@@ -8,7 +8,7 @@ use App\Ilinya\Webhook\Facebook\Messaging;
 use App\Ilinya\User;
 use App\Ilinya\Bot;
 use Illuminate\Http\Request;
-use App\Ilinya\Tracker;
+use App\Ilinya\BotTracker;
 use App\Ilinya\Http\Curl;
 /*
     @Template
@@ -52,7 +52,7 @@ class PackageResponse{
   private $web_url = "https://mezzohotel.com/inquiry/event";
   public function __construct(Messaging $messaging){
       $this->messaging = $messaging;
-      $this->tracker   = new Tracker($messaging);
+      $this->tracker   = new BotTracker($messaging);
       $this->bot       = new Bot($messaging);
       $this->curl = new Curl();
       $this->credentials = array(env('PACKAGE_URL'),"3");
@@ -66,17 +66,27 @@ class PackageResponse{
   public function packageMenu()
   {
     $this->user();
-    $title =  "Hi ".$this->user->getFirstName().", thank you for your interest in our Banquet Packages.Please choose the following options to get the information you need.";
+    $title =  "Hi ".$this->user->getFirstName().", thank you for your interest in our Banquet.Please choose the following options to get the information you need.";
     $menus= array( 
-      array("payload"=> "@pPackageInquiry", "title"=>"BANQUET INQUIRY" ,"web"=>true) ,
-      array("payload"=> "@pPackageSelected", "title"=>"BANQUET PACKAGES" ,"web"=>false)
+      array("payload"=>null, "title"=>"INQUIRY" ,"web"=>true) ,
+      array("payload"=> "@pPackageSelected", "title"=>"PACKAGES" ,"web"=>false)
     );
     $buttons =[];
     foreach ($menus as $menu) {
-        $buttons[] = ButtonElement::title($menu["title"])
-                        ->type('postback')
-                        ->payload($menu["payload"])
-                        ->toArray();
+        if ($menu["web"]) {
+            $buttons[] = ButtonElement::title(ucwords(strtolower($menu["title"])))
+            ->type('web_url')
+            ->url($this->web_url)
+            ->ratio("full")
+            ->messengerExtensions()
+            ->fallbackUrl($this->web_url)
+            ->toArray();
+        } else {
+            $buttons[] = ButtonElement::title(ucwords(strtolower($menu["title"])))
+            ->type('postback')
+            ->payload($menu["payload"])
+            ->toArray();
+        }
         
     }
     $response = ButtonTemplate::toArray($title,$buttons);
@@ -87,10 +97,12 @@ class PackageResponse{
       $buttons = [];
       $elements = [];
       $max  = 10; 
+      $partitions = $this->bot->partition($this->packages);
       if(sizeof($this->packages)>0){
-          $prev = $this->packages[0]['title'];
-          $i = 0; 
-          foreach ($this->packages as $package) {
+        foreach ($partitions as $chunck) {
+            $prev = $chunck[0]['title'];
+            $i = 0; 
+          foreach ($chunck as $package) {
               $imageUrl = $package['image'];
               $payload= preg_replace('/\s+/', '_', strtolower($package['title']));
               $buttons[] = ButtonElement::title(strtoupper('Inquire now'))
@@ -100,8 +112,8 @@ class PackageResponse{
                 ->messengerExtensions()
                 ->fallbackUrl($this->web_url)
                 ->toArray();
-              if($i < sizeof($this->packages) - 1){
-                  if($prev != $this->packages[$i + 1]['title']){
+              if($i < sizeof($chunck) - 1){
+                  if($prev != $chunck[$i + 1]['title']){
                       $title = $package['title'];
                       $elements[] = GenericElement::title($title)
                       ->imageUrl($imageUrl)
@@ -123,15 +135,15 @@ class PackageResponse{
                 echo $imageUrl.'<br />';
             }
             $i++;
-            if (sizeof($elements) == $max) {
-                $response =  GenericTemplate::toArray($elements);
-                $this->bot->reply(json_encode($response) , false);
-                $elements = [];
-            }
+            // if (sizeof($elements) == $max) {
+            //     $response =  GenericTemplate::toArray($elements);
+            //     $this->bot->reply(json_encode($response) , false);
+            //     $elements = [];
+            // }
         }
         $response =  GenericTemplate::toArray($elements);
         $this->bot->reply(json_encode($response) , false);
-        
+    }
     }else{
         $this->bot->reply(["text"=>"There are no packages available at the moment."],false);
         
@@ -140,7 +152,7 @@ class PackageResponse{
 
     public function packageInquiry(){
         $quickReplies =[];
-        for ($i=0; $i <sizeof($this->packages) ; $i++) {  
+        for ($i=0; $i < sizeof($this->packages) ; $i++) {  
             $payload = preg_replace('/\s+/', '_', $packages[$i]['title']);
             $quickReplies[] = QuickReplyElement::title($this->packages[$i]['title'])->contentType('text')->payload($payload.'@qInquirePackage');
         }

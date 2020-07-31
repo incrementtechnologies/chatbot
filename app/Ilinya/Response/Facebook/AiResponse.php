@@ -8,7 +8,7 @@ use App\Ilinya\Webhook\Facebook\Messaging;
 use App\Ilinya\User;
 use App\Ilinya\Bot;
 use Illuminate\Http\Request;
-use App\Ilinya\Tracker;
+use App\Ilinya\BotTracker;
 use App\Ilinya\Http\Curl;
 /*
     @Template
@@ -44,7 +44,7 @@ class AiResponse{
 
   public function __construct(Messaging $messaging){
       $this->messaging = $messaging;
-      $this->tracker   = new Tracker($messaging);
+      $this->tracker   = new BotTracker($messaging);
       $this->bot       = new Bot($messaging);
       $this->curl = new Curl();
   }

@@ -17,6 +17,7 @@ class IlinyaController extends APIController
 {
     protected $tracker;   
     public function hook(Request $request){
+        // return response("", 200);
         $entries = Entry::getEntries($request);
         foreach ($entries as $entry) {
             $messagings = $entry->getMessagings();
@@ -31,9 +32,8 @@ class IlinyaController extends APIController
                     }
                 }
             }
-        
-        return response("", 200);
         $this->tracker->remove();
+        return response("", 200);
     }
 
     private function insertLog($messaging){
@@ -56,7 +56,7 @@ class IlinyaController extends APIController
         ];
 
         if ($messaging->getType() =='postback') {
-            $data['message'] = $messaging->getPostback()->getPayload();
+            $data['message'] = $messaging->getPostback()->getTitle().$messaging->getPostback()->getPayload();
         }else{
             if ($messaging->getMessage()->getQuickReply()) {
                 # code...
@@ -115,7 +115,7 @@ class IlinyaController extends APIController
     }
 
     public function createImage(){
-        ImageGenerator::create();
+        ImageGenerator::create();               
     }
     
 

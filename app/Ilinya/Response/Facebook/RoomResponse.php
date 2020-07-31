@@ -71,21 +71,21 @@ class RoomResponse{
   }
   public function roomMenu(){
     $this->user();
-    $title ="Hi ".$this->user->getFirstName().", thank you for interest in our room rates. Please choose the following options to get the information you need.";
+    $title ="Hi ".$this->user->getFirstName().", thank you for interest in our rooms. Please choose the following options to get the information you need.";
     $menus= array( 
-      array("payload"=> "@pRoomMenuSelected", "title"=>"ROOM RATES" ,"web"=>false),
-      array("url"=> "https://mezzohotel.com", "title"=>"HOTEL FACILITIES" ,"web"=>true),
+      array("payload"=> "@pRoomMenuSelected", "title"=>"ROOMS" ,"web"=>false),
+      array("url"=> "https://mezzohotel.com/#gallery", "title"=>"HOTEL FACILITIES" ,"web"=>true),
       array("payload"=> "@pRoomMenuSelected", "title"=>"GROUP RESERVATIONS","web"=>false)
     );
     // 
     foreach ($menus as $menu) {
       if (!$menu['web']) {
-        $buttons[] = ButtonElement::title($menu["title"])
+        $buttons[] = ButtonElement::title(ucwords(strtolower($menu["title"])))
                   ->type('postback')
                   ->payload($menu["payload"])
                   ->toArray();
       } else {
-        $buttons[] = ButtonElement::title($menu["title"])
+        $buttons[] = ButtonElement::title(ucwords(strtolower($menu["title"])))
                   ->type('web_url')
                   ->url($menu["url"])
                   ->ratio("full")
@@ -112,67 +112,67 @@ class RoomResponse{
     return $response;
   }
   public function rooms($isRreserve){
-    $credentials = array(env('ROOMS_URL'),"9");
-    $categories = SheetController::getSheetContent($credentials); 
-    \Storage::put("request.json", json_encode($categories));
-
     $buttons = [];
     $elements = [];
     $length = sizeof($this->categories);
+    $partitions = $this->bot->partition($this->categories);
     $max = 10;
     if($length>0){
-        $prev = $this->categories[0]['title'];
-        $i = 0; 
-        foreach ($this->categories as $category) {
-             $subtitle = $isRreserve ? null: $category['price'];
-             $payload= preg_replace('/\s+/', '_', strtolower($category['title']));
-             $imgArray= explode(',' , $category['images = array']);
-             $imageUrl = "https://mezzohotel.com/img/".$imgArray[0];
-             if ($isRreserve!=true) {
-              $buttons[] = ButtonElement::title('BOOK NOW')
-                ->type('web_url')
-                ->url("https://mezzohotel.com/managebooking.php")
-                ->ratio("full")
-                ->messengerExtensions()
-                ->fallbackUrl("https://mezzohotel.com/managebooking.php")
+        foreach ($partitions as $chunck) {
+          $prev = $chunck[0]['title'];
+          $i = 0; 
+          foreach ($chunck as $category) {
+               $subtitle = $isRreserve ? null: $category['price'];
+               $payload= preg_replace('/\s+/', '_', strtolower($category['title']));
+               $imgArray= explode(',' , $category['images = array']);
+               $imageUrl = "https://mezzohotel.com/img/".$imgArray[0];
+               if ($isRreserve!=true) {
+                $buttons[] = ButtonElement::title(ucwords(strtolower("BOOK NOW")))
+                  ->type('web_url')
+                  ->url("https://mezzohotel.com/managebooking.php")
+                  ->ratio("full")
+                  ->messengerExtensions()
+                  ->fallbackUrl("https://mezzohotel.com/managebooking.php")
+                  ->toArray();
+               } else {
+                $buttons[] = ButtonElement::title(ucwords(strtolower('RESERVE')))
+                ->type('postback')
+                ->payload($payload."@pRoomInquiry")
                 ->toArray();
-             } else {
-              $buttons[] = ButtonElement::title('RESERVE')
-              ->type('postback')
-              ->payload($payload."@pRoomInquiry")
-              ->toArray();
-             } 
-            if($i < sizeof($this->categories) - 1){
-                if($prev != $this->categories[$i + 1]['title']){
-                    $title = $category['title'];
-                    $elements[] = GenericElement::title($title)
-                        ->imageUrl($imageUrl)
-                        ->subtitle(null)
-                        ->buttons($buttons)
-                        ->toArray();
-                    $prev = $category['title'];
-                    $buttons = null;
-                    echo $imageUrl.'<br />';
-                }
-            }
-            else{
-                $title = $category['title'];
-                $elements[] = GenericElement::title($title)
-                    ->imageUrl($imageUrl)
-                    ->subtitle($subtitle)
-                    ->buttons($buttons)
-                    ->toArray();
-                    echo $imageUrl.'<br />';
-            }
-            $i++;
-            if (sizeof($elements) == $max) {
-              $response =  GenericTemplate::toArray($elements);
-              $this->bot->reply($response , false);
-              $elements = [];
+               } 
+              if($i < sizeof($chunck) - 1){
+                  if($prev != $chunck[$i + 1]['title']){
+                      $title = $category['title'];
+                      $elements[] = GenericElement::title($title)
+                          ->imageUrl($imageUrl)
+                          ->subtitle(null)
+                          ->buttons($buttons)
+                          ->toArray();
+                      $prev = $category['title'];
+                      $buttons = null;
+                      echo $imageUrl.'<br />';
+                  }
+              }
+              else{
+                  $title = $category['title'];
+                  $elements[] = GenericElement::title($title)
+                      ->imageUrl($imageUrl)
+                      ->subtitle($subtitle)
+                      ->buttons($buttons)
+                      ->toArray();
+                      echo $imageUrl.'<br />';
+              }
+              $i++;
+            //   if (sizeof($elements) == $max) {
+            //     $response =  GenericTemplate::toArray($elements);
+            //     $this->bot->reply($response , false);
+            //     $elements = [];
+            // }
           }
+          $response =  GenericTemplate::toArray($elements);
+          $this->bot->reply($response , false);
         }
-        $response =  GenericTemplate::toArray($elements);
-        $this->bot->reply($response , false);
+       
     }else{
       $this->bot->reply(["text"=>"There are no rooms available at the moment."],false);
     }
@@ -180,6 +180,75 @@ class RoomResponse{
     // $response =  GenericTemplate::toArray($elements);
     // return json_encode($response);
 }
+//   public function rooms($isRreserve){
+//     $credentials = array(env('ROOMS_URL'),"9");
+//     $categories = SheetController::getSheetContent($credentials); 
+//     \Storage::put("request.json", json_encode($categories));
+
+//     $buttons = [];
+//     $elements = [];
+//     $length = sizeof($this->categories);
+//     $max = 10;
+//     if($length>0){
+//         $prev = $this->categories[0]['title'];
+//         $i = 0; 
+//         foreach ($this->categories as $category) {
+//              $subtitle = $isRreserve ? null: $category['price'];
+//              $payload= preg_replace('/\s+/', '_', strtolower($category['title']));
+//              $imgArray= explode(',' , $category['images = array']);
+//              $imageUrl = "https://mezzohotel.com/img/".$imgArray[0];
+//              if ($isRreserve!=true) {
+//               $buttons[] = ButtonElement::title('BOOK NOW')
+//                 ->type('web_url')
+//                 ->url("https://mezzohotel.com/managebooking.php")
+//                 ->ratio("full")
+//                 ->messengerExtensions()
+//                 ->fallbackUrl("https://mezzohotel.com/managebooking.php")
+//                 ->toArray();
+//              } else {
+//               $buttons[] = ButtonElement::title('RESERVE')
+//               ->type('postback')
+//               ->payload($payload."@pRoomInquiry")
+//               ->toArray();
+//              } 
+//             if($i < sizeof($this->categories) - 1){
+//                 if($prev != $this->categories[$i + 1]['title']){
+//                     $title = $category['title'];
+//                     $elements[] = GenericElement::title($title)
+//                         ->imageUrl($imageUrl)
+//                         ->subtitle(null)
+//                         ->buttons($buttons)
+//                         ->toArray();
+//                     $prev = $category['title'];
+//                     $buttons = null;
+//                     echo $imageUrl.'<br />';
+//                 }
+//             }
+//             else{
+//                 $title = $category['title'];
+//                 $elements[] = GenericElement::title($title)
+//                     ->imageUrl($imageUrl)
+//                     ->subtitle($subtitle)
+//                     ->buttons($buttons)
+//                     ->toArray();
+//                     echo $imageUrl.'<br />';
+//             }
+//             $i++;
+//             if (sizeof($elements) == $max) {
+//               $response =  GenericTemplate::toArray($elements);
+//               $this->bot->reply($response , false);
+//               $elements = [];
+//           }
+//         }
+//         $response =  GenericTemplate::toArray($elements);
+//         $this->bot->reply($response , false);
+//     }else{
+//       $this->bot->reply(["text"=>"There are no rooms available at the moment."],false);
+//     }
+    
+//     // $response =  GenericTemplate::toArray($elements);
+//     // return json_encode($response);
+// }
 public function roomReserveAgain(){
   $title =  "Thank you for your interest in Mezzo Hotel. Please wait for our personnel to respond to confirm your banquet inquiry. If you have anything to change with your inquiry please select the option to arrange banquet.";
    $buttons[] = ButtonElement::title("Reserve Room Again")
@@ -190,4 +259,3 @@ public function roomReserveAgain(){
   return $response;
 }
 }
-
