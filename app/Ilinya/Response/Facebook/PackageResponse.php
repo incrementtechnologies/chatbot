@@ -104,7 +104,7 @@ class PackageResponse{
           foreach ($chunck as $package) {
               $imageUrl = $package['image'];
               $payload= preg_replace('/\s+/', '_', strtolower($package['title']));
-              $buttons[] = ButtonElement::title(strtoupper('Inquire now'))
+              $buttons[] = ButtonElement::title(strtolower('Inquire now'))
                 ->type("web_url")
                 ->url($this->web_url)
                 ->ratio("full")
