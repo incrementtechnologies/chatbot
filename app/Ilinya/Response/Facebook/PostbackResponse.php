@@ -106,7 +106,7 @@ class PostbackResponse{
         $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
         $menus= array(
             array("title"=>"Rooms"),
-            array("title"=>"Food and Beverage"),
+            array("title"=>"Food & Beverage"),
             array("title"=>"Inquiries")
         );
         $buttons =[];
@@ -118,11 +118,10 @@ class PostbackResponse{
             ->toArray();
         }
         $response = ButtonTemplate::toArray($title,$buttons);
-
         return $response;
     }
     public function foodAndBeverageMenu(){
-        $title =  "Food and Beverage";
+        $title =  "Food & Beverage";
         $buttons=[];
         $menus= array( 
             array( "title"=>"Banquet") ,

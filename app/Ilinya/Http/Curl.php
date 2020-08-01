@@ -23,7 +23,7 @@ class Curl{
       $url = 'https://graph.facebook.com/v2.6/me/messages';
       $curl = new Curl();
       $curl->post($url,$parameter);
-      return response("", 200);  
+      // return response("", 200);  
     }
 
     public static function started(){
@@ -52,7 +52,7 @@ class Curl{
                    [
                       "type"=> "postback",
                       "title"=> "Food & Beverage",
-                      "payload"=> "Food and Beverage@pCategorySelected"
+                      "payload"=> "food_&_beverage@pCategorySelected"
                    ],
                     [
                       "type"=> "postback",
@@ -100,7 +100,7 @@ class Curl{
       curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
       curl_setopt($request, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
       curl_setopt($request, CURLINFO_HEADER_OUT, true);
-      curl_setopt($request, CURLOPT_SSL_VERIFYPEER, true);
+      curl_setopt($request, CURLOPT_SSL_VERIFYPEER, true);  
       return $request;  
     }
 

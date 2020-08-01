@@ -140,7 +140,7 @@ class DialogResponse    {
             $buttons =[];
             foreach ($menus as $menu) {
                 # code...
-                $buttons[] = ButtonElement::title(ucwords(strtolower($menu["title"])))
+                $buttons[] = ButtonElement::title(ucwords(c($menu["title"])))
                   ->type('postback')
                   ->payload("@pCategorySelected")
                   ->toArray();

@@ -66,7 +66,7 @@ class PackageResponse{
   public function packageMenu()
   {
     $this->user();
-    $title =  "Hi ".$this->user->getFirstName().", thank you for your interest in our Banquet.Please choose the following options to get the information you need.";
+    $title =  "Hi ".$this->user->getFirstName().", thank you for your interest in our Banquet. Please choose the following options to get the information you need.";
     $menus= array( 
       array("payload"=>null, "title"=>"INQUIRY" ,"web"=>true) ,
       array("payload"=> "@pPackageSelected", "title"=>"PACKAGES" ,"web"=>false)

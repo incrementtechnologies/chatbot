@@ -40,7 +40,7 @@ class Bot{
         $max = 10;
         $len = sizeof($arr);
         $partition = 1;
-        if (!$len > $max) {
+        if ($len > $max) {
            $partition =  $len % $max != 0 ? floor($len/$max)+1 : floor($len/$max);
         }
         return $partition ;

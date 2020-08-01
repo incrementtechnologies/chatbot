@@ -57,7 +57,6 @@ class FoodResponse{
       $this->curl = new Curl();
       $this->credentials = array(env('FOOD_URL'),"4");
       $this->foods = SheetController::getSheetContent($this->credentials); 
-
   }
   
   public function user(){
@@ -69,9 +68,11 @@ class FoodResponse{
     $elements = [];
     $max=10;
     if(sizeof($this->foods)>0){
-        $partitions = $this->bot->partition($this->packages);
+        $partitions = $this->bot->partition($this->foods);
+        Storage::put("size.txt", sizeof($partitions));
         foreach ($partitions as $chunck) {
-            $prev = $chunck[0]['caption'];
+            Storage::put($chunck[0]['caption'].".json",json_encode($chunck));
+            $prev = $chunck[0]['type'];
             $i = 0; 
             foreach ($chunck as $food) {
                 $data = explode(":",$food['caption']);
@@ -116,13 +117,14 @@ class FoodResponse{
                 
         }
         $response =  GenericTemplate::toArray($elements);
-        $this->bot->reply(json_encode($response) , false);
+        $this->bot->reply($response , false);
+        $buttons = [];
+        $elements = [];
     }
         
     }else{
-        $this->bot->reply(["text"=>"There are no foods available at the moment."],false);
-        
-      }
+        $this->bot->reply(["text"=>"There are no foods available at the moment."],false);        
+    }
    
     // return json_encode($response);
 }

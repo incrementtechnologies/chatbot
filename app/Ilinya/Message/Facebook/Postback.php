@@ -84,7 +84,7 @@ class Postback{
                         $this->bot->reply($this->room->roomMenuStart(), false);
                         $this->bot->reply($this->room->roomMenu(), false);
                         break;
-              case strtolower('Food and Beverage'):
+              case strtolower('Food & Beverage'):
                         $this->bot->reply($this->post->foodAndBeverageMenu(), false);
                         break;
               case strtolower('inquiries'):
@@ -94,7 +94,8 @@ class Postback{
                 $this->bot->reply($this->package->packageMenu(), false);
                 break;
               case strtolower('CAFE MEZZO'):
-                $this->bot->reply($this->food->foods(), false);
+               \Log::info("case enter  : ".strtolower($custom['parameter']));
+                $this->food->foods();
                 break;
                 case strtolower('ASK ANOTHER QUESTION'):
                   $this->tracker->delete();
@@ -102,9 +103,7 @@ class Postback{
                   break;
                 case strtolower('GO BACK TO MENU'):
                   $this->tracker->delete();
-                  $this->bot->reply($this->post->banner(), false);
                   $this->bot->reply($this->post->start(), false);
-                  $this->bot->reply($this->post->inquiry(), false);
                   break;
                 case strtolower('CONCERN/INQUIRY'):
                   $this->tracker->delete();
