@@ -105,7 +105,7 @@ class CategoryResponse{
              if ($isRreserve!=true) {
               $buttons[] = ButtonElement::title('BOOK NOW')
               ->type('web_url')
-              ->url("https://mezzohotel.com/managebooking.php")
+              ->url("https://mezzohotel.com/inquiry/room")
               ->toArray();
              } else {
               $buttons[] = ButtonElement::title('RESERVE')
@@ -174,7 +174,7 @@ class CategoryResponse{
              $payload= preg_replace('/\s+/', '_', strtolower($package['title']));
              $buttons[] = ButtonElement::title(strtoupper('Inquire now'))
                 ->type('web_url')
-                ->url('https://mezzohotel.com/managebooking.php ')
+                ->url('https://mezzohotel.com/inquiry/room')
                 ->toArray();
             if($i < sizeof($packages) - 1){
                 if($prev != $packages[$i + 1]['title']){
