@@ -129,10 +129,10 @@ class RoomResponse{
                if ($isRreserve!=true) {
                 $buttons[] = ButtonElement::title(ucwords(strtolower("BOOK NOW")))
                   ->type('web_url')
-                  ->url("https://mezzohotel.com/managebooking.php")
+                  ->url("https://mezzohotel.com/inquiry/room")
                   ->ratio("full")
                   ->messengerExtensions()
-                  ->fallbackUrl("https://mezzohotel.com/managebooking.php")
+                  ->fallbackUrl("https://mezzohotel.com/inquiry/room")
                   ->toArray();
                } else {
                 $buttons[] = ButtonElement::title(ucwords(strtolower('RESERVE')))
