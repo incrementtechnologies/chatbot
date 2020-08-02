@@ -93,12 +93,13 @@ class PackageResponse{
   }
 
   public function packages(){
-      $buttons = [];
-      $elements = [];
+     
       $max  = 10; 
       $partitions = $this->bot->partition($this->packages);
       if(sizeof($this->packages)>0){
         foreach ($partitions as $chunck) {
+            $buttons = [];
+            $elements = [];
             $prev = $chunck[0]['title'];
             $i = 0; 
           foreach ($chunck as $package) {

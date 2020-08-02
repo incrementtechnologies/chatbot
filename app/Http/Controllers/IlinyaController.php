@@ -18,7 +18,6 @@ class IlinyaController extends APIController
     protected $tracker;   
     public function hook(Request $request){
         // return response("", 200);
-        \Log::info( $request->method());
         $entries = Entry::getEntries($request);
         foreach ($entries as $entry) {
             $messagings = $entry->getMessagings();

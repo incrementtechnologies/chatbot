@@ -70,7 +70,6 @@ class FoodResponse{
         $partitions = $this->bot->partition($this->foods);
         Storage::put("size.txt", sizeof($partitions));
         foreach ($partitions as $chunck) {
-            Storage::put($chunck[0]['caption'].".json",json_encode($chunck));
             $prev = $chunck[0]['type'];
             $i = 0; 
             $buttons = [];

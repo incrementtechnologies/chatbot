@@ -112,13 +112,14 @@ class RoomResponse{
     return $response;
   }
   public function rooms($isRreserve){
-    $buttons = [];
-    $elements = [];
+   
     $length = sizeof($this->categories);
     $partitions = $this->bot->partition($this->categories);
     $max = 10;
     if($length>0){
         foreach ($partitions as $chunck) {
+          $buttons = [];
+          $elements = [];
           $prev = $chunck[0]['title'];
           $i = 0; 
           foreach ($chunck as $category) {
