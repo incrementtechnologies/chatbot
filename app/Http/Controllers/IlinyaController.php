@@ -18,6 +18,7 @@ class IlinyaController extends APIController
     protected $tracker;   
     public function hook(Request $request){
         // return response("", 200);
+        \Log::info( $request->method());
         $entries = Entry::getEntries($request);
         foreach ($entries as $entry) {
             $messagings = $entry->getMessagings();
@@ -25,14 +26,14 @@ class IlinyaController extends APIController
             foreach ($messagings as $messaging) {
                 $this->insertLog($messaging);
                 $this->tracker = new BotTracker($messaging);
-                    if (! $this->checkDuplicate($messaging)) {
+                    if (!$this->checkDuplicate($messaging)) {
                         dispatch(new BotHandler($messaging));
                     } else {
                         return response("", 200);
                     }
                 }
             }
-        $this->tracker->remove();
+        // $this->tracker->remove();
         return response("", 200);
     }
 

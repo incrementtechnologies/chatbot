@@ -94,7 +94,6 @@ class Postback{
                 $this->bot->reply($this->package->packageMenu(), false);
                 break;
               case strtolower('CAFE MEZZO'):
-               \Log::info("case enter  : ".strtolower($custom['parameter']));
                 $this->food->foods();
                 break;
                 case strtolower('ASK ANOTHER QUESTION'):

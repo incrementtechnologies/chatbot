@@ -84,6 +84,7 @@ class DialogResponse    {
     $this->tracker->retrieve();
     $reply = $this->tracker->getInput();
     $this->paginateQuestion($page , $reply);
+    $this->tracker->delete();
   }
 
   public function paginateQuestion($page ,$reply){
@@ -140,7 +141,7 @@ class DialogResponse    {
             $buttons =[];
             foreach ($menus as $menu) {
                 # code...
-                $buttons[] = ButtonElement::title(ucwords(c($menu["title"])))
+                $buttons[] = ButtonElement::title(ucwords(strtolower($menu["title"])))
                   ->type('postback')
                   ->payload("@pCategorySelected")
                   ->toArray();
@@ -148,10 +149,8 @@ class DialogResponse    {
              $response = ButtonTemplate::toArray($title,$buttons);
              $this->bot->reply($response,false);
              $this->FaqList();
-
+            }
         }
-    }
-
   }
 
    public function FaqList()

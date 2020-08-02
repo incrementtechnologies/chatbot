@@ -24,7 +24,7 @@ class Bot{
         $message = ($flag == true)?["text" => $data] : $data;
         $recipientId = $this->messaging->getSenderId();
         Curl::send($recipientId, $message);
-        $this->tracker->remove();
+        return response("", 200);
     }
 
     public static function notify($recipientId, $message){

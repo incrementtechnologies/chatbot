@@ -64,8 +64,7 @@ class FoodResponse{
     $this->user = new User($this->messaging->getSenderId(), $user['first_name'], $user['last_name']);
   }
   public function foods(){
-    $buttons = [];
-    $elements = [];
+    
     $max=10;
     if(sizeof($this->foods)>0){
         $partitions = $this->bot->partition($this->foods);
@@ -74,6 +73,8 @@ class FoodResponse{
             Storage::put($chunck[0]['caption'].".json",json_encode($chunck));
             $prev = $chunck[0]['type'];
             $i = 0; 
+            $buttons = [];
+            $elements = [];
             foreach ($chunck as $food) {
                 $data = explode(":",$food['caption']);
                 $subtitle = $data[0];
@@ -118,8 +119,7 @@ class FoodResponse{
         }
         $response =  GenericTemplate::toArray($elements);
         $this->bot->reply($response , false);
-        $buttons = [];
-        $elements = [];
+       
     }
         
     }else{

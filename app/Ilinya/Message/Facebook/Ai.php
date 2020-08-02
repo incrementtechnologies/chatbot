@@ -65,6 +65,7 @@ class Ai{
     $track_flag = $this->tracker->getStage();
     if ($track_flag!=null) {
         $this->bot->reply($this->dialog->manage($reply) , false);
+        
     } else {
         $this->tracker->delete();
         if(strpos($reply, 'hi') !== false || strpos($reply, 'hello') !== false ||strpos($reply, 'help') !== false || strpos($reply, 'hola') !== false){
