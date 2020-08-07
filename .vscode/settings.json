@@ -1,7 +1,0 @@
-{
-    "phpfmt.php_bin": "php" ,
-    "editor.formatOnSave": true,
-    "phpfmt.cakephp": true,
-    "phpfmt.detect_indent": true,
-    "phpfmt.enable_auto_align": true
-}
