@@ -1,0 +1,18 @@
+<VirtualHost *:443>
+        DocumentRoot /var/www/chatbot
+        ServerName ai.bookingbot.asia
+        SSLEngine on
+        SSLCertificateFile /etc/ssl/private/bookingbot/bookingbot_asia.crt
+        SSLCertificateKeyFile /etc/ssl/private/bookingbot/bookingbot.asia.key
+        SSLCertificateChainFile /etc/ssl/private/bookingbot/My_CA_Bundle.ca-bundle
+        <Directory /var/www/chabot>
+                AllowOverride All
+        </Directory>
+
+        <Files ~ "\.(cgi|shtml|phtml|php3?)$">
+                SSLOptions +StdEnvVars
+        </Files>
+        <Directory "/var/www/cgi-bin">
+                SSLOptions +StdEnvVars
+        </Directory>
+</VirtualHost>
