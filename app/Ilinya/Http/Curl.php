@@ -27,12 +27,12 @@ class Curl{
       // return response("", 200);  
     }
 
-    public static function sendOnTyping($recipientId, $action = null){
+    public function sendOnTyping($recipientId){
       $parameter = [
           "recipient" => [
               "id" => $recipientId
           ],
-          "sender_action" => $action ? $action : 'typing_on'
+          "sender_action" => 'typing_on'
       ];
       $url = 'https://graph.facebook.com/v2.6/me/messages';
       $curl = new Curl();

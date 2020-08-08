@@ -26,10 +26,8 @@ class IlinyaController extends APIController
                 $this->insertLog($messaging);
                 $this->tracker = new BotTracker($messaging);
                     if (!$this->checkDuplicate($messaging)) {
-                        Curl::sendOnTypingOn($messaging->getSenderId());
                         dispatch(new BotHandler($messaging));
                     } else {
-                        Curl::sendOnTypingOn($messaging->getSenderId(), 'typing_off');
                         return response("", 200);
                     }
                 }
