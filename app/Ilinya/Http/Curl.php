@@ -22,7 +22,7 @@ class Curl{
       ];
       $url = 'https://graph.facebook.com/v2.6/me/messages';
       $curl = new Curl();
-      $curl->sendOnTypingoff($recipientId);
+      // $curl->sendOnTypingoff($recipientId);
       $curl->post($url,$parameter);
       // return response("", 200);  
     }
@@ -47,7 +47,6 @@ class Curl{
           "sender_action" => 'typing_off'
       ];
       $url = 'https://graph.facebook.com/v2.6/me/messages';
-      $curl = new Curl();
       $curl->post($url,$parameter);
     }
 
