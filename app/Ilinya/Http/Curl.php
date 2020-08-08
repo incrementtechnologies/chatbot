@@ -22,32 +22,8 @@ class Curl{
       ];
       $url = 'https://graph.facebook.com/v2.6/me/messages';
       $curl = new Curl();
-      // $curl->sendOnTypingoff($recipientId);
       $curl->post($url,$parameter);
       // return response("", 200);  
-    }
-
-    public function sendOnTyping($recipientId){
-      $parameter = [
-          "recipient" => [
-              "id" => $recipientId
-          ],
-          "sender_action" => 'typing_on'
-      ];
-      $url = 'https://graph.facebook.com/v2.6/me/messages';
-      $curl = new Curl();
-      $curl->post($url,$parameter);
-    }
-
-    public function sendOnTypingoff($recipientId){
-      $parameter = [
-          "recipient" => [
-              "id" => $recipientId
-          ],
-          "sender_action" => 'typing_off'
-      ];
-      $url = 'https://graph.facebook.com/v2.6/me/messages';
-      $curl->post($url,$parameter);
     }
 
     public static function started(){
