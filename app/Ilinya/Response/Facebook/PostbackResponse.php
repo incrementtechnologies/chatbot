@@ -67,7 +67,7 @@ class PostbackResponse{
         $menus=  array(
             array("title"=>"FAQ" , "isWebview"=>false),
             array("title"=>"FAQ List" , "isWebview"=>false),
-            array("title"=>"Convern/Inquiry" ,"isWebview"=>true,"url" => "https://mezzohotel.com/inquiry/other")
+            array("title"=>"Inquiry" ,"isWebview"=>true,"url" => "https://mezzohotel.com/inquiry/other")
         );
         $actions =[];
         foreach ($menus as $menu) {
@@ -143,7 +143,7 @@ class PostbackResponse{
         $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
         $menus= array(
             array("title"=>"FAQ" , "isWebview"=>false),
-            array("title"=>"CONCERN/INQUIRY" ,"isWebview"=>true,
+            array("title"=>"Inquiry" ,"isWebview"=>true,
             "url" => "https://mezzohotel.com/inquiry/other"),
         );
         $buttons =[];
