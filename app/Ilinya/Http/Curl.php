@@ -22,7 +22,7 @@ class Curl{
       ];
       $url = 'https://graph.facebook.com/v2.6/me/messages';
       $curl = new Curl();
-      $this->sendOnTypingoff($recipientId);
+      $curl->sendOnTypingoff($recipientId);
       $curl->post($url,$parameter);
       // return response("", 200);  
     }
