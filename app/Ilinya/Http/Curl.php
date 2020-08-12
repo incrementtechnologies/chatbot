@@ -26,6 +26,19 @@ class Curl{
       // return response("", 200);  
     }
 
+    public static function typing($recipientId, $action){
+      $parameter = [
+          "recipient" => [
+              "id" => $recipientId
+          ],
+          "sender_action": $action
+      ];
+      $url = 'https://graph.facebook.com/v2.6/me/messages';
+      $curl = new Curl();
+      $curl->post($url,$parameter);
+      // return response("", 200);  
+    }
+
     public static function started(){
       $body = [
         "get_started" => [
