@@ -31,7 +31,7 @@ class Curl{
           "recipient" => [
               "id" => $recipientId
           ],
-          "sender_action": $action
+          "sender_action" => $action
       ];
       $url = 'https://graph.facebook.com/v2.6/me/messages';
       $curl = new Curl();

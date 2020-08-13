@@ -94,60 +94,60 @@ class PackageResponse{
 
   public function packages(){
      
-      $max  = 10; 
-      $partitions = $this->bot->partition($this->packages);
-      if(sizeof($this->packages)>0){
-        foreach ($partitions as $chunck) {
-            $buttons = [];
-            $elements = [];
-            $prev = $chunck[0]['title'];
-            $i = 0; 
-          foreach ($chunck as $package) {
-              $imageUrl = $package['image'];
-              $payload= preg_replace('/\s+/', '_', strtolower($package['title']));
-              $buttons[] = ButtonElement::title(strtolower('Inquire now'))
-                ->type("web_url")
-                ->url($this->web_url)
-                ->ratio("full")
-                ->messengerExtensions()
-                ->fallbackUrl($this->web_url)
-                ->toArray();
-              if($i < sizeof($chunck) - 1){
-                  if($prev != $chunck[$i + 1]['title']){
-                      $title = $package['title'];
-                      $elements[] = GenericElement::title($title)
-                      ->imageUrl($imageUrl)
-                      ->subtitle(null)
-                      ->buttons($buttons)
-                      ->toArray();
-                      $prev = $package['title'];
-                      $buttons = null;
-                      echo $imageUrl.'<br />';
-                    }
-                }
-            else{
-                $title = $package['title'];
-                $elements[] = GenericElement::title($title)
-                ->imageUrl($imageUrl)
-                ->subtitle(null)
-                ->buttons($buttons)
-                ->toArray();
-                echo $imageUrl.'<br />';
-            }
-            $i++;
-            // if (sizeof($elements) == $max) {
-            //     $response =  GenericTemplate::toArray($elements);
-            //     $this->bot->reply(json_encode($response) , false);
-            //     $elements = [];
-            // }
-        }
-        $response =  GenericTemplate::toArray($elements);
-        $this->bot->reply(json_encode($response) , false);
-    }
-    }else{
-        $this->bot->reply(["text"=>"There are no packages available at the moment."],false);
-        
+    $max  = 10; 
+    $partitions = $this->bot->partition($this->packages);
+    if(sizeof($this->packages)>0){
+      foreach ($partitions as $chunck) {
+          $buttons = [];
+          $elements = [];
+          $prev = $chunck[0]['types'];
+          $i = 0; 
+        foreach ($chunck as $package) {
+            $imageUrl = "https://mezzohotel.com/img/".$package['images'];
+            $payload= preg_replace('/\s+/', '_', strtolower($package['types']));
+            $buttons[] = ButtonElement::title(strtolower('Inquire now'))
+              ->type("web_url")
+              ->url($this->web_url)
+              ->ratio("full")
+              ->messengerExtensions()
+              ->fallbackUrl($this->web_url)
+              ->toArray();
+            if($i < sizeof($chunck) - 1){
+                if($prev != $chunck[$i + 1]['types']){
+                    $title = $package['types'];
+                    $elements[] = GenericElement::title($title)
+                    ->imageUrl($imageUrl)
+                    ->subtitle(null)
+                    ->buttons($buttons)
+                    ->toArray();
+                    $prev = $package['types'];
+                    $buttons = null;
+                    echo $imageUrl.'<br />';
+                  }
+              }
+          else{
+              $title = $package['types'];
+              $elements[] = GenericElement::title($title)
+              ->imageUrl($imageUrl)
+              ->subtitle($package["description"])
+              ->buttons($buttons)
+              ->toArray();
+              echo $imageUrl.'<br />';
+          }
+          $i++;
+          // if (sizeof($elements) == $max) {
+          //     $response =  GenericTemplate::toArray($elements);
+          //     $this->bot->reply(json_encode($response) , false);
+          //     $elements = [];
+          // }
       }
+      $response =  GenericTemplate::toArray($elements);
+      $this->bot->reply(json_encode($response) , false);
+  }
+  }else{
+      $this->bot->reply(["text"=>"There are no packages available at the moment."],false);
+      
+    }
 }
 
     public function packageInquiry(){
