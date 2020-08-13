@@ -24,8 +24,11 @@ class IlinyaController extends APIController
             $temp_messagings = [];
             foreach ($messagings as $messaging) {
                 $this->insertLog($messaging);
+                $recepientId = $messaging->getSenderId();
+                Curl::typing($recepientId , 'mark_seen');
                 $this->tracker = new BotTracker($messaging);
-                    if (!$this->checkDuplicate($messaging)) {
+                if (!$this->checkDuplicate($messaging)) {
+                        Curl::typing($recepientId , 'typing_on');
                         dispatch(new BotHandler($messaging));
                     } else {
                         return response("", 200);

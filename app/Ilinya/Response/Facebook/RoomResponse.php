@@ -75,7 +75,7 @@ class RoomResponse{
     $menus= array( 
       array("payload"=> "@pRoomMenuSelected", "title"=>"ROOMS" ,"web"=>false),
       array("url"=> "https://mezzohotel.com/#gallery", "title"=>"HOTEL FACILITIES" ,"web"=>true),
-      array("payload"=> "@pRoomMenuSelected", "title"=>"GROUP RESERVATIONS","web"=>false)
+      array("url"=> "https://mezzohotel.com/inquiry/room", "title"=>"GROUP RESERVATIONS","web"=>true)
     );
     // 
     foreach ($menus as $menu) {
