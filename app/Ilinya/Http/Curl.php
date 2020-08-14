@@ -64,7 +64,7 @@ class Curl{
                   ],
                    [
                       "type"=> "postback",
-                      "title"=> "Food & Beverage",
+                      "title"=> "Restaurant & Events",
                       "payload"=> "food_&_beverage@pCategorySelected"
                    ],
                     [
