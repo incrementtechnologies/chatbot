@@ -88,6 +88,9 @@ class Postback
                         $this->bot->reply($this->room->roomMenuStart(), false);
                         $this->bot->reply($this->room->roomMenu(), false);
                         break;
+                    case strtolower('food_&_beverage') :
+                        $this->bot->reply($this->post->foodAndBeverageMenu(), false);
+                        break;
                     case strtolower('food & beverage') :
                         $this->bot->reply($this->post->foodAndBeverageMenu(), false);
                         break;
