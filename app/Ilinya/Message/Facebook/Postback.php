@@ -82,22 +82,25 @@ class Postback
                 break;
             case $this->code->pCategorySelected:
                 $this->tracker->delete();
-                switch (strtolower($custom['parameter'])) {
+                $payload = trim(strtolower($custom['parameter']));
+                switch ($payload) {
                     case 'rooms':
                         $this->bot->reply($this->room->roomMenuStart(), false);
                         $this->bot->reply($this->room->roomMenu(), false);
                         break;
-                    case strtolower('Food & Beverage') || strtolower('restaurants & events'):
+                    case strtolower('food & beverage') :
                         $this->bot->reply($this->post->foodAndBeverageMenu(), false);
                         break;
-
+                    case  strtolower('restaurants & events'):
+                        $this->bot->reply($this->post->foodAndBeverageMenu(), false);
+                        break;
                     case strtolower('inquiries'):
                         $this->bot->reply($this->post->inquiry(), false);
                         break;
                     case strtolower('BANQUET'):
                         $this->bot->reply($this->package->packageMenu(), false);
                         break;
-                    case strtolower('CAFE MEZZO'):
+                    case strtolower('cafe mezzo'):
                         $this->food->foods();
                         break;
                     case strtolower('ASK ANOTHER QUESTION'):
@@ -113,7 +116,7 @@ class Postback
                         $this->bot->reply($this->package->concerns($custom['parameter']), false);
                         break;
                     default:
-                        return '';
+                        return response("", 200);
                         break;
                 }
                 break;

@@ -31,7 +31,6 @@ class IlinyaController extends APIController
                 if (!$this->checkDuplicate($messaging)) {
                     Curl::typing($recepientId, 'typing_on');
                     dispatch(new BotHandler($messaging));
-                    Curl::typing($recepientId, "typing_off");
                 } else {
                     return response("", 200);
                 }
@@ -39,7 +38,7 @@ class IlinyaController extends APIController
             }
         }
         // $this->tracker->remove();
-        // return response("", 200);
+        return response("", 200);
     }
 
     private function checkDuplicate($messaging)
@@ -63,7 +62,6 @@ class IlinyaController extends APIController
             }
         }
         $result = Logs::where($data)->get();
-        \Log::info('results : '. sizeof($result));
         if (sizeof($result) > 0) {
             return true;
         } else {
@@ -71,6 +69,7 @@ class IlinyaController extends APIController
                 [
                     "userID" => $messaging->getSenderId(),
                     "recepientID" => $messaging->getRecipientId(),
+                    "type" => $messaging->getType(),
                 ],
                 $data
             );

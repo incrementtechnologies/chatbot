@@ -67,10 +67,9 @@ class Ai
         $track_flag = $this->tracker->getStage();
         if ($track_flag != null) {
             $this->bot->reply($this->dialog->manage($reply), false);
-
         } else {
             $this->tracker->delete();
-            if (strpos($reply, 'hi') !== false || strpos($reply, 'hello') !== false || strpos($reply, 'help') !== false || strpos($reply, 'hola') !== false) {
+            if (strpos($reply, 'hi') !== false || strpos($reply, 'hello') !== false || strpos($reply, 'help') !== false || strpos($reply, 'hola') !== false || $reply =="?") {
                 $this->bot->reply($this->post->start(), false);
             } else if (strpos($reply, 'thank you') !== false) {
                 $this->bot->reply($this->aiResponse->thankYou(), false);
@@ -86,6 +85,9 @@ class Ai
                 // $this->bot->reply($this->post->start(), false);
                 // $this->bot->reply($this->post->inquiry(), false);
                 // $this->tracker->delete();
+                if (trim($reply[-1]) == "?") {
+                    $reply = substr_replace(trim($reply), "", -1);
+                }
                 $this->tracker->insert(1, $reply);
                 $this->dialog->paginateQuestion(1, $reply);
                 $this->tracker->delete();

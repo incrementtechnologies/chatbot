@@ -25,6 +25,7 @@ class Bot
         $message = ($flag == true) ? ["text" => $data] : $data;
         $recipientId = $this->messaging->getSenderId();
         Curl::send($recipientId, $message);
+        Curl::typing($recipientId, "typing_off");
         // return response("", 200);
     }
 

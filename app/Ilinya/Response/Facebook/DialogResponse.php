@@ -113,8 +113,6 @@ class DialogResponse
                 $message = "Hi  these are the FAQ's related to your question.\n\n";
                 $this->bot->reply(["text" => $message], false);
             }
-            \Log::notice("offset  : ".$offset < sizeof($result));
-            \Log::notice("offset  : ".$offset ." length : ". sizeof($result));
             for ($i = $index; $i < $offset; $i++) {
                 $message = ($i + 1) . ". " . $result[$i]['question'] . "\n\n" . $result[$i]['answer'];
                 $this->bot->reply(["text" => $message], false);
@@ -134,21 +132,21 @@ class DialogResponse
                 $this->bot->reply($response, false);
                 // $this->FaqList();
             } else {
-                $title = "You have reached the bottom of the results. What do you want to do next?";
-                $menus = array(
-                    array("title" => "Ask another question"),
-                    array("title" => "Go back to menu"),
-                );
-                $buttons = [];
-                foreach ($menus as $menu) {
-                    # code...
-                    $buttons[] = ButtonElement::title(ucwords(strtolower($menu["title"])))
-                        ->type('postback')
-                        ->payload("@pCategorySelected")
-                        ->toArray();
-                }
-                $response = ButtonTemplate::toArray($title, $buttons);
-                $this->bot->reply($response, false);
+                // $title = "You have reached the bottom of the results. What do you want to do next?";
+                // $menus = array(
+                //     array("title" => "Ask another question"),
+                //     array("title" => "Go back to menu"),
+                // );
+                // $buttons = [];
+                // foreach ($menus as $menu) {
+                //     # code...
+                //     $buttons[] = ButtonElement::title(ucwords(strtolower($menu["title"])))
+                //         ->type('postback')
+                //         ->payload("@pCategorySelected")
+                //         ->toArray();
+                // }
+                // $response = ButtonTemplate::toArray($title, $buttons);
+                // $this->bot->reply($response, false);
                 $this->FaqList();
             }
         }
