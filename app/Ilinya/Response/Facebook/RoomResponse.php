@@ -66,9 +66,12 @@ class RoomResponse{
   public function roomMenuStart()
   {
     $this->user();;
-    $title =  "Greetings from Mezzo! \n\nYou can also call our Reservations at 0906 423 1579 for booking inquiries and room availability.\n\n#anewdimensionofluxury";    
+    $title =  "Greetings from Mezzo Hotel! \n\nFor urgent inquiries, you may call us at 032 231 0777 or 0906 423 1579.\n\n#anewdimensionofluxury";    
     return ["text" => $title];
   }
+
+
+#anewdimensionofluxury
   public function roomMenu(){
     $this->user();
     $title ="Hi ".$this->user->getFirstName().", thank you for interest in our rooms. Please choose the following options to get the information you need.";

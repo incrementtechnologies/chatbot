@@ -13,7 +13,7 @@ class Attachments{
       $this->type = $type;
     }
 
-    public static function manage(){
+    public  function manage(){
       switch ($this->type) {
         case $this->LOCATION:
           $this->location();

@@ -61,7 +61,6 @@ class MessageHandler{
     $this->currentCode = $this->code->getCode($this->custom);
     $this->trackerFlag = $this->response['tracker_flag'];
     $type = $this->messaging->getType();
-    \Log::info("New ".$type." received");
     switch ($type){
       case 'message':
            $this->message();

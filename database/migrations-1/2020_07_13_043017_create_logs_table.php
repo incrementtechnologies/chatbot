@@ -19,7 +19,7 @@ class CreateLogsTable extends Migration
             $table->string('recepientID');
             $table->string('message');
             $table->string('type');
-            $table->string('msgID')->nullable();
+            $table->string('replied');
             $table->timestamps();
         });
     }

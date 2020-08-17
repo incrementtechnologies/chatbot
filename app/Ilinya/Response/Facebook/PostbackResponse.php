@@ -40,7 +40,7 @@ use App\Ilinya\API\Controller;
 
 
 class PostbackResponse{
-    public  $ERROR            = "I'm sorry but I can't do what you want me to do :'(";
+    public  $ERROR = "I'm sorry but I can't do what you want me to do :'(";
     private $user;
     private $messaging;
     private $curl;
@@ -101,7 +101,7 @@ class PostbackResponse{
     }
     public function start(){
         $this->user();
-        $title =  "Such a great day to get in touch with you, ".$this->user->getFirstName().". To better a to help you with your inquiry, please select the following options below:";
+        $title =  "Such a great day to get in touch with you, ".$this->user->getFirstName().". I'm Sean, to better a to help you with your inquiry, please select the following options below:";
         $subtitle = "Kindly click the buttons to navigate.";
         $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
         $menus= array(
@@ -139,9 +139,9 @@ class PostbackResponse{
     }
     public function inquiry(){
         $this->user();
-        $title =  "For more Concerns and Inquiries.";
+        $title = "For more Concerns and Inquiries.";
         $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
-        $menus= array(
+        $menus = array(
             array("title"=>"FAQ" , "isWebview"=>false),
             array("title"=>"Inquiry" ,"isWebview"=>true,
             "url" => "https://mezzohotel.com/inquiry/other"),
