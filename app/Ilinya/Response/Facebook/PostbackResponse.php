@@ -101,7 +101,7 @@ class PostbackResponse{
     }
     public function start(){
         $this->user();
-        $title =  "Such a great day to get in touch with you, ".$this->user->getFirstName().". I'm Sean, to better a to help you with your inquiry, please select the following options below:";
+        $title =  "Such a great day to get in touch with you, ".$this->user->getFirstName().". I'm Sean, to better help you with your inquiry, please select the following options below:";
         $subtitle = "Kindly click the buttons to navigate.";
         $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
         $menus= array(
@@ -121,6 +121,7 @@ class PostbackResponse{
         return $response;
     }
     public function foodAndBeverageMenu(){
+        $this->user();
         $title =  "Food & Beverage";
         $buttons=[];
         $menus= array( 
