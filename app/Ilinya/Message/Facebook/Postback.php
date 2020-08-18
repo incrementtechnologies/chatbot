@@ -84,7 +84,6 @@ class Postback
             case $this->code->pCategorySelected:
                 $this->tracker->delete();
                 $payload = trim(strtolower($custom['parameter']));
-                \Log::debug($payload);
                 switch ($payload) {
                     case 'rooms':
                         $this->bot->reply($this->room->roomMenuStart(), false);
