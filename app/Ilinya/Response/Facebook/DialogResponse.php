@@ -132,6 +132,7 @@ class DialogResponse
                 $this->bot->reply($response, false);
                 // $this->FaqList();
             } else {
+                \Log::debug("end of result should display faqs");
                 // $title = "You have reached the bottom of the results. What do you want to do next?";
                 // $menus = array(
                 //     array("title" => "Ask another question"),
@@ -154,6 +155,7 @@ class DialogResponse
 
     public function FaqList()
     {
+        \Log::debug('sending faq list');
         $buttons = [];
         $buttons[] = ButtonElement::title("FAQ List")
             ->type('web_url')

@@ -85,7 +85,8 @@ class Curl
                 ],
             ],
         ];
-        $url = "https://graph.facebook.com/v2.6/me/messenger_profile";
+        // $url = "https://graph.facebook.com/v8.0/me/messenger_profile";
+        $url = "https://graph.facebook.com/v7.0/me/messenger_profile";
         $curl = new Curl();
         $curl->post($url, $body);
     }
@@ -134,10 +135,6 @@ class Curl
         $body = curl_exec($request);
         $info = curl_getinfo($request);
         $statusCode = $info['http_code'] === 0 ? 500 : $info['http_code'];
-        if ($statusCode === 500) {
-          \Storage::append("err_response.json", json_encode($info));
-        }
-        \Log::notice("status : " . $statusCode);
         curl_close($request);
         return new Response((string) $body, $statusCode, []);
     }

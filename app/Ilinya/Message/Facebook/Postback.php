@@ -20,6 +20,7 @@ use App\Ilinya\Response\Facebook\RoomResponse;
 use App\Ilinya\Response\Facebook\SearchResponse;
 use App\Ilinya\Response\Facebook\SendResponse;
 use App\Ilinya\Webhook\Facebook\Messaging;
+use App\Ilinya\Http\Curl;
 
 class Postback
 {
@@ -83,6 +84,7 @@ class Postback
             case $this->code->pCategorySelected:
                 $this->tracker->delete();
                 $payload = trim(strtolower($custom['parameter']));
+                \Log::debug($payload);
                 switch ($payload) {
                     case 'rooms':
                         $this->bot->reply($this->room->roomMenuStart(), false);
@@ -91,7 +93,7 @@ class Postback
                     case strtolower('food & beverage') :
                         $this->bot->reply($this->post->foodAndBeverageMenu(), false);
                         break;
-                    case  strtolower('restaurants & events'):
+                    case  strtolower('Restaurant & Events'):
                         $this->bot->reply($this->post->foodAndBeverageMenu(), false);
                         break;
                     case strtolower('inquiries'):
