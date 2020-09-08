@@ -18,6 +18,8 @@ class CreateBotConfiguration extends Migration
             $table->bigInteger('account_id');
             $table->string('payload');
             $table->longText('payload_value');
+            $table->string('page');
+            $table->longText('token');
             $table->timestamps();
             $table->softDeletes();
         });
