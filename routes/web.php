@@ -98,6 +98,12 @@ Route::get("/bot/reminder/{recipientId}/{message}/{surveyMode}","IlinyaControlle
 Route::get("/bot/image","IlinyaController@createImage");
 Route::get("/bot/test/{size}","IlinyaController@test");
 
+$route = env('PACKAGE_ROUTE', '').'/bot';
+Route::post($route.'/create', "BotConfigurationController@create");
+Route::post($route.'/retrieve', "BotConfigurationController@retrieve");
+Route::post($route.'/update', "BotConfigurationController@update");
+Route::post($route.'/delete', "BotConfigurationController@delete");
+
 /**
  * @Webview Routes
  */
