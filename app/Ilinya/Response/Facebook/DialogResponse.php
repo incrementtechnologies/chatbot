@@ -114,7 +114,7 @@ class DialogResponse
             $offset = sizeof($result) >= $page * 3 ? $page * 3 : sizeof($result);
             $index = $offset - 3 < 0 ? 0 : $offset - 3;
             if ($page == 1) {
-                $message = "Hi ".$this->user->getFirstName().", these are the FAQ's related to your question.\n\n";
+                $message = "Here is/are the FAQ's related to your question.\n\n";
                 $this->bot->reply(["text" => $message], false);
             }
             for ($i = $index; $i < $offset; $i++) {
