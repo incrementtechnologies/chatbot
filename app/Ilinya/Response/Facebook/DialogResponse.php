@@ -9,6 +9,7 @@ use App\Ilinya\Bot;
 use App\Ilinya\BotTracker;
 use App\Ilinya\Http\Curl;
 use App\Ilinya\Response\Facebook\AiResponse;
+use App\Ilinya\Response\Facebook\PostbackResponse;
 /*
 @Template
  */
@@ -43,6 +44,7 @@ class DialogResponse
     protected $bot;
     private $curl;
     private $aiResponse;
+    private $postbackResponse;
     private $user;
     private $questions;
     public function __construct(Messaging $messaging)
@@ -51,6 +53,7 @@ class DialogResponse
         $this->tracker = new BotTracker($messaging);
         $this->bot = new Bot($messaging);
         $this->aiResponse = new AiResponse($messaging);
+        $this->postbackResponse = new PostbackResponse($messaging);
         $this->curl = new Curl();
         $this->questions = SheetController::getSheetContent(array(env("FAQ_URL"), "3"));
     }
@@ -102,15 +105,16 @@ class DialogResponse
             }
         }
         if (sizeof($result) == 0) {
-            $this->bot->reply($this->aiResponse->error(), false);
-            $this->bot->reply($this->startFaq('faq'), false);
+            // $this->bot->reply($this->aiResponse->error(), false);
+            // $this->bot->reply($this->startFaq('faq'), false);
+            $this->bot->reply($this->postbackResponse->start(), false);
             $this->tracker->delete();
 
         } else {
             $offset = sizeof($result) >= $page * 3 ? $page * 3 : sizeof($result);
             $index = $offset - 3 < 0 ? 0 : $offset - 3;
             if ($page == 1) {
-                $message = "Hi  these are the FAQ's related to your question.\n\n";
+                $message = "Hi these are the FAQ's related to your question.\n\n";
                 $this->bot->reply(["text" => $message], false);
             }
             for ($i = $index; $i < $offset; $i++) {
