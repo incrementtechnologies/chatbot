@@ -16,6 +16,7 @@ class CreateDialogFlowsTable extends Migration
         Schema::create('dialog_flows', function (Blueprint $table) {
             $table->increments('id');
             $table->string('userID');
+            $table->string('tags')->nullable();
             $table->string('input');
             $table->integer('stage');
             $table->timestamps();
