@@ -65,8 +65,9 @@ class PackageResponse{
   }
   public function packageMenu()
   {
-    $this->user();
-    $title =  "Hi ".$this->user->getFirstName().", thank you for your interest in our Banquet. Please choose the following options to get the information you need.";
+    // $this->user();
+    // $title =  "Hi ".$this->user->getFirstName().", thank you for your interest in our Banquet. Please choose the following options to get the information you need.";
+    $title =  "Thank you for your interest in our Banquet. Please choose the following options to get the information you need.";
     $menus= array( 
       array("payload"=>null, "title"=>"INQUIRY" ,"web"=>true) ,
       array("payload"=> "@pPackageSelected", "title"=>"PACKAGES" ,"web"=>false)
@@ -162,7 +163,7 @@ class PackageResponse{
     }
 
     public function packageInquiryStages(){
-        $this->user();
+        // $this->user();
         $title =  "For us to follow up your inquiry please follow the questions in order for us understand your Inquiry through Facebook.";
          $buttons[] = ButtonElement::title("Click Here")
                     ->type('web_url')
