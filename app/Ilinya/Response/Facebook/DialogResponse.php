@@ -157,10 +157,10 @@ class DialogResponse
                     $this->FaqList();
                 }
             }else{
-                $this->user();
-                $message = "Please allow us to get back to you soonest on your inquiry, ".$this->user->getFirstName().". For urgent inquiries, you may call us at 032 231 0777 or 0906 423 1579.\n\nYou may also leave us the complete details of your inquiry through https://mezzohotel.com/inquiry/other";
-                $this->bot->reply(["text" => $message], false);
-                // $this->bot->reply($this->postbackResponse->urgentInquiry(), false);
+                // $this->user();
+                // $message = "Please allow us to get back to you soonest on your inquiry, ".$this->user->getFirstName().". For urgent inquiries, you may call us at 032 231 0777 or 0906 423 1579.\n\nYou may also leave us the complete details of your inquiry through https://mezzohotel.com/inquiry/other";
+                // $this->bot->reply(["text" => $message], false);
+                $this->bot->reply($this->postbackResponse->urgentInquiry(), false);
             }
         }
     }

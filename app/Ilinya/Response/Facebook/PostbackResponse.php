@@ -171,8 +171,8 @@ class PostbackResponse{
     }
 
     public function urgentInquiry(){
-        // $this->user();
-        $title = "For urgent inquiries, you may call us at 032 231 0777 or 0906 423 1579.\n\n";
+        $this->user();
+        $title = "Please allow us to get back to you soonest on your inquiry, ".$this->user->getFirstName().". For urgent inquiries, you may call us at 032 231 0777 or 0906 423 1579.\n\nYou may also leave us the complete details of your inquiry by clicking the button below.";
         $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
         $menus = array(
             array("title"=>"Send inquiry" ,"isWebview"=>true,
