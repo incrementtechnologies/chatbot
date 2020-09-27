@@ -157,8 +157,10 @@ class DialogResponse
                     $this->FaqList();
                 }
             }else{
-                $message = "We'll get back to you sooner. For urgent inquiries, you may call us at 032 231 0777 or 0906 423 1579.\n\n";
+                $this->user();
+                $message = "Please allow us to get back to you soonest on your inquiry, ".$this->user->getFirstName().". For urgent inquiries, you may call us at 032 231 0777 or 0906 423 1579.\n\nYou may also leave us the complete details of your inquiry through https://mezzohotel.com/inquiry/other";
                 $this->bot->reply(["text" => $message], false);
+                // $this->bot->reply($this->postbackResponse->urgentInquiry(), false);
             }
         }
     }
@@ -171,8 +173,7 @@ class DialogResponse
         return $retval;
     }
 
-    public function FaqList()
-    {
+    public function FaqList(){
         \Log::debug('sending faq list');
         $buttons = [];
         $buttons[] = ButtonElement::title("FAQ List")

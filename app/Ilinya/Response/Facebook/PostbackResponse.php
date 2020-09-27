@@ -170,6 +170,36 @@ class PostbackResponse{
         return $response;
     }
 
+    public function urgentInquiry(){
+        // $this->user();
+        $title = "For urgent inquiries, you may call us at 032 231 0777 or 0906 423 1579.\n\n";
+        $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
+        $menus = array(
+            array("title"=>"Send inquiry" ,"isWebview"=>true,
+            "url" => "https://mezzohotel.com/inquiry/other"),
+        );
+        $buttons =[];
+        foreach ($menus as $menu) {
+            $payload = preg_replace('/\s+/', '_', $menu["title"]);
+            if ($menu["isWebview"]) {
+                $buttons[] = ButtonElement::title(ucwords(strtolower( $menu['title'])))
+                    ->type('web_url')
+                    ->url($menu["url"])
+                    ->ratio("full")
+                    ->messengerExtensions()
+                    ->fallbackUrl($menu["url"])
+                    ->toArray();
+            } else {
+                $buttons[] = ButtonElement::title(ucwords(strtolower( $menu['title'])))
+                            ->type('postback')
+                            ->payload('@pFaq')
+                            ->toArray();
+            }
+        }
+        $response = ButtonTemplate::toArray($title,$buttons);
+        return $response;
+    }
+
     public function priorityError(){
         $quickReplies[] = QuickReplyElement::title('Yes')->contentType('text')->payload('z@yes');
         $quickReplies[] = QuickReplyElement::title('No')->contentType('text')->payload('priority@no');
