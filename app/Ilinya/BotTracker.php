@@ -172,4 +172,15 @@ class BotTracker{
       }
       $delete = Logs::where($data)->delete();
   }
+
+  public function compareTags($tags){
+    $ctr = 0;
+    $result = DB::getTags($this->db_tracker, $this->messaging->getSenderId(), $tags);
+    if($result){
+      foreach ($result as $key) {
+          $ctr++;
+      }
+    }
+    return $ctr;
+  }
 }

@@ -9,6 +9,7 @@ use App\Ilinya\Bot;
 use App\Ilinya\BotTracker;
 use App\Ilinya\Http\Curl;
 use App\Ilinya\Response\Facebook\AiResponse;
+use App\Ilinya\Response\Facebook\PostbackResponse;
 /*
 @Template
  */
@@ -43,6 +44,7 @@ class DialogResponse
     protected $bot;
     private $curl;
     private $aiResponse;
+    private $postbackResponse;
     private $user;
     private $questions;
     public function __construct(Messaging $messaging)
@@ -51,6 +53,7 @@ class DialogResponse
         $this->tracker = new BotTracker($messaging);
         $this->bot = new Bot($messaging);
         $this->aiResponse = new AiResponse($messaging);
+        $this->postbackResponse = new PostbackResponse($messaging);
         $this->curl = new Curl();
         $this->questions = SheetController::getSheetContent(array(env("FAQ_URL"), "3"));
     }
@@ -102,59 +105,75 @@ class DialogResponse
             }
         }
         if (sizeof($result) == 0) {
-            $this->bot->reply($this->aiResponse->error(), false);
-            $this->bot->reply($this->startFaq('faq'), false);
+            // $this->bot->reply($this->aiResponse->error(), false);
+            // $this->bot->reply($this->startFaq('faq'), false);
+            $this->bot->reply($this->postbackResponse->start(), false);
             $this->tracker->delete();
-
         } else {
             $offset = sizeof($result) >= $page * 3 ? $page * 3 : sizeof($result);
             $index = $offset - 3 < 0 ? 0 : $offset - 3;
-            if ($page == 1) {
-                $message = "Hi  these are the FAQ's related to your question.\n\n";
-                $this->bot->reply(["text" => $message], false);
-            }
-            for ($i = $index; $i < $offset; $i++) {
-                $message = ($i + 1) . ". " . $result[$i]['question'] . "\n\n" . $result[$i]['answer'];
-                $this->bot->reply(["text" => $message], false);
-            }
-            if ($offset < sizeof($result)) {
-                $quickReplies = [];
-                $options = [
-                    ["title" => "more", "payload" => "@qLoadMoreResult"],
-                    ["title" => "ask again", "payload" => "@qFaq"],
-                    ["title" => "Go back to menu", "payload" => "@qMainMenu"],
-                ];
-                foreach ($options as $option) {
-                    $quickReplies[] = QuickReplyElement::title(strtoupper($option['title']))->contentType('text')->payload($option['payload']);
+            $data = [];
+            $data["tags"] = $result[$index]['tags'];
+            if ($this->checkTags($data) == true) {            
+                if ($page == 1) {
+                    $message = "Here is/are the FAQ's related to your question.\n\n";
+                    $this->bot->reply(["text" => $message], false);
                 }
-                $title = "Reply 'more' to view more results.";
-                $response = QuickReplyTemplate::toArray($title, $quickReplies);
-                $this->bot->reply($response, false);
-                // $this->FaqList();
-            } else {
-                \Log::debug("end of result should display faqs");
-                // $title = "You have reached the bottom of the results. What do you want to do next?";
-                // $menus = array(
-                //     array("title" => "Ask another question"),
-                //     array("title" => "Go back to menu"),
-                // );
-                // $buttons = [];
-                // foreach ($menus as $menu) {
-                //     # code...
-                //     $buttons[] = ButtonElement::title(ucwords(strtolower($menu["title"])))
-                //         ->type('postback')
-                //         ->payload("@pCategorySelected")
-                //         ->toArray();
-                // }
-                // $response = ButtonTemplate::toArray($title, $buttons);
-                // $this->bot->reply($response, false);
-                $this->FaqList();
+                for ($i = $index; $i < $offset; $i++) {
+                    $message = ($i + 1) . ". " . $result[$i]['question'] . "\n\n" . $result[$i]['answer'];
+                    $this->bot->reply(["text" => $message], false);
+                }
+                if ($offset < sizeof($result)) {
+                    $quickReplies = [];
+                    $options = [
+                        ["title" => "more", "payload" => "@qLoadMoreResult"],
+                        ["title" => "ask again", "payload" => "@qFaq"],
+                        ["title" => "Go back to menu", "payload" => "@qMainMenu"],
+                    ];
+                    foreach ($options as $option) {
+                        $quickReplies[] = QuickReplyElement::title(strtoupper($option['title']))->contentType('text')->payload($option['payload']);
+                    }
+                    $title = "Reply 'more' to view more results.";
+                    $response = QuickReplyTemplate::toArray($title, $quickReplies);
+                    $this->bot->reply($response, false);
+                    // $this->FaqList();
+                } else {
+                    \Log::debug("end of result should display faqs");
+                    // $title = "You have reached the bottom of the results. What do you want to do next?";
+                    // $menus = array(
+                    //     array("title" => "Ask another question"),
+                    //     array("title" => "Go back to menu"),
+                    // );
+                    // $buttons = [];
+                    // foreach ($menus as $menu) {
+                    //     # code...
+                    //     $buttons[] = ButtonElement::title(ucwords(strtolower($menu["title"])))
+                    //         ->type('postback')
+                    //         ->payload("@pCategorySelected")
+                    //         ->toArray();
+                    // }
+                    // $response = ButtonTemplate::toArray($title, $buttons);
+                    // $this->bot->reply($response, false);
+                    $this->FaqList();
+                }
+            }else{
+                // $this->user();
+                // $message = "Please allow us to get back to you soonest on your inquiry, ".$this->user->getFirstName().". For urgent inquiries, you may call us at 032 231 0777 or 0906 423 1579.\n\nYou may also leave us the complete details of your inquiry through https://mezzohotel.com/inquiry/other";
+                // $this->bot->reply(["text" => $message], false);
+                $this->bot->reply($this->postbackResponse->urgentInquiry(), false);
             }
         }
     }
+    public function checkTags($data){
+        $retval = false;
+        if($this->tracker->compareTags($data["tags"]) == 0){
+            $retval = true;
+        }
+        $this->tracker->update($data);
+        return $retval;
+    }
 
-    public function FaqList()
-    {
+    public function FaqList(){
         \Log::debug('sending faq list');
         $buttons = [];
         $buttons[] = ButtonElement::title("FAQ List")

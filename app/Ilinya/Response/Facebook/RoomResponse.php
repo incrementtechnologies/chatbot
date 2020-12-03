@@ -65,7 +65,7 @@ class RoomResponse{
 // Start Yol
   public function roomMenuStart()
   {
-    $this->user();;
+    // $this->user();;
     $title =  "Greetings from Mezzo Hotel! \n\nFor urgent inquiries, you may call us at 032 231 0777 or 0906 423 1579.\n\n#anewdimensionofluxury";    
     return ["text" => $title];
   }
@@ -73,8 +73,9 @@ class RoomResponse{
 
 #anewdimensionofluxury
   public function roomMenu(){
-    $this->user();
-    $title ="Hi ".$this->user->getFirstName().", thank you for interest in our rooms. Please choose the following options to get the information you need.";
+    // $this->user();
+    // $title ="Hi ".$this->user->getFirstName().", thank you for interest in our rooms. Please choose the following options to get the information you need.";
+    $title ="Thank you for interest in our rooms. Please choose the following options to get the information you need.";
     $menus= array( 
       array("payload"=> "@pRoomMenuSelected", "title"=>"ROOMS" ,"web"=>false),
       array("url"=> "https://mezzohotel.com/#gallery", "title"=>"HOTEL FACILITIES" ,"web"=>true),

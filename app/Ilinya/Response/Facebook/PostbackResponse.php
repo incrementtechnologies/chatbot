@@ -100,8 +100,9 @@ class PostbackResponse{
         return $response;
     }
     public function start(){
-        $this->user();
-        $title =  "Such a great day to get in touch with you, ".$this->user->getFirstName().". I'm Sean, to better help you with your inquiry, please select the following options below:";
+        // $this->user();
+        // $title =  "Such a great day to get in touch with you, ".$this->user->getFirstName().". I'm Sean, to better help you with your inquiry, please select the following options below:";
+        $title =  "Such a great day to get in touch with you. I'm Sean, to better help you with your inquiry, please select the following options below:";
         $subtitle = "Kindly click the buttons to navigate.";
         $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
         $menus= array(
@@ -121,7 +122,7 @@ class PostbackResponse{
         return $response;
     }
     public function foodAndBeverageMenu(){
-        $this->user();
+        // $this->user();
         $title =  "Food & Beverage";
         $buttons=[];
         $menus= array( 
@@ -139,12 +140,42 @@ class PostbackResponse{
         return $response;
     }
     public function inquiry(){
-        $this->user();
+        // $this->user();
         $title = "For more Concerns and Inquiries.";
         $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
         $menus = array(
             array("title"=>"FAQ" , "isWebview"=>false),
             array("title"=>"Inquiry" ,"isWebview"=>true,
+            "url" => "https://mezzohotel.com/inquiry/other"),
+        );
+        $buttons =[];
+        foreach ($menus as $menu) {
+            $payload = preg_replace('/\s+/', '_', $menu["title"]);
+            if ($menu["isWebview"]) {
+                $buttons[] = ButtonElement::title(ucwords(strtolower( $menu['title'])))
+                    ->type('web_url')
+                    ->url($menu["url"])
+                    ->ratio("full")
+                    ->messengerExtensions()
+                    ->fallbackUrl($menu["url"])
+                    ->toArray();
+            } else {
+                $buttons[] = ButtonElement::title(ucwords(strtolower( $menu['title'])))
+                            ->type('postback')
+                            ->payload('@pFaq')
+                            ->toArray();
+            }
+        }
+        $response = ButtonTemplate::toArray($title,$buttons);
+        return $response;
+    }
+
+    public function urgentInquiry(){
+        // $this->user();
+        $title = "Please allow us to get back to you soonest on your inquiry. For urgent inquiries, you may call us at 032 231 0777 or 0906 423 1579.\n\nYou may also leave us the complete details of your inquiry by clicking the button below.";
+        $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
+        $menus = array(
+            array("title"=>"Send inquiry" ,"isWebview"=>true,
             "url" => "https://mezzohotel.com/inquiry/other"),
         );
         $buttons =[];

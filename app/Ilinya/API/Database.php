@@ -38,4 +38,11 @@ class Database{
   public static function delete($name, $condition){
     return DB::table($name)->where($condition)->whereNull("deleted_at")->update(["deleted_at" => Carbon::now()]);
   }
+
+  public static function getTags($name, $userID, $tags){
+    $result = null;
+    $where = "tags LIKE '".$tags."' AND userID = '".$userID."' AND deleted_at between DATE_SUB(CURDATE(), INTERVAL 7 DAY) and DATE_SUB(CURDATE(), INTERVAL -1 DAY)";
+    $result =  DB::table($name)->selectRaw("id, userID, input")->whereRaw($where)->get();
+    return json_decode($result, true);
+  }
 }

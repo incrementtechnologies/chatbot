@@ -14,7 +14,7 @@ class Curl
 
     public function getUser($userId)
     {
-        $url = "https://graph.facebook.com/v2.6/" . $userId . "?fields=first_name,last_name,profile_pic,locale,timezone,gender";
+        $url = "https://graph.facebook.com/v7.0/" . $userId . "?fields=first_name,last_name,profile_pic,locale,timezone,gender";
         return $this->get($url, true);
     }
 
@@ -26,7 +26,7 @@ class Curl
             ],
             "message" => $message,
         ];
-        $url = 'https://graph.facebook.com/v2.6/me/messages';
+        $url = 'https://graph.facebook.com/v7.0/me/messages';
         $curl = new Curl();
         $curl->post($url, $parameter);
         // return response("", 200);
@@ -40,7 +40,7 @@ class Curl
             ],
             "sender_action" => $action,
         ];
-        $url = 'https://graph.facebook.com/v2.6/me/messages';
+        $url = 'https://graph.facebook.com/v7.0/me/messages';
         $curl = new Curl();
         $curl->post($url, $parameter);
         // return response("", 200);
@@ -53,7 +53,7 @@ class Curl
                 "payload" => "@pStart",
             ],
         ];
-        $url = "https://graph.facebook.com/v2.6/me/messenger_profile";
+        $url = "https://graph.facebook.com/v7.0/me/messenger_profile";
         $curl = new Curl();
         $curl->post($url, $body);
     }
