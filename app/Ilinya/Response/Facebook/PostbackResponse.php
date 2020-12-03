@@ -121,7 +121,8 @@ class PostbackResponse{
         $response = ButtonTemplate::toArray($title,$buttons);
         return $response;
     }
-    public function foodAndBeverageMenu(){
+
+    public function foodAndBeverageMenuRedirect(){
         // $this->user();
         $title =  "Food & Beverage";
         $buttons=[];
@@ -139,6 +140,24 @@ class PostbackResponse{
         $response = ButtonTemplate::toArray($title,$buttons);
         return $response;
     }
+
+    public function foodAndBeverageMenu(){
+        // $this->user();
+        $title      =  "Food & Beverage";
+        $buttons    = [];
+        $buttons[]  = ButtonElement::title('Banquet')
+        ->type('postback')
+        ->payload('Banquet@pCategorySelected')
+        ->toArray();
+
+        $buttons[]  = ButtonElement::title('Cafe Mezzo')
+        ->type('web_url')
+        ->url('https://m.me/cafemezzobymezzohotel')
+        ->toArray();
+        $response = ButtonTemplate::toArray($title,$buttons);
+        return $response;
+    }
+    
     public function inquiry(){
         // $this->user();
         $title = "For more Concerns and Inquiries.";
