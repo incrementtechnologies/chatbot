@@ -21,8 +21,10 @@ class SheetController
         
         for ($j= sizeof($headers); $j < sizeof($entries) ; $j+=$num) { 
             $object = array();
-            for ($k=0; $k < sizeof($headers) ; $k++) { 
-                $object[$headers[$k]]= $entries[$j+$k]['content']['$t'];
+            for ($k=0; $k < sizeof($headers) ; $k++) {
+                if(($j + $k) < sizeof($entries)){
+                    $object[$headers[$k]]= $entries[$j+$k]['content']['$t'];
+                }
             }
             array_push($categories, $object);   
         }
