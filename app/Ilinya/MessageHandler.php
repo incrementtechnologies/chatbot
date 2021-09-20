@@ -66,7 +66,6 @@ class MessageHandler{
            $this->message();
         break;
       case 'postback':
-          $this->getParameter();  
           $this->postback->manage($this->custom);
         break;
     }

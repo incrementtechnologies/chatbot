@@ -7,7 +7,7 @@ class SheetController
 {
 
 
-  public static function getSheetContent($arr) {        
+  public static function getSheetContent($arr) {
     $url = $arr[0];
     $num = (int)$arr[1];
     $curl = new Curl();

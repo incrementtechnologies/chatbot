@@ -55,7 +55,7 @@ class RoomResponse{
       $this->bot       = new Bot($messaging);
       $this->curl = new Curl();
       $this->credentials = array(env('ROOMS_URL'),"9");
-      $this->categories = SheetController::getSheetContent($this->credentials); 
+      // $this->categories = SheetController::getSheetContent($this->credentials); 
   }
   
   public function user(){

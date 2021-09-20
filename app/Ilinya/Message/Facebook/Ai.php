@@ -21,6 +21,10 @@ use App\Ilinya\Response\Facebook\RoomResponse;
 use App\Ilinya\Response\Facebook\SearchResponse;
 use App\Ilinya\Webhook\Facebook\Messaging;
 
+
+use App\Ilinya\Templates\Facebook\ButtonTemplate;
+use App\Ilinya\Templates\Facebook\ButtonElement;
+
 class Ai
 {
     protected $form;
@@ -61,6 +65,39 @@ class Ai
     }
 
     public function manage($reply)
+    {
+        $reply = strtolower($reply);
+        $this->curl->whitelistWebView();
+        $track_flag = $this->tracker->getStage();
+        
+        $title = "Oops! Please be reminded that I’m just a chatbot. Please follow the steps and answer my questions precisely so I can assist you better. \n\nIf you’d rather speak to a hotel representative, please contact us at (032) 231-0777 Alternatively, you can fill-in the form below and a hotel representative will contact you within 24 hours.";
+        
+        $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
+
+        $menus = array(
+            array(
+                "title"=>"Take me to the form." ,
+                "isWebview"=>true,
+                "url" => "https://mezzohotel.com/inquiry/other"
+            ),
+        );
+
+        $buttons =[];
+        foreach ($menus as $menu) {
+            $payload = preg_replace('/\s+/', '_', $menu["title"]);
+            $buttons[] = ButtonElement::title(ucwords(strtolower( $menu['title'])))
+                ->type('web_url')
+                ->url($menu["url"])
+                ->ratio("full")
+                ->messengerExtensions()
+                ->fallbackUrl($menu["url"])
+                ->toArray();
+        }
+        $response = ButtonTemplate::toArray($title,$buttons);
+        $this->bot->reply($response, false);
+    }
+
+    public function manageOld($reply)
     {
         $reply = strtolower($reply);
         $this->curl->whitelistWebView();

@@ -55,7 +55,7 @@ class DialogResponse
         $this->aiResponse = new AiResponse($messaging);
         $this->postbackResponse = new PostbackResponse($messaging);
         $this->curl = new Curl();
-        $this->questions = SheetController::getSheetContent(array(env("FAQ_URL"), "3"));
+        // $this->questions = SheetController::getSheetContent(array(env("FAQ_URL"), "3"));
     }
 
     public function user()

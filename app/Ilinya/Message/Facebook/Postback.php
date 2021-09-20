@@ -14,7 +14,7 @@ use App\Ilinya\Response\Facebook\EditDetailsResponse;
 use App\Ilinya\Response\Facebook\EditResponse;
 use App\Ilinya\Response\Facebook\FoodResponse;
 use App\Ilinya\Response\Facebook\PackageResponse;
-use App\Ilinya\Response\Facebook\PostbackResponse;
+use App\Ilinya\Response\Facebook\PostbackResponseV2 as PostbackResponse;
 use App\Ilinya\Response\Facebook\QueueCardsResponse;
 use App\Ilinya\Response\Facebook\RoomResponse;
 use App\Ilinya\Response\Facebook\SearchResponse;
@@ -44,7 +44,7 @@ class Postback
     {
         $this->bot = new Bot($messaging);
         $this->post = new PostbackResponse($messaging);
-        $this->category = new CategoryResponse($messaging);
+        // $this->category = new CategoryResponse($messaging);
         $this->forms = new Form($messaging);
         $this->tracker = new BotTracker($messaging);
         $this->code = new Codes();
@@ -55,13 +55,26 @@ class Postback
         $this->search = new SearchResponse($messaging);
         $this->details = new DetailsResponse($messaging);
         $this->editDetails = new EditDetailsResponse($messaging);
-        $this->room = new RoomResponse($messaging);
-        $this->package = new PackageResponse($messaging);
-        $this->food = new FoodResponse($messaging);
-        $this->dialog = new DialogResponse($messaging);
+        // $this->room = new RoomResponse($messaging);
+        // $this->package = new PackageResponse($messaging);
+        // $this->food = new FoodResponse($messaging);
+        // $this->dialog = new DialogResponse($messaging);
     }
 
-    public function manage($custom)
+    public function manage($custom){
+        $action = $this->code->getCode($custom);
+        switch ($action) {
+            case $this->code->pStart:
+                $this->tracker->delete();
+                $this->bot->reply(['text' => 'Test'], false);
+                break;
+            default:
+                //Error
+                break;
+        }
+    }
+
+    public function manage1($custom)
     {
         $action = $this->code->getCode($custom);
         switch ($action) {
