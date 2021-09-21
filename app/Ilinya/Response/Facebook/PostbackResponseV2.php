@@ -65,9 +65,9 @@ class PostbackResponseV2{
 
     public function persistentMenu(){
         $menus=  array(
-            array("title"=>"FAQ" , "isWebview"=>false),
-            array("title"=>"FAQ List" , "isWebview"=>false),
-            array("title"=>"Inquiry" ,"isWebview"=>true,"url" => "https://mezzohotel.com/inquiry/other")
+            array("title"=>"Bookings" , "isWebview"=>false),
+            array("title"=>"Promos" , "isWebview"=>false),
+            array("title"=>"General FAQ" ,"isWebview"=>true,"url" => "https://mezzohotel.com/inquiry/other")
         );
         $actions =[];
         foreach ($menus as $menu) {

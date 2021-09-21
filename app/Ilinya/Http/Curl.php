@@ -68,18 +68,18 @@ class Curl
                     "call_to_actions" => [
                         [
                             "type" => "postback",
-                            "title" => "Rooms",
+                            "title" => "Bookings",
                             "payload" => "rooms@pCategorySelected",
                         ],
                         [
                             "type" => "postback",
-                            "title" => "Restaurant & Events",
-                            "payload" => "food_&_beverage@pCategorySelected",
+                            "title" => "Promos",
+                            "payload" => "promos@pCategorySelected",
                         ],
                         [
                             "type" => "postback",
-                            "title" => "Inquiries",
-                            "payload" => "inquiries@pCategorySelected",
+                            "title" => "General FAQ",
+                            "payload" => "faq@pCategorySelected",
                         ],
                     ],
                 ],
