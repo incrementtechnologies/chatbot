@@ -91,7 +91,7 @@ class CategoryResponse{
   }
   public function rooms($isRreserve){
     $credentials = array("5","6");
-    $categories = SheetController::getSheetContent($credentials); 
+    $categories =[]; // SheetController::getSheetContent($credentials); 
     $buttons = [];
     $elements = [];
     if(sizeof($categories)>0){

@@ -99,6 +99,7 @@ class PostbackResponse{
         $response =  GenericTemplate::toArray($elements);
         return $response;
     }
+
     public function start(){
         // $this->user();
         // $title =  "Such a great day to get in touch with you, ".$this->user->getFirstName().". I'm Sean, to better help you with your inquiry, please select the following options below:";
@@ -120,6 +121,7 @@ class PostbackResponse{
         }
         $response = ButtonTemplate::toArray($title,$buttons);
         return $response;
+        
     }
 
     public function foodAndBeverageMenuRedirect(){

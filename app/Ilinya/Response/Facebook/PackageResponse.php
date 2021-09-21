@@ -56,7 +56,7 @@ class PackageResponse{
       $this->bot       = new Bot($messaging);
       $this->curl = new Curl();
       $this->credentials = array(env('PACKAGE_URL'),"3");
-      $this->packages = SheetController::getSheetContent($this->credentials); 
+      // $this->packages = SheetController::getSheetContent($this->credentials); 
   }
   
   public function user(){

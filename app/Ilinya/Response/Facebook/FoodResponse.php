@@ -56,7 +56,7 @@ class FoodResponse{
       $this->bot       = new Bot($messaging);
       $this->curl = new Curl();
       $this->credentials = array(env('FOOD_URL'),"4");
-      $this->foods = SheetController::getSheetContent($this->credentials); 
+      // $this->foods = SheetController::getSheetContent($this->credentials); 
   }
   
   public function user(){
