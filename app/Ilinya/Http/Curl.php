@@ -67,19 +67,22 @@ class Curl
                     "composer_input_disabled" => false,
                     "call_to_actions" => [
                         [
-                            "type" => "postback",
+                            "type" => "web_url",
                             "title" => "Bookings",
-                            "payload" => "rooms@pCategorySelected",
+                            "url" => "https://mezzohotel.com/booking-inquiry",
+                            "webview_height_ratio" => "full"
                         ],
                         [
-                            "type" => "postback",
+                            "type" => "web_url",
                             "title" => "Promos",
-                            "payload" => "promos@pCategorySelected",
+                            "url" => "https://mezzohotel.com/promos",
+                            "webview_height_ratio"  =>  "full"
                         ],
                         [
-                            "type" => "postback",
+                            "type" => "web_url",
                             "title" => "General FAQ",
-                            "payload" => "faq@pCategorySelected",
+                            "url" => "https://mezzohotel.com/#faq",
+                            "webview_height_ratio" => "full"
                         ],
                     ],
                 ],

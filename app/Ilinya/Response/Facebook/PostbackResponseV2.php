@@ -51,23 +51,35 @@ class PostbackResponseV2{
     }   
 
 
-    public function user(){
+    public function getUser(){
         $user = $this->curl->getUser($this->messaging->getSenderId());
         $this->user = new User($this->messaging->getSenderId(), $user['first_name'], $user['last_name']);
     }
 
     public function testMessage(){
-        $this->user();
+        $this->getUser();
         // $message = "Hi ".$this->user->getFirstName()." :) I'm ILinya, I can help you to get ticket or make reservation to any establishment(s) or event(s) you want. I'm currently on a TEST MODE right now, so all of the data are just sample and not really connected to the establishment that will be mentioned in our conversation later. ";
         $message = "Hi ".$this->user->getFirstName().", how could I help you?";
         return ["text" => $message];
     }
 
-    public function persistentMenu(){
+    public static function persistentMenu(){
         $menus=  array(
-            array("title"=>"Bookings" , "isWebview"=>false),
-            array("title"=>"Promos" , "isWebview"=>false),
-            array("title"=>"General FAQ" ,"isWebview"=>true,"url" => "https://mezzohotel.com/inquiry/other")
+            array(
+                "title" => "Bookings",
+                "isWebview" => true,
+                'url' => 'https://mezzohotel.com/booking-inquiry'
+            ),
+            array(
+                "title" => "Promos",
+                "isWebview" => true,
+                'url' => 'https://mezzohotel.com/promos'
+            ),
+            array(
+                "title" =>  "General FAQ",
+                "isWebview" =>  true,
+                "url" => "https://mezzohotel.com/#faq"
+            )
         );
         $actions =[];
         foreach ($menus as $menu) {
@@ -102,23 +114,35 @@ class PostbackResponseV2{
 
 
     public function start(){
-        $title =  "Hello, [Insert First name]! Thank you for messaging Mezzo Hotel, Cebu’s four-star business hotel offering a new dimension of luxury to its guests.
-
-            \n\n I’m Zoe/Sean, the Mezzo chatbot. Please follow the steps and answer my questions precisely so I can assist you better.
-
-            \n\n Please select the category of your request or question:";
+        $this->getUser();
+        $title =  "Hello, ".$this->user->getFirstName()."! Thank you for messaging Mezzo Hotel, Cebu’s four-star business hotel offering a new dimension of luxury to its guests.\n\nI’m Sean, the Mezzo chatbot. Please follow the steps and answer my questions precisely so I can assist you better.\n\nPlease select the category of your request or question:";
         $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
         $menus= array(
-            array("title"=>"Bookings"),
-            array("title"=>"Promos"),
-            array("title"=>"General FAQ")
+            array(
+                "title"=>"Bookings",
+                "isWebview" => true,
+                "url" => "https://mezzohotel.com/booking-inquiry",
+            ),
+            array(
+                "title"=>"Promos",
+                "isWebview" => true,
+                "url" => "https://mezzohotel.com/promos",
+            ),
+            array(
+                "title"=>"General FAQ",
+                "isWebview" => true,
+                "url" => "https://mezzohotel.com/#faq",
+            )
         );
         $buttons =[];
         foreach ($menus as $menu) {
             $payload = preg_replace('/\s+/', '_', $menu["title"]);
             $buttons[] = ButtonElement::title(ucwords(strtolower( $menu['title'])))
-            ->type('postback')
-            ->payload(strtolower($payload).'@pCategorySelected')
+            ->type('web_url')
+            ->url($menu["url"])
+            ->ratio("full")
+            ->messengerExtensions()
+            ->fallbackUrl($menu["url"])
             ->toArray();
         }
         $response = ButtonTemplate::toArray($title,$buttons);

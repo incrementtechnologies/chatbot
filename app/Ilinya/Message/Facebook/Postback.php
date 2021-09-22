@@ -66,7 +66,8 @@ class Postback
         switch ($action) {
             case $this->code->pStart:
                 $this->tracker->delete();
-                $this->bot->reply(['text' => 'Test'], false);
+                // $this->bot->reply(['text' => 'Test'], false);
+                $this->bot->reply($this->post->start(), false);
                 break;
             default:
                 //Error

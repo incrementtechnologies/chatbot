@@ -7,6 +7,7 @@ use App\Ilinya\BotTracker;
 use App\Ilinya\Http\Curl;
 use App\Ilinya\ImageGenerator;
 use App\Ilinya\Response\Facebook\SurveyResponse;
+use App\Ilinya\Response\Facebook\PostbackResponseV2;
 use App\Ilinya\Webhook\Facebook\Entry;
 use App\Jobs\BotHandler;
 use App\Jobs\ChatbotBroadcast;
@@ -110,7 +111,9 @@ class IlinyaController extends APIController
 
     public function persistent(Request $request)
     {
-        Curl::setupMenu();
+        // Curl::setupMenu();
+        PostbackResponseV2::persistentMenu();
+
     }
 
     public function createImage()

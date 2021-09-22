@@ -44,53 +44,8 @@ class Text{
   }
 
   public function manage($reply){
-    /*  switch ($this->tracker->getReplyStage()) {
-        case $this->code->replyStageSearch:
-          if(intval($this->tracker->getSearchOption()) >= 2){
-            $this->bot->reply($this->search->manage($reply), false);
-          }
-          else{
-            $this->bot->reply($this->search->manageSearchByCode($reply), false);
-          }   
-          break;  
-        case $this->code->replyStageForm:
-          $this->form->reply($reply);
-          break;
-        case $this->code->replyStageEdit:
-          $validate = $this->edit->validate($reply);
-          if($validate['status'] == true){
-            $this->bot->reply($this->edit->inform(), false);
-            $this->bot->reply($this->edit->update($reply), false);
-          }
-          else{
-            $this->bot->reply('Sorry you have entered an invalid '.$validate['type']." :'( Again, ".$validate['description'], true);
-          }
-          break;
-        case $this->code->replyEditDetails:
-          $validate = $this->validation->validate($reply);
-          if($validate['status'] == true){
-            $data = [
-                "column"  => "id",
-                "value"   => $this->tracker->getEditFieldId()
-            ];
-            $qCardId = QueueCardFields::retrieveByCustom($data, "queue_card_id");
-            $this->bot->reply($this->editDetails->update($reply), false);
-            $this->bot->reply($this->details->viewDetails($qCardId), false);
-          }
-          else{
-            $this->bot->reply('Sorry you have entered an invalid '.$validate['type']." :'( Again, ".$validate['description'], true);
-          }
-          break;
-        case $this->code->replyStageShortCodes:
-          $this->shortCodes();
-          break;
-        default:
-          $this->ai->manage($reply);
-          break;
-      } 
-    **/
-        $this->ai->manage($reply);
-       }
+    $this->ai->manage($reply);
+   }
   public function checkShortCodes($text){
     if($text[0] == '@'){
       return true;

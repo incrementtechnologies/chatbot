@@ -24,6 +24,8 @@ use App\Ilinya\Webhook\Facebook\Messaging;
 
 use App\Ilinya\Templates\Facebook\ButtonTemplate;
 use App\Ilinya\Templates\Facebook\ButtonElement;
+use App\Ilinya\Templates\Facebook\GenericTemplate;
+use App\Ilinya\Templates\Facebook\GenericElement;
 
 class Ai
 {
@@ -69,32 +71,137 @@ class Ai
         $reply = strtolower($reply);
         $this->curl->whitelistWebView();
         $track_flag = $this->tracker->getStage();
-        
-        $title = "Oops! Please be reminded that I’m just a chatbot. Please follow the steps and answer my questions precisely so I can assist you better. \n\nIf you’d rather speak to a hotel representative, please contact us at (032) 231-0777 Alternatively, you can fill-in the form below and a hotel representative will contact you within 24 hours.";
-        
-        $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
+
+        $this->bot->reply(['text' => "Oops! Please be reminded that I’m just a chatbot. Please follow the steps and answer my questions precisely so I can assist you better.\n\nIf you’d rather speak to a hotel representative, please contact us at (032) 231-0777.\n\nAlternatively, you can explore other options below:"], false);
 
         $menus = array(
             array(
-                "title"=>"Take me to the form." ,
-                "isWebview"=>true,
-                "url" => "https://mezzohotel.com/inquiry/other"
+                'title' => "Send Us Your Inquiry",
+                "image_url" => "https://mezzohotel.com/img/web_christmas.png",
+                "sub_title" => " Our hotel representative will contact you within 24 hours.",
+                "buttons"   => array(
+                    array(
+                        "title" =>  "Take me to the form.",
+                        "isWebview" => true,
+                        "type" => 'web_url',
+                        "url" => "https://mezzohotel.com/booking-inquiry",
+                    )
+                )
+            ),
+            array(
+                'title' => "Cafe Mezzo: Order Your Foods Now!",
+                "sub_title" => "Café Mezzo caters to food orders for delivery only.",
+                "image_url" => "https://mezzohotel.com/img/web_christmas.png",
+                "buttons"   => array(
+                    array(
+                        "title" =>   "Order Now!",
+                        "isWebview" => true,
+                        "type" => 'web_url',
+                        "url" => "https://m.me/cafemezzobymezzohotel",
+                    )
+                )
+            ),
+            array(
+                'title' => "Our Contact Details",
+                "sub_title" => "You may reach us through: Whatsapp(+639171397204)\nLocal Phone((032) 231-0777)",
+                "image_url" => "https://mezzohotel.com/img/web_christmas.png",
+                "buttons"   => array(
+                    array(
+                        "title" =>  "Whatsapp",
+                        "isWebview" => true,
+                        "type" => 'web_url',
+                        "url" => "https://wa.me/+639171397204",
+                    ),
+                    array(
+                        "title" =>   "Call Us",
+                        "type" => 'phone_number',
+                        "payload" => "+6390322310777"
+                    )
+                )
+            ),
+            array(
+                'title' => "We will call you",
+                "sub_title" => "Our hotel representative will reach out to you within 24 hours.",
+                "image_url" => "https://mezzohotel.com/img/web_christmas.png",
+                "buttons"   => array(
+                    array(
+                        "title"=>"Contact Me",
+                        "isWebview" => true,
+                        "type" => 'web_url',
+                        "url" => "https://mezzohotel.com/inquiry/others",
+                    ),
+                )
             ),
         );
-
-        $buttons =[];
+        $elements = [];
         foreach ($menus as $menu) {
-            $payload = preg_replace('/\s+/', '_', $menu["title"]);
-            $buttons[] = ButtonElement::title(ucwords(strtolower( $menu['title'])))
-                ->type('web_url')
-                ->url($menu["url"])
-                ->ratio("full")
-                ->messengerExtensions()
-                ->fallbackUrl($menu["url"])
-                ->toArray();
+            $buttons = [];
+            
+            if($menu['buttons'] && sizeof($menu['buttons']) > 0){
+
+                foreach ($menu['buttons'] as $button) {
+                    if($button['type'] === 'web_url'){
+                        $buttons[] = ButtonElement::title(ucwords(strtolower( $button['title'])))
+                            ->type($button['type'])
+                            ->url($button["url"])
+                            ->ratio("full")
+                            ->toArray();
+                    }else if($button['type'] === 'phone_number'){
+                        $buttons[] = ButtonElement::title(ucwords(strtolower( $button['title'])))
+                            ->type($button['type'])
+                            ->payload($button['payload'])
+                            ->toArray();
+                    }
+                    
+                }
+                
+                $elements[] = GenericElement::title($menu['title'])
+                    ->imageUrl($menu['image_url'])
+                    ->subtitle($menu['sub_title'])
+                    ->buttons($buttons)
+                    ->toArray();
+            }
         }
-        $response = ButtonTemplate::toArray($title,$buttons);
-        $this->bot->reply($response, false);
+        $response =  GenericTemplate::toArray($elements);
+        $this->bot->reply($response , false);
+        
+
+        $this->bot->reply(['text' => "Thank you for getting in touch! We look forward to having you here at Mezzo Hotel. Make your stay worthwhile, make it Mezzo."], false);
+
+        return response('', 200);
+
+
+
+        // $reply = strtolower($reply);
+        // $this->curl->whitelistWebView();
+        // $track_flag = $this->tracker->getStage();
+        
+        // $title = "Oops! Please be reminded that I’m just a chatbot. Please follow the steps and answer my questions precisely so I can assist you better. \n\nIf you’d rather speak to a hotel representative, please contact us at (032) 231-0777 Alternatively, you can fill-in the form below and a hotel representative will contact you within 24 hours.";
+        
+        // $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
+
+        // $menus = array(
+        //     array(
+        //         "title"=>"Take me to the form." ,
+        //         "isWebview"=>true,
+        //         "url" => "https://mezzohotel.com/inquiry/other"
+        //     ),
+        // );
+
+        // $buttons =[];
+        // foreach ($menus as $menu) {
+        //     $payload = preg_replace('/\s+/', '_', $menu["title"]);
+        //     $buttons[] = ButtonElement::title(ucwords(strtolower( $menu['title'])))
+        //         ->type('web_url')
+        //         ->url($menu["url"])
+        //         ->ratio("full")
+        //         ->messengerExtensions()
+        //         ->fallbackUrl($menu["url"])
+        //         ->toArray();
+        // }
+        // $response = ButtonTemplate::toArray($title,$buttons);
+        // $this->bot->reply($response, false);
+        // return response('', 200);
     }
 
     public function manageOld($reply)
