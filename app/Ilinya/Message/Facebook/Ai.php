@@ -77,7 +77,7 @@ class Ai
         $menus = array(
             array(
                 'title' => "Send Us Your Inquiry",
-                "image_url" => "https://mezzohotel.com/img/web_christmas.png",
+                "image_url" => "https://mezzohotel.com/img/send_inquiry.png",
                 "sub_title" => " Our hotel representative will contact you within 24 hours.",
                 "buttons"   => array(
                     array(
@@ -91,7 +91,7 @@ class Ai
             array(
                 'title' => "Cafe Mezzo: Order Your Foods Now!",
                 "sub_title" => "Café Mezzo caters to food orders for delivery only.",
-                "image_url" => "https://mezzohotel.com/img/web_christmas.png",
+                "image_url" => "https://mezzohotel.com/img/cafe_mezzo.png",
                 "buttons"   => array(
                     array(
                         "title" =>   "Order Now!",
@@ -103,8 +103,8 @@ class Ai
             ),
             array(
                 'title' => "Our Contact Details",
-                "sub_title" => "You may reach us through: Whatsapp(+639171397204)\nLocal Phone((032) 231-0777)",
-                "image_url" => "https://mezzohotel.com/img/web_christmas.png",
+                "sub_title" => "You may reach us through: Whatsapp +63 917-139-7204 \nLocal Phone +63 32 231-0777",
+                "image_url" => "https://mezzohotel.com/img/our_contact.png",
                 "buttons"   => array(
                     array(
                         "title" =>  "Whatsapp",
@@ -113,16 +113,21 @@ class Ai
                         "url" => "https://wa.me/+639171397204",
                     ),
                     array(
-                        "title" =>   "Call Us",
+                        "title" =>   "Mobile Number",
                         "type" => 'phone_number',
-                        "payload" => "+6390322310777"
+                        "payload" => "+639171397204"
+                    ),
+                    array(
+                        "title" =>   "Landline",
+                        "type" => 'phone_number',
+                        "payload" => "+63322310777"
                     )
                 )
             ),
             array(
                 'title' => "We will call you",
                 "sub_title" => "Our hotel representative will reach out to you within 24 hours.",
-                "image_url" => "https://mezzohotel.com/img/web_christmas.png",
+                "image_url" => "https://mezzohotel.com/img/call_you.png",
                 "buttons"   => array(
                     array(
                         "title"=>"Contact Me",

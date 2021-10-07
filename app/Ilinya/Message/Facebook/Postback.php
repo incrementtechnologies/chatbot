@@ -65,7 +65,8 @@ class Postback
         $action = $this->code->getCode($custom);
         switch ($action) {
             case $this->code->pStart:
-                $this->tracker->delete();
+                // $this->tracker->delete();
+            // echo "hello";
                 // $this->bot->reply(['text' => 'Test'], false);
                 $this->bot->reply($this->post->start(), false);
                 break;

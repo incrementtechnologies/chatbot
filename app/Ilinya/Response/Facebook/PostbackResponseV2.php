@@ -115,7 +115,8 @@ class PostbackResponseV2{
 
     public function start(){
         $this->getUser();
-        $title =  "Hello, ".$this->user->getFirstName()."! Thank you for messaging Mezzo Hotel, Cebu’s four-star business hotel offering a new dimension of luxury to its guests.\n\nI’m Sean, the Mezzo chatbot. Please follow the steps and answer my questions precisely so I can assist you better.\n\nPlease select the category of your request or question:";
+
+        $title =  "Hello ".$this->user->getFirstName()."! Thank you for messaging Mezzo Hotel, Cebu’s four-star business hotel offering a new dimension of luxury to its guests.\n\nI’m Sean, the Mezzo chatbot. Please follow the steps and answer my questions precisely so I can assist you better.\n\nPlease select the category of your request or question:";
         $imageUrl = "http://ilinya.com/wp-content/uploads/2017/08/cropped-logo-copy-copy.png";
         $menus= array(
             array(
