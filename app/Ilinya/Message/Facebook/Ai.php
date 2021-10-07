@@ -90,7 +90,7 @@ class Ai
             ),
             array(
                 'title' => "Café Mezzo Order Yours Now!",
-                "sub_title" => 'Café Mezzo caters to food delivery orders. Dial "0" For in-house guests.',
+                "sub_title" => 'For delivery, order via messenger. For in-house guests, dial "0"',
                 "image_url" => "https://mezzohotel.com/img/cafe_mezzo.png",
                 "buttons"   => array(
                     array(
