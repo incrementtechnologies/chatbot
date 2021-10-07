@@ -78,7 +78,7 @@ class Ai
             array(
                 'title' => "Send Us Your Inquiry",
                 "image_url" => "https://mezzohotel.com/img/send_inquiry.png",
-                "sub_title" => " Our hotel representative will contact you within 24 hours.",
+                "sub_title" => "Our hotel representative will contact you within 24 hours.",
                 "buttons"   => array(
                     array(
                         "title" =>  "Take me to the form.",
@@ -90,7 +90,7 @@ class Ai
             ),
             array(
                 'title' => "Cafe Mezzo: Order Your Foods Now!",
-                "sub_title" => "Café Mezzo caters to food orders for delivery. For in-house guests, \nplease dial 0",
+                "sub_title" => 'Café Mezzo caters to food delivery orders. Dial "0" For in-house guests.',
                 "image_url" => "https://mezzohotel.com/img/cafe_mezzo.png",
                 "buttons"   => array(
                     array(
