@@ -111,8 +111,8 @@ class IlinyaController extends APIController
 
     public function persistent(Request $request)
     {
-        // Curl::setupMenu();
-        PostbackResponseV2::persistentMenu();
+        Curl::setupMenu();
+        // PostbackResponseV2::persistentMenu();
 
     }
 
