@@ -103,7 +103,7 @@ class Ai
             ),
             array(
                 'title' => "Our Contact Details",
-                "sub_title" => "You may reach us through: Whatsapp +63 917-139-7204 \nLocal Phone +63 32 231-0777",
+                "sub_title" => "You may reach us through: Whatsapp +63 917-139-7204 \nLocal Phone +63 32 262-9720",
                 "image_url" => "https://mezzohotel.com/img/our_contact.png",
                 "buttons"   => array(
                     array(
