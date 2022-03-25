@@ -72,7 +72,7 @@ class Ai
         $this->curl->whitelistWebView();
         $track_flag = $this->tracker->getStage();
 
-        $this->bot->reply(['text' => "Oops! Please be reminded that I’m just a chatbot. Please follow the steps and answer my questions precisely so I can assist you better.\n\nIf you’d rather speak to a hotel representative, please contact us at (032) 231-0777.\n\nAlternatively, you can explore other options below:"], false);
+        $this->bot->reply(['text' => "Oops! Please be reminded that I’m just a chatbot. Please follow the steps and answer my questions precisely so I can assist you better.\n\nIf you’d rather speak to a hotel representative, please contact us at (032) 262 9720.\n\nAlternatively, you can explore other options below:"], false);
 
         $menus = array(
             array(
@@ -120,7 +120,7 @@ class Ai
                     array(
                         "title" =>   "Landline",
                         "type" => 'phone_number',
-                        "payload" => "+63322310777"
+                        "payload" => "+63322629720"
                     )
                 )
             ),
