@@ -232,8 +232,8 @@ class PostbackResponse{
         $buttons=[];
         $contacts= array( 
             array("payload"=> "+639177001599", "title"=>"Sales") ,
-            array("payload"=> "+639226590829", "title"=>"Reservations"),
-            array("payload"=> "+63322310777", "title"=>"Hotel Trunkline")
+            array("payload"=> "+639171397204", "title"=>"Reservations"),
+            array("payload"=> "+63322629720", "title"=>"Hotel Trunkline")
           );
           foreach ($contacts as $contact) {
               # code...
