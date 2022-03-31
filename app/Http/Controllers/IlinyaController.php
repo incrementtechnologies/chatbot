@@ -18,9 +18,47 @@ use Illuminate\Http\Request;
 class IlinyaController extends APIController
 {
     protected $tracker;
+
+    public function getBotPowerStatus(){
+        $headers[] = 'Content-Type: application/json';
+        $ch = curl_init();
+        $url = 'http://apibooking.mezzohotel.com/public/increment/v1/payloads/retrieve';
+        curl_setopt($ch, CURLOPT_VERBOSE, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+
+        $query = array(
+            'condition' => array(
+                array(
+                    'column' => 'payload',
+                    'clause' => '=',
+                    'value'  => 'chatbot'
+                )
+            )
+        );
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($query));
+
+        $result = curl_exec($ch);
+        curl_close($ch);
+        // print_r($result);
+        $result = json_decode($result, true);
+        if($result && isset($result['data'])){
+            $item = $result['data'][0];
+            // return $item;
+            return ($item['payload_value'] == 'true') ? true : false;
+        }else{
+            return true;
+        }
+    }
+
     public function hook(Request $request)
     {
         // return response("", 200);
+        if($this->getBotPowerStatus() == false){
+            return response("hello", 200);
+        }
         $entries = Entry::getEntries($request);
         foreach ($entries as $entry) {
             $messagings = $entry->getMessagings();

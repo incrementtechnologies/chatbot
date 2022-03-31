@@ -90,6 +90,7 @@ Route::get('/migrate', function () {
 */
 Route::get("/bot/hook","IlinyaController@hook")->middleware("verify");
 Route::post("/bot/hook","IlinyaController@hook");
+Route::get("/bot/power_status","IlinyaController@getBotPowerStatus");
 Route::post("/bot/persistent","IlinyaController@persistent");
 Route::post("/bot/get_started","IlinyaController@getStarted");
 Route::get("/bot/broadcast/{message}","IlinyaController@broadcast");
