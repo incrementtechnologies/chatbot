@@ -57,7 +57,7 @@ class IlinyaController extends APIController
     {
         // return response("", 200);
         if($this->getBotPowerStatus() == false){
-            return response("hello", 200);
+            return response("", 200);
         }
         $entries = Entry::getEntries($request);
         foreach ($entries as $entry) {
