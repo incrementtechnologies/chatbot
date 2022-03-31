@@ -45,20 +45,22 @@ class IlinyaController extends APIController
         // print_r($result);
         $result = json_decode($result, true);
         if($result && isset($result['data'])){
-            $item = $result['data'][0];
-            // return $item;
-            return ($item['payload_value'] == 'true') ? true : false;
+            $item = sizeof($result['data']) > 0 ? $result['data'][0] : array(
+                'payload_value' => 'false'
+            );
+            return $item['payload_value'];
         }else{
-            return true;
+            return 'true';
         }
     }
 
     public function hook(Request $request)
     {
-        // return response("", 200);
-        // if($this->getBotPowerStatus() == false){
-        //     return response("", 200);
-        // }
+        $power = $this->getBotPowerStatus();
+        // print_r($power);
+        if($power == 'false'){
+            return response("", 200);
+        }
         $entries = Entry::getEntries($request);
         foreach ($entries as $entry) {
             $messagings = $entry->getMessagings();
