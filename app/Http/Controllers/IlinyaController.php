@@ -56,9 +56,9 @@ class IlinyaController extends APIController
     public function hook(Request $request)
     {
         // return response("", 200);
-        if($this->getBotPowerStatus() == false){
-            return response("", 200);
-        }
+        // if($this->getBotPowerStatus() == false){
+        //     return response("", 200);
+        // }
         $entries = Entry::getEntries($request);
         foreach ($entries as $entry) {
             $messagings = $entry->getMessagings();
